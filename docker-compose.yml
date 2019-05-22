@@ -2,15 +2,15 @@ version: '3.1'
 
 services:
 
-  db_teclab:
+  db_labtec:
     image: postgres:11.2-alpine
     environment:
-      POSTGRES_PASSWORD: teclab
-      POSTGRES_DB: teclab
+      POSTGRES_PASSWORD: labtec
+      POSTGRES_DB: labtec
     ports:
       - 5401:5432
     volumes:
-      - db_teclab:/var/lib/postgresql/data
+      - db_labtec:/var/lib/postgresql/data
     
 volumes:
-  db_teclab:
+  db_labtec:
