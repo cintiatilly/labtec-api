@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+
+  db_mip:
+    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_PASSWORD: mip
+      POSTGRES_DB: mip
+    ports:
+      - 5400:5432
+    volumes:
+      - db_mip:/var/lib/postgresql/data
+    
+volumes:
+  db_mip:
