@@ -7,19 +7,14 @@ module.exports = (sequelize) => {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
     username: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
     },
-    email: {
-      type: Sequelize.STRING,
+    type: {
+      type: Sequelize.ENUM(['admin', 'tecnico', 'finac', 'recep']),
       allowNull: false,
-      unique: true,
     },
   })
 

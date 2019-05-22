@@ -1,5 +1,3 @@
-const R = require('ramda')
-
 const database = require('../../database')
 
 const SessionDomain = require('./session')
@@ -9,7 +7,6 @@ const { FieldValidationError } = require('../../helpers/errors')
 
 const User = database.model('user')
 const Login = database.model('login')
-const Session = database.model('session')
 
 const sessionDomain = new SessionDomain()
 
@@ -46,9 +43,7 @@ class LoginDomain {
         transaction,
         attributes: [
           'id',
-          'name',
           'username',
-          'email',
         ],
       },
     )
@@ -56,9 +51,7 @@ class LoginDomain {
     const response = {
       token: session.id,
       userId: user.id,
-      name: user.name,
       username: user.username,
-      email: user.email,
     }
 
     return response
@@ -80,57 +73,6 @@ class LoginDomain {
       logout: true,
     }
     return sucess
-  }
-
-  async logoutAllSessions(username, options = {}) {
-    const { transaction = null } = options
-
-    const login = await Login.findOne({
-      include: [{
-        model: User,
-        where: { username },
-      }],
-      transaction,
-    })
-
-    const allSessionsList = await Session
-      .findAndCountAll({
-        where: {
-          loginId: login.id,
-        },
-      })
-
-    const { count } = allSessionsList
-    const { rows } = allSessionsList
-
-    const sessionsIds = rows.map(currentSession => currentSession.id)
-
-    sessionsIds.map(
-      async sessionId => sessionDomain
-        .turnInvalidSession(sessionId),
-    )
-
-    const sucessList = sessionsIds.map(
-      async sessionId => sessionDomain
-        .checkSessionIsValid(sessionId),
-    )
-
-    const checkSucess = R.reduce((acc, value) => acc || value, false)
-
-    const sucess = checkSucess(sucessList)
-
-    const response = {
-      count,
-      sucess: false,
-    }
-
-    if (!sucess) {
-      response.sucess = true
-    } else {
-      response.sucess = false
-    }
-
-    return response
   }
 }
 

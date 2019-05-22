@@ -1,15 +1,16 @@
-const { generateUser } = require('../../helpers/mockData/user')
 const request = require('../../helpers/request')
 const UserDomain = require('../../domains/user')
 
 const userDomain = new UserDomain()
 
 describe('/login', () => {
-  let userMock = null
+  const userMock = {
+    username: 'teste4',
+    type: 'tecnico',
+  }
   let user = null
 
   beforeAll(async () => {
-    userMock = generateUser('login_controller')
     user = await userDomain.user_Create(userMock)
   })
 
@@ -32,7 +33,7 @@ describe('/login', () => {
   test('try login with incorrect username', async () => {
     const loginBody = {
       username: 'naocadastrado1322103',
-      password: userMock.username,
+      password: 'baasdfa',
     }
 
     const response = await request().post('/oapi/login', loginBody)
