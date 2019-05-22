@@ -7,8 +7,10 @@ const databaseHelper = require('./helpers/database')
 const errorFormatter = require('./helpers/errors/formatter')
 const loginRoute = require('./routes/login')
 const protectRoute = require('./routes/protect')
+const { auth } = require('./middlewares/authentic')
 
 const app = Express()
+
 // const authRoute = require('./routes/auth')
 // const unprotectedRoute = require('./routes/unprotected')
 // const authentication = require('./middlewares/authentication')
@@ -23,7 +25,8 @@ app.use(Express.static('public'))
 app.use(bodyParser.json())
 
 app.use('/oapi', loginRoute)
-app.use('/api', protectRoute)
+// app.use('/api', middlewareAuthentic)
+app.use('/api', auth, protectRoute)
 // app.post('/contract-upload', uploadMiddleware('file', 'temporary', { isTemp: true }))
 
 // app.use(unprotectedRoute)

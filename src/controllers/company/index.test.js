@@ -19,7 +19,21 @@ describe('companyController', () => {
   })
 
   test('create', async () => {
-    const response = await request().post('/api/company', companyMock)
+    const loginBody = {
+      username: 'modrp',
+      password: '102030',
+    }
+
+    const login = await request().post('/oapi/login', loginBody)
+
+    const { token, username } = login.body
+
+    const response = await request().post('/api/company', companyMock, {
+      headers: {
+        token,
+        username,
+      },
+    })
 
     const { body, statusCode } = response
 
