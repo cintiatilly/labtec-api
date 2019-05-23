@@ -2,8 +2,9 @@ const request = require('../../helpers/request')
 
 describe('companyController', () => {
   let companyMock = null
+  let headers = null
 
-  beforeAll(() => {
+  beforeAll(async () => {
     companyMock = {
       razaoSocial: 'teste 12sa3 LTDA',
       cnpj: '32478461000160',
@@ -15,10 +16,9 @@ describe('companyController', () => {
       zipCode: '03265080',
       telphone: '09654568',
       nameContact: 'joseildom',
+      email: 'clebinho@joazinho.com',
     }
-  })
 
-  test('create', async () => {
     const loginBody = {
       username: 'modrp',
       password: '102030',
@@ -28,12 +28,14 @@ describe('companyController', () => {
 
     const { token, username } = login.body
 
-    const response = await request().post('/api/company', companyMock, {
-      headers: {
-        token,
-        username,
-      },
-    })
+    headers = {
+      token,
+      username,
+    }
+  })
+
+  test('create', async () => {
+    const response = await request().post('/api/company', companyMock, { headers })
 
     const { body, statusCode } = response
 
@@ -48,5 +50,17 @@ describe('companyController', () => {
     expect(body.zipCode).toBe(companyMock.zipCode)
     expect(body.telphone).toBe(companyMock.telphone)
     expect(body.telphone).toBe(companyMock.telphone)
+  })
+
+  test('getall', async () => {
+    const response = await request().get('/api/company', { headers })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.count).toBeTruthy()
+    expect(body.page).toBeTruthy()
+    expect(body.show).toBeTruthy()
+    expect(body.rows).toBeTruthy()
   })
 })

@@ -40,6 +40,13 @@ module.exports = class CompanyDomain {
       }])
     }
 
+    if (companyNotHasProp('email') || !company.email) {
+      throw new FieldValidationError([{
+        field: 'email',
+        message: 'email is required',
+      }])
+    }
+
     if (companyNotHasProp('number') || !company.number) {
       throw new FieldValidationError([{
         field: 'number',
@@ -123,12 +130,16 @@ module.exports = class CompanyDomain {
       acendent: true,
       direction: 'DESC',
     }
-    const { query = null, order = inicialOrder, transaction = null } = options
 
-    if (order.acendent) {
-      order.direction = 'DESC'
+    const { query = null, order = null, transaction = null } = options
+
+    const newQuery = Object.assign({}, query)
+    const newOrder = Object.assign(inicialOrder, order)
+
+    if (newOrder.acendent) {
+      newOrder.direction = 'DESC'
     } else {
-      order.direction = 'ASC'
+      newOrder.direction = 'ASC'
     }
 
     const {
@@ -136,20 +147,13 @@ module.exports = class CompanyDomain {
       limit,
       offset,
       pageResponse,
-    } = formatQuery(query)
+    } = formatQuery(newQuery)
 
     const companies = await Company.findAndCountAll({
       where: getWhere('company'),
       order: [
-        [order.field, order.direction],
+        [newOrder.field, newOrder.direction],
       ],
-      atributes: [
-        'cnpj',
-        'razaoSocial',
-        'createdAt',
-        'updatedAt',
-        'nameContact',
-        'telphone'],
       limit,
       offset,
       transaction,
@@ -165,14 +169,17 @@ module.exports = class CompanyDomain {
       return dateformated
     }
 
-    const formatData = R.forEach(comp => ({
-      cnpj: comp.cnpj,
-      razaoSocial: comp.razaoSocial,
-      createdAt: formatDateFunct(comp.createdAt),
-      updatedAt: formatDateFunct(comp.updatedAt),
-      nameContact: comp.nameContact,
-      telphone: comp.telphone,
-    }))
+    const formatData = R.map((comp) => {
+      const resp = {
+        cnpj: comp.cnpj,
+        razaoSocial: comp.razaoSocial,
+        createdAt: formatDateFunct(comp.createdAt),
+        updatedAt: formatDateFunct(comp.updatedAt),
+        nameContact: comp.nameContact,
+        telphone: comp.telphone,
+      }
+      return resp
+    })
 
     const companiesList = formatData(rows)
 

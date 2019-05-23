@@ -19,6 +19,7 @@ describe('companyDomain', () => {
       zipCode: '03265080',
       telphone: '09654568',
       nameContact: 'joseildom',
+      email: 'josealdo@gmasi.com',
     }
   })
 
