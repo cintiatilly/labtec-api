@@ -19,6 +19,7 @@ describe('companyDomain', () => {
       zipCode: '03265080',
       telphone: '09654568',
       nameContact: 'joseildom',
+      email: 'josealdo@gmasi.com',
     }
   })
 
@@ -38,5 +39,10 @@ describe('companyDomain', () => {
 
     await expect(companyDomain.add(companyMock))
       .rejects.toThrowError(new FieldValidationError())
+  })
+
+  test('getAll', async () => {
+    const companies = await companyDomain.getAll()
+    expect(companies.rows.length > 0).toBeTruthy()
   })
 })
