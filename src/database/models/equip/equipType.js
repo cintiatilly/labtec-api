@@ -22,6 +22,11 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+
+    description: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
   })
   return equipType
 }

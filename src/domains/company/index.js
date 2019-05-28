@@ -19,159 +19,172 @@ module.exports = class CompanyDomain {
 
     const companyNotHasProp = prop => R.not(R.has(prop, bodyData))
 
-    if (companyNotHasProp('razaoSocial') || !company.razaoSocial) {
-      throw new FieldValidationError([{
-        field: 'razaoSocial',
-        message: 'razaoSocial is required',
-      }])
-    }
-    const companyReturnedRS = await Company.findOne({
-      where: { razaoSocial: company.razaoSocial },
-      transaction,
-    })
+    const errors = []
 
-    if (companyReturnedRS) {
-      throw new FieldValidationError([{
+    if (companyNotHasProp('razaoSocial') || !company.razaoSocial) {
+      errors.push({
         field: 'razaoSocial',
-        message: 'razaoSocial already exists',
-      }])
+        message: 'O campo Razão social é obrigatório',
+      })
+    } else {
+      const companyReturnedRS = await Company.findOne({
+        where: { razaoSocial: company.razaoSocial },
+        transaction,
+      })
+
+      if (companyReturnedRS) {
+        errors.push({
+          field: 'razaoSocial',
+          message: 'Razâo social já extiste',
+        })
+      }
     }
 
     if (companyNotHasProp('cnpj') || !company.cnpj) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'cnpj',
-        message: 'cnpj is required',
-      }])
-    }
-    const cnpjOrCpf = company.cnpj
+        message: 'O campo cnpj é obrigatório',
+      })
+    } else {
+      const cnpjOrCpf = company.cnpj
 
-    if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
-      throw new FieldValidationError([{
-        field: 'cnpj',
-        message: 'cnpj or cpf is invalid',
-      }])
-    }
+      if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
+        errors.push({
+          field: 'cnpj',
+          message: 'cnpj ou cpf inválido',
+        })
+      }
 
-    const companyHasExist = await Company.findOne({
-      where: {
-        cnpj: cnpjOrCpf,
-      },
-      transaction,
-    })
+      const companyHasExist = await Company.findOne({
+        where: {
+          cnpj: cnpjOrCpf,
+        },
+        transaction,
+      })
 
-    if (companyHasExist) {
-      throw new FieldValidationError([{
-        field: 'cnpj',
-        message: 'cnpj alread exist',
-      }])
+      if (companyHasExist) {
+        errors.push({
+          field: 'cnpj',
+          message: 'cnpj já exixte',
+        })
+      }
     }
 
     if (companyNotHasProp('street') || !company.street) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'street',
-        message: 'street is required',
-      }])
+        message: 'O campo rua é obrigatório',
+      })
     }
 
     if (companyNotHasProp('email') || !company.email) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'email',
-        message: 'email is required',
-      }])
-    }
-    const { email } = bodyData
+        message: 'O campo E-mail é obrigatório',
+      })
+    } else {
+      const { email } = bodyData
 
-    // eslint-disable-next-line no-useless-escape
-    if (!/^[\w_\-\.]+@[\w_\-\.]{2,}\.[\w]{2,}(\.[\w])?/.test(email)) {
-      throw new FieldValidationError([{
-        field: 'email',
-        message: 'email is inválid',
-      }])
+      // eslint-disable-next-line no-useless-escape
+      if (!/^[\w_\-\.]+@[\w_\-\.]{2,}\.[\w]{2,}(\.[\w])?/.test(email)) {
+        errors.push({
+          field: 'email',
+          message: 'E-mail inválido',
+        })
+      }
     }
+
 
     if (companyNotHasProp('number') || !company.number) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'number',
-        message: 'number is required',
-      }])
-    }
-    const { number } = bodyData
+        message: 'O campo Número é obrigatório',
+      })
+    } else {
+      const { number } = bodyData
 
-    if (!/^[0-9]+$/.test(number)) {
-      throw new FieldValidationError([{
-        field: 'number',
-        message: 'number is invalid',
-      }])
+      if (!/^[0-9]+$/.test(number)) {
+        errors.push({
+          field: 'number',
+          message: 'Número inválido',
+        })
+      }
     }
 
 
     if (companyNotHasProp('city') || !company.city) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'city',
-        message: 'city is required',
-      }])
+        message: 'O campo Cidade é obrigatório',
+      })
     }
 
     if (companyNotHasProp('state') || !company.state) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'state',
-        message: 'state is required',
-      }])
+        message: 'O campo Estado é obrigatório',
+      })
     }
 
     if (companyNotHasProp('neighborhood') || !company.neighborhood) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'neighborhood',
-        message: 'neighborhood is required',
-      }])
+        message: 'O campo Bairro é obrigatório',
+      })
     }
 
     if (companyNotHasProp('zipCode') || !company.zipCode) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'zipCode',
-        message: 'zipCode is required',
-      }])
-    }
-    const { zipCode } = bodyData
+        message: 'O campo CEP é obrigatório',
+      })
+    } else {
+      const { zipCode } = company
+      company.zipCode = zipCode.replace(/-/, '')
 
-    if (/^\s$/.test(zipCode)) {
-      throw new FieldValidationError([{
-        field: 'zipCode',
-        message: 'cannot contains space',
-      }])
-    } else if (!/^[0-9]{8}$/.test(zipCode)) {
-      throw new FieldValidationError([{
-        field: 'zipCode',
-        message: 'zipCode is invalid',
-      }])
+      if (!/^\d{8}$/.test(company.zipCode)) {
+        errors.push({
+          field: 'zipCode',
+          message: 'CEP inválido',
+        })
+      }
     }
+
 
     if (companyNotHasProp('telphone') || !company.telphone) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'telphone',
-        message: 'telphone is required',
-      }])
+        message: 'O campo Telefone é obrigatório',
+      })
+    } else {
+      const { telphone } = company
+      company.telphone = telphone.replace(/\(*\)*-*/g, '')
+
+      if (!/^\d+$/.test(company.telphone)) {
+        errors.push({
+          field: 'telphone',
+          message: 'Telefone inválido',
+        })
+      }
+
+      if (!company.telphone.length === 10 && !company.telphone.length === 11) {
+        errors.push({
+          field: 'telphone',
+          message: 'Telefone inválido',
+        })
+      }
     }
 
-    if (!/^[0-9]+$/.test(company.telphone)) {
-      throw new FieldValidationError([{
-        field: 'telphone',
-        message: 'telphone is inválid',
-      }])
-    }
-
-    if (!company.telphone.length === 10 && !company.telphone.length === 11) {
-      throw new FieldValidationError([{
-        field: 'telphone',
-        message: 'telphone is inválid',
-      }])
-    }
 
     if (companyNotHasProp('nameContact') || !company.nameContact) {
-      throw new FieldValidationError([{
+      errors.push({
         field: 'nameContact',
-        message: 'nameContact is required',
-      }])
+        message: 'O compo Nome para contato é obrigatório',
+      })
+    }
+
+    if (errors.length) {
+      throw new FieldValidationError(errors)
     }
 
     const companyCreated = Company.create(company, { transaction })
