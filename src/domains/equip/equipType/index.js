@@ -8,7 +8,7 @@ const { FieldValidationError } = require('../../../helpers/errors')
 
 const EquipType = database.model('equipType')
 
-module.exports = class equipTypeDomain {
+module.exports = class EquipTypeDomain {
   async add(bodyData, options = {}) {
     const { transaction = null } = options
 
@@ -37,6 +37,13 @@ module.exports = class equipTypeDomain {
       }])
     }
 
+    if (equipTypeNotHasProp('description')) {
+      throw new FieldValidationError([{
+        field: 'description',
+        message: 'property description is required',
+      }])
+    }
+
     if (equipType.type !== 'catraca'
       && equipType.type !== 'relogio'
       && equipType.type !== 'controleAcesso'
@@ -45,6 +52,22 @@ module.exports = class equipTypeDomain {
       throw new FieldValidationError([{
         field: 'type',
         message: 'type is invalid',
+      }])
+    }
+
+    const modelHasExist = await EquipType.findOne({
+      where: {
+        type: equipType.type,
+        mark: equipType.mark,
+        model: equipType.model,
+      },
+      transaction,
+    })
+
+    if (modelHasExist) {
+      throw new FieldValidationError([{
+        field: 'model',
+        message: 'model alread exist',
       }])
     }
 
