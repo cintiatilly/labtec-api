@@ -134,4 +134,37 @@ describe('equipType', () => {
     expect(equipTypeCreated.model).toBe(equipTypeMock2.model)
     expect(equipTypeCreated.description).toBe(equipTypeMock2.description)
   })
+
+  test('create quipType of the piece type with the same model and brand', async () => {
+    const equipTypeMock1 = {
+      type: 'peca',
+      mark: 'Ford',
+      model: 'Ka',
+      description: 'Motor',
+    }
+    const equipTypeMock2 = {
+      type: 'peca',
+      mark: 'Ford',
+      model: 'Ka',
+      description: 'Volante',
+    }
+
+    const equipTypeCreated1 = await equipTypeDomain.add(equipTypeMock1)
+
+    const equipTypeCreated2 = await equipTypeDomain.add(equipTypeMock2)
+
+    expect(equipTypeCreated1).toBeTruthy()
+    expect(equipTypeCreated2).toBeTruthy()
+
+    await expect(equipTypeDomain.add(equipTypeMock2)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'description',
+        message: 'peca alread exist',
+      }]))
+  })
+
+  test('getAll', async () => {
+    const equipTypes = await equipTypeDomain.getAll()
+    expect(equipTypes.rows.length > 0).toBeTruthy()
+  })
 })

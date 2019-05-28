@@ -1,7 +1,6 @@
 const R = require('ramda')
-// const moment = require('moment')
 
-// const formatQuery = require('../../../helpers/lazyLoad')
+const formatQuery = require('../../../helpers/lazyLoad')
 const database = require('../../../database')
 
 const { FieldValidationError } = require('../../../helpers/errors')
@@ -55,20 +54,38 @@ module.exports = class EquipTypeDomain {
       }])
     }
 
-    const modelHasExist = await EquipType.findOne({
-      where: {
-        type: equipType.type,
-        mark: equipType.mark,
-        model: equipType.model,
-      },
-      transaction,
-    })
+    if (equipType.type !== 'peca') {
+      const modelHasExist = await EquipType.findOne({
+        where: {
+          type: equipType.type,
+          mark: equipType.mark,
+          model: equipType.model,
+        },
+        transaction,
+      })
 
-    if (modelHasExist) {
-      throw new FieldValidationError([{
-        field: 'model',
-        message: 'model alread exist',
-      }])
+      if (modelHasExist) {
+        throw new FieldValidationError([{
+          field: 'model',
+          message: 'equipType alread exist',
+        }])
+      }
+    } else {
+      const pecaHasExist = await EquipType.findOne({
+        where: {
+          mark: equipType.mark,
+          model: equipType.model,
+          description: equipType.description,
+        },
+        transaction,
+      })
+
+      if (pecaHasExist) {
+        throw new FieldValidationError([{
+          field: 'description',
+          message: 'peca alread exist',
+        }])
+      }
     }
 
     const equipTypeCreated = EquipType.create(equipType, { transaction })
@@ -76,72 +93,62 @@ module.exports = class EquipTypeDomain {
     return equipTypeCreated
   }
 
-  // async getAll(options = {}) {
-  //   const inicialOrder = {
-  //     field: 'createdAt',
-  //     acendent: true,
-  //     direction: 'DESC',
-  //   }
+  async getAll(options = {}) {
+    const inicialOrder = {
+      field: 'createdAt',
+      acendent: true,
+      direction: 'DESC',
+    }
 
-  //   const { query = null, order = null, transaction = null } = options
+    const { query = null, order = null, transaction = null } = options
 
-  //   const newQuery = Object.assign({}, query)
-  //   const newOrder = Object.assign(inicialOrder, order)
+    const newQuery = Object.assign({}, query)
+    const newOrder = Object.assign(inicialOrder, order)
 
-  //   if (newOrder.acendent) {
-  //     newOrder.direction = 'DESC'
-  //   } else {
-  //     newOrder.direction = 'ASC'
-  //   }
+    if (newOrder.acendent) {
+      newOrder.direction = 'DESC'
+    } else {
+      newOrder.direction = 'ASC'
+    }
 
-  //   const {
-  //     getWhere,
-  //     limit,
-  //     offset,
-  //     pageResponse,
-  //   } = formatQuery(newQuery)
+    const {
+      getWhere,
+      limit,
+      offset,
+      pageResponse,
+    } = formatQuery(newQuery)
 
-  //   const companies = await equipType.findAndCountAll({
-  //     where: getWhere('equipType'),
-  //     order: [
-  //       [newOrder.field, newOrder.direction],
-  //     ],
-  //     limit,
-  //     offset,
-  //     transaction,
-  //   })
+    const equipTypes = await EquipType.findAndCountAll({
+      where: getWhere('equipType'),
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
+      limit,
+      offset,
+      transaction,
+    })
 
-  //   const { rows } = companies
+    const { rows } = equipTypes
 
-  //   const formatDateFunct = (date) => {
-  //     moment.locale('pt-br')
-  //     const formatDate = moment(date).format('L')
-  //     const formatHours = moment(date).format('LT')
-  //     const dateformated = `${formatDate} ${formatHours}`
-  //     return dateformated
-  //   }
+    const formatData = R.map((equip) => {
+      const resp = {
+        type: equip.type,
+        mark: equip.mark,
+        model: equip.model,
+        description: equip.description,
+      }
+      return resp
+    })
 
-  //   const formatData = R.map((comp) => {
-  //     const resp = {
-  //       cnpj: comp.cnpj,
-  //       razaoSocial: comp.razaoSocial,
-  //       createdAt: formatDateFunct(comp.createdAt),
-  //       updatedAt: formatDateFunct(comp.updatedAt),
-  //       nameContact: comp.nameContact,
-  //       telphone: comp.telphone,
-  //     }
-  //     return resp
-  //   })
-
-  //   const companiesList = formatData(rows)
+    const equipTypesList = formatData(rows)
 
 
-  //   const response = {
-  //     page: pageResponse,
-  //     show: limit,
-  //     count: companies.count,
-  //     rows: companiesList,
-  //   }
-  //   return response
-  // }
+    const response = {
+      page: pageResponse,
+      show: limit,
+      count: equipTypes.count,
+      rows: equipTypesList,
+    }
+    return response
+  }
 }
