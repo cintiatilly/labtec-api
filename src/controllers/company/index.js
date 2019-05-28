@@ -12,7 +12,7 @@ const add = async (req, res, next) => {
     res.json(company)
   } catch (error) {
     await transaction.rollback()
-    next()
+    next(error)
   }
 }
 
