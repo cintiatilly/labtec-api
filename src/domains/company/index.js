@@ -132,14 +132,11 @@ module.exports = class CompanyDomain {
         message: 'zipCode is required',
       }])
     }
-    const { zipCode } = bodyData
 
-    if (/^\s$/.test(zipCode)) {
-      throw new FieldValidationError([{
-        field: 'zipCode',
-        message: 'cannot contains space',
-      }])
-    } else if (!/^[0-9]{8}$/.test(zipCode)) {
+    const { zipCode } = company
+    company.zipCode = zipCode.replace(/-/, '')
+
+    if (!/^\d{8}$/.test(company.zipCode)) {
       throw new FieldValidationError([{
         field: 'zipCode',
         message: 'zipCode is invalid',
@@ -153,7 +150,10 @@ module.exports = class CompanyDomain {
       }])
     }
 
-    if (!/^[0-9]+$/.test(company.telphone)) {
+    const { telphone } = company
+    company.telphone = telphone.replace(/\(*\)*-*/g, '')
+
+    if (!/^\d+$/.test(company.telphone)) {
       throw new FieldValidationError([{
         field: 'telphone',
         message: 'telphone is inválid',

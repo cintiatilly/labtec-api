@@ -18,8 +18,8 @@ describe('companyDomain', () => {
       city: 'São Paulo',
       state: 'UF',
       neighborhood: 'JD. Avelino',
-      zipCode: '03265080',
-      telphone: '1109654568',
+      zipCode: '03265-080',
+      telphone: '(11)0965-4568',
       nameContact: 'joseildom',
       email: 'josealdo@gmasi.com',
     }
@@ -35,9 +35,10 @@ describe('companyDomain', () => {
     expect(companyCreated.city).toBe(companyMock.city)
     expect(companyCreated.state).toBe(companyMock.state)
     expect(companyCreated.neighborhood).toBe(companyMock.neighborhood)
-    expect(companyCreated.zipCode).toBe(companyMock.zipCode)
-    expect(companyCreated.telphone).toBe(companyMock.telphone)
-    expect(companyCreated.telphone).toBe(companyMock.telphone)
+    expect(companyCreated.zipCode).toBe('03265080')
+    expect(companyCreated.telphone).toBe('1109654568')
+    expect(companyCreated.nameContact).toBe(companyMock.nameContact)
+    expect(companyCreated.email).toBe(companyMock.email)
 
     await expect(companyDomain.add(companyMock))
       .rejects.toThrowError(new FieldValidationError())
@@ -321,7 +322,7 @@ describe('companyDomain', () => {
     await expect(companyDomain.add(companyCreated4)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'zipCode',
-        message: 'zipCode is invalid',
+        message: 'cannot contains space',
       }]))
   })
 
