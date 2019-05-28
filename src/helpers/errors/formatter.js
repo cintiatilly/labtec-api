@@ -14,7 +14,7 @@ const UniqueConstraintErrorFormatter = R.applySpec({
 
 const validationErrorFormatter = R.applySpec({
   field: R.pipe(
-    R.propOr('', 'name'),
+    R.propOr('', 'field'),
   ),
   message: R.propOr('required', 'message'),
   type: () => 'required',
