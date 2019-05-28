@@ -17,15 +17,43 @@ module.exports = class CompanyDomain {
 
     const company = R.omit(['id'], bodyData)
 
-    const companyNotHasProp = prop => R.not(R.has(prop, bodyData))
+    const companyNotHasProp = prop => R.not(R.has(prop, company))
 
-    const errors = []
+    const field = {
+      razaoSocial: false,
+      cnpj: false,
+      street: false,
+      number: false,
+      city: false,
+      state: false,
+      neighborhood: false,
+      referencePoint: false,
+      zipCode: false,
+      telphone: false,
+      email: false,
+      nameContact: false,
+    }
+    const message = {
+      razaoSocial: '',
+      cnpj: '',
+      street: '',
+      number: '',
+      city: '',
+      state: '',
+      neighborhood: '',
+      referencePoint: '',
+      zipCode: '',
+      telphone: '',
+      email: '',
+      nameContact: '',
+    }
+
+    let errors = false
 
     if (companyNotHasProp('razaoSocial') || !company.razaoSocial) {
-      errors.push({
-        field: 'razaoSocial',
-        message: 'O campo Razão social é obrigatório',
-      })
+      errors = true
+      field.razaoSocial = true
+      message.razaoSocial = 'Por favor informar a razão social.'
     } else {
       const companyReturnedRS = await Company.findOne({
         where: { razaoSocial: company.razaoSocial },
@@ -33,26 +61,23 @@ module.exports = class CompanyDomain {
       })
 
       if (companyReturnedRS) {
-        errors.push({
-          field: 'razaoSocial',
-          message: 'Razâo social já extiste',
-        })
+        errors = true
+        field.razaoSocial = true
+        message.razaoSocial = 'Essa razão social já existe em nosso sistema.'
       }
     }
 
     if (companyNotHasProp('cnpj') || !company.cnpj) {
-      errors.push({
-        field: 'cnpj',
-        message: 'O campo cnpj é obrigatório',
-      })
+      errors = true
+      field.cnpj = true
+      message.cnpj = 'Por favor informar o cnpj ou cpf.'
     } else {
       const cnpjOrCpf = company.cnpj
 
       if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
-        errors.push({
-          field: 'cnpj',
-          message: 'cnpj ou cpf inválido',
-        })
+        errors = true
+        field.cnpj = true
+        message.cnpj = 'O cnpj ou o cpf informado não é válido.'
       }
 
       const companyHasExist = await Company.findOne({
@@ -63,128 +88,112 @@ module.exports = class CompanyDomain {
       })
 
       if (companyHasExist) {
-        errors.push({
-          field: 'cnpj',
-          message: 'cnpj já exixte',
-        })
+        errors = true
+        field.cnpj = true
+        message.cnpj = 'O cnpj ou cpf infomardo já existem em nosso sistema.'
       }
     }
 
     if (companyNotHasProp('street') || !company.street) {
-      errors.push({
-        field: 'street',
-        message: 'O campo rua é obrigatório',
-      })
+      errors = true
+      field.street = true
+      message.street = 'Por favor informar o nome da rua.'
     }
 
     if (companyNotHasProp('email') || !company.email) {
-      errors.push({
-        field: 'email',
-        message: 'O campo E-mail é obrigatório',
-      })
+      errors = true
+      field.email = true
+      message.email = 'por favor informar o e-mail'
     } else {
       const { email } = bodyData
 
       // eslint-disable-next-line no-useless-escape
       if (!/^[\w_\-\.]+@[\w_\-\.]{2,}\.[\w]{2,}(\.[\w])?/.test(email)) {
-        errors.push({
-          field: 'email',
-          message: 'E-mail inválido',
-        })
+        errors = true
+        field.email = true
+        message.email = 'O e-mail informado está inválido.'
       }
     }
 
 
     if (companyNotHasProp('number') || !company.number) {
-      errors.push({
-        field: 'number',
-        message: 'O campo Número é obrigatório',
-      })
+      errors = true
+      field.number = true
+      message.number = 'Por favor informar o número.'
     } else {
       const { number } = bodyData
 
       if (!/^[0-9]+$/.test(number)) {
-        errors.push({
-          field: 'number',
-          message: 'Número inválido',
-        })
+        errors = true
+        field.number = true
+        message.number = 'O número informado é inválido.'
       }
     }
 
 
     if (companyNotHasProp('city') || !company.city) {
-      errors.push({
-        field: 'city',
-        message: 'O campo Cidade é obrigatório',
-      })
+      errors = true
+      field.city = true
+      message.city = 'Por favor informar a cidade.'
     }
 
     if (companyNotHasProp('state') || !company.state) {
-      errors.push({
-        field: 'state',
-        message: 'O campo Estado é obrigatório',
-      })
+      errors = true
+      field.state = true
+      message.state = 'Por favor informar o estado.'
     }
 
     if (companyNotHasProp('neighborhood') || !company.neighborhood) {
-      errors.push({
-        field: 'neighborhood',
-        message: 'O campo Bairro é obrigatório',
-      })
+      errors = true
+      field.neighborhood = true
+      message.neighborhood = 'Por favor informar o bairro.'
     }
 
     if (companyNotHasProp('zipCode') || !company.zipCode) {
-      errors.push({
-        field: 'zipCode',
-        message: 'O campo CEP é obrigatório',
-      })
+      errors = true
+      field.zipCode = true
+      message.zipCode = 'Por favor informar o CEP.'
     } else {
       const { zipCode } = company
       company.zipCode = zipCode.replace(/-/, '')
 
       if (!/^\d{8}$/.test(company.zipCode)) {
-        errors.push({
-          field: 'zipCode',
-          message: 'CEP inválido',
-        })
+        errors = true
+        field.zipCode = true
+        message.zipCode = 'O cep informado está inválido.'
       }
     }
 
-
     if (companyNotHasProp('telphone') || !company.telphone) {
-      errors.push({
-        field: 'telphone',
-        message: 'O campo Telefone é obrigatório',
-      })
+      errors = true
+      field.telphone = true
+      message.telphone = 'Por favor informar o número de telefone para contato.'
     } else {
       const { telphone } = company
       company.telphone = telphone.replace(/\(*\)*-*/g, '')
 
       if (!/^\d+$/.test(company.telphone)) {
-        errors.push({
-          field: 'telphone',
-          message: 'Telefone inválido',
-        })
+        errors = true
+        field.telphone = true
+        message.telphone = 'O telefone informado está inválido.'
       }
 
       if (!company.telphone.length === 10 && !company.telphone.length === 11) {
-        errors.push({
-          field: 'telphone',
-          message: 'Telefone inválido',
-        })
+        errors = true
+        field.telphone = true
+        message.telphone = 'O telefone informado está inválido.'
       }
     }
 
 
     if (companyNotHasProp('nameContact') || !company.nameContact) {
-      errors.push({
-        field: 'nameContact',
-        message: 'O compo Nome para contato é obrigatório',
-      })
+      errors = true
+      field.nameContact = true
+      message.nameContact = 'Por favor informar o nome para contato.'
     }
 
-    if (errors.length) {
-      throw new FieldValidationError(errors)
+    if (errors) {
+      throw new FieldValidationError([{ field, message }])
     }
 
     const companyCreated = Company.create(company, { transaction })
