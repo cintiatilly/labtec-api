@@ -3,7 +3,8 @@ const user = require('./user')
 const login = require('./user/login')
 const session = require('./user/session')
 const company = require('./company')
-const equipType = require('./equip/equipType')
+const equip = require('./equip')
+const equipType = require('./equipType')
 
 
 module.exports = [
@@ -13,6 +14,7 @@ module.exports = [
   session,
 
   company,
+  equip,
 
   equipType,
 ]
