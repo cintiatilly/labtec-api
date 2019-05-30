@@ -98,10 +98,21 @@ module.exports = class EquipTypeDomain {
       throw new FieldValidationError([{ field, message }])
     }
 
-    const equipTypeCreated = EquipType.create(equipType, { transaction })
-    
+    const equipTypeCreated = await EquipType.create(equipType, { transaction })
 
-    return equipTypeCreated
+    const response = await EquipType.findByPk(equipTypeCreated.id, {
+      // include: [
+      //   {
+      //     model: EquipMark,
+      //     include: [{
+      //       model: EquipModel,
+      //     }],
+      //   },
+      // ],
+      transaction,
+    })
+
+    return response
   }
 
   async getAll(options = {}) {
