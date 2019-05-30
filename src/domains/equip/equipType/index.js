@@ -116,14 +116,14 @@ module.exports = class EquipTypeDomain {
     const equipTypeCreated = await EquipType.create(equipType, { transaction })
 
     const response = await EquipType.findByPk(equipTypeCreated.id, {
-      // include: [
-      //   {
-      //     model: EquipMark,
-      //     include: [{
-      //       model: EquipModel,
-      //     }],
-      //   },
-      // ],
+      include: [
+        {
+          model: EquipMark,
+          // include: [{
+          //   model: EquipModel,
+          // }],
+        },
+      ],
       transaction,
     })
 

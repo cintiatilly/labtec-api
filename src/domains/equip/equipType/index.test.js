@@ -32,86 +32,86 @@ describe('equipType', () => {
     //   .rejects.toThrowError(new FieldValidationError())
   })
 
-  // test('try add equipType with description null', async () => {
-  //   equipTypeMock.model = 'Ford'
-  //   equipTypeMock.description = ''
-  //   const equipTypeCreated = await equipTypeDomain.add(equipTypeMock)
+  test('try add equipType with description null', async () => {
+    equipTypeMock.model = 'Ford'
+    equipTypeMock.description = ''
+    const equipTypeCreated = await equipTypeDomain.add(equipTypeMock)
 
-  //   expect(equipTypeCreated.description).toBe(equipTypeMock.description)
-  // })
+    expect(equipTypeCreated).toBeTruthy()
+  })
 
-  // test('try add equipType with Type null', async () => {
-  //   equipTypeMock.type = ''
+  test('try add equipType with Type null', async () => {
+    equipTypeMock.type = ''
 
-  //   await expect(equipTypeDomain.add(equipTypeMock)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'Type',
-  //       message: 'type is required',
-  //     }]))
-  // })
-
-
-  // test('try add equipType without Type', async () => {
-  //   const equipTypeMockCreated = R.omit(['Type'], equipTypeMock)
-
-  //   await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'Type',
-  //       message: 'type is required',
-  //     }]))
-  // })
-
-  // test('try add equipType with mark null', async () => {
-  //   equipTypeMock.mark = ''
-
-  //   await expect(equipTypeDomain.add(equipTypeMock)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'mark',
-  //       message: 'mark is required',
-  //     }]))
-  // })
+    await expect(equipTypeDomain.add(equipTypeMock)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'Type',
+        message: 'type is required',
+      }]))
+  })
 
 
-  // test('try add equipType without mark', async () => {
-  //   const equipTypeMockCreated = R.omit(['mark'], equipTypeMock)
+  test('try add equipType without Type', async () => {
+    const equipTypeMockCreated = R.omit(['Type'], equipTypeMock)
 
-  //   await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'mark',
-  //       message: 'mark is required',
-  //     }]))
-  // })
+    await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'Type',
+        message: 'type is required',
+      }]))
+  })
 
-  // test('try add equipType with model null', async () => {
-  //   equipTypeMock.model = ''
+  test('try add equipType with mark null', async () => {
+    equipTypeMock.mark = ''
 
-  //   await expect(equipTypeDomain.add(equipTypeMock)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'model',
-  //       message: 'model is required',
-  //     }]))
-  // })
+    await expect(equipTypeDomain.add(equipTypeMock)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'mark',
+        message: 'mark is required',
+      }]))
+  })
 
 
-  // test('try add equipType without model', async () => {
-  //   const equipTypeMockCreated = R.omit(['model'], equipTypeMock)
+  test('try add equipType without mark', async () => {
+    const equipTypeMockCreated = R.omit(['mark'], equipTypeMock)
 
-  //   await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'model',
-  //       message: 'model is required',
-  //     }]))
-  // })
+    await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'mark',
+        message: 'mark is required',
+      }]))
+  })
 
-  // test('try add equipType without description', async () => {
-  //   const equipTypeMockCreated = R.omit(['description'], equipTypeMock)
+  test('try add equipType with model null', async () => {
+    equipTypeMock.model = ''
 
-  //   await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'description',
-  //       message: 'property description is required',
-  //     }]))
-  // })
+    await expect(equipTypeDomain.add(equipTypeMock)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'model',
+        message: 'model is required',
+      }]))
+  })
+
+
+  test('try add equipType without model', async () => {
+    const equipTypeMockCreated = R.omit(['model'], equipTypeMock)
+
+    await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'model',
+        message: 'model is required',
+      }]))
+  })
+
+  test('try add equipType without description', async () => {
+    const equipTypeMockCreated = R.omit(['description'], equipTypeMock)
+
+    await expect(equipTypeDomain.add(equipTypeMockCreated)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'description',
+        message: 'property description is required',
+      }]))
+  })
 
   // test('create equipType with same make and model, but different type', async () => {
   //   const equipTypeMock1 = {
