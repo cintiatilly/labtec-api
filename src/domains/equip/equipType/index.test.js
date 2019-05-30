@@ -24,7 +24,7 @@ describe('equipType', () => {
     console.log(JSON.stringify(equipTypeCreated))
 
     expect(equipTypeCreated.type).toBe(equipTypeMock.type)
-    // expect(equipTypeCreated.mark).toBe(equipTypeMock.mark)
+    expect(equipTypeCreated.markId).toBe(equipTypeMock.markId)
     // expect(equipTypeCreated.model).toBe(equipTypeMock.model)
     // expect(equipTypeCreated.description).toBe(equipTypeMock.description)
 

@@ -12,21 +12,14 @@ module.exports = (sequelize) => {
       type: Sequelize.ENUM(['catraca', 'relogio', 'controleAcesso', 'peca', 'sirene']),
       allowNull: false,
     },
-
-    mark: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-
-    model: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-
-    description: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
   })
+
+  equipType.associate = (models) => {
+    equipType.belongsTo(models.equipMark, {
+      foreignKey: {
+        allowNull: false,
+      },
+    })
+  }
   return equipType
 }

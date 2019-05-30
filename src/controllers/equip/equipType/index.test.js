@@ -34,9 +34,7 @@ describe('equipTypeController', () => {
 
     expect(statusCode).toBe(200)
     expect(body.type).toBe(equipTypeMock.type)
-    expect(body.mark).toBe(equipTypeMock.mark)
-    expect(body.model).toBe(equipTypeMock.model)
-    expect(body.description).toBe(equipTypeMock.description)
+    expect(body.markId).toBe(equipTypeMock.markId)
   })
 
   test('getall', async () => {
