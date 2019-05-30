@@ -99,6 +99,7 @@ module.exports = class EquipTypeDomain {
     }
 
     const equipTypeCreated = EquipType.create(equipType, { transaction })
+    
 
     return equipTypeCreated
   }
