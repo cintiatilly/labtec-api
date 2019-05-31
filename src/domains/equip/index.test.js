@@ -14,6 +14,7 @@ const equipTypeDomain = new EquipTypeDomain()
 
 describe('equipDomain', () => {
   let equipMock = null
+  let equipMock1 = null
 
   beforeAll(async () => {
     const companyMock = {
@@ -48,10 +49,45 @@ describe('equipDomain', () => {
       readerColor: 'Verde',
       details: '',
     }
+
+    const companyMock1 = {
+      razaoSocial: 'teste 54321 LTDA',
+      cnpj: '70128209000110',
+      street: 'jaime rodrigues',
+      number: '69',
+      city: 'São Paulo',
+      state: 'UF',
+      neighborhood: 'JD. Avelino',
+      zipCode: '03465-080',
+      telphone: '(11)0999-4568',
+      nameContact: 'jaimeldom',
+      email: 'jaime@gmasi.com',
+    }
+
+    const companyCreated1 = await companyDomain.add(companyMock1)
+
+    const equipTypeMock1 = {
+      type: 'catraca',
+      mark: 'Hanrye',
+      model: 'Henry 9.0',
+      description: '',
+    }
+
+    const equipModelCreated1 = await equipTypeDomain.add(equipTypeMock1)
+
+    equipMock1 = {
+      equipModelId: equipModelCreated1.id,
+      companyId: companyCreated1.id,
+      serialNumber: '987654321',
+      readerColor: 'Verde',
+      details: '',
+    }
   })
 
   test('create', async () => {
     const equipCreated = await equipDomain.add(equipMock)
+    // eslint-disable-next-line no-unused-vars
+    const equipCreated1 = await equipDomain.add(equipMock1)
 
     expect(equipCreated.equipModelId).toBe(equipMock.equipModelId)
     expect(equipCreated.companyId).toBe(equipMock.companyId)
@@ -160,5 +196,10 @@ describe('equipDomain', () => {
   test('getAll', async () => {
     const equips = await equipDomain.getAll()
     expect(equips.rows.length > 0).toBeTruthy()
+  })
+
+  test('getOneBySerialNumber', async () => {
+    const equips = await equipDomain.getOneBySerialNumber('12345687')
+    expect(equips).toBeTruthy()
   })
 })

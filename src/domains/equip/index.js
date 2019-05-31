@@ -205,4 +205,30 @@ module.exports = class EquipDomain {
     }
     return response
   }
+
+  async getOneBySerialNumber(serialNumber, options = {}) {
+    const { transaction = null } = options
+    const response = await Equip.findOne({
+      where: {
+        serialNumber,
+      },
+      include: [
+        {
+          model: Company,
+        },
+        {
+          model: EquipModel,
+          include: [{
+            model: EquipMark,
+            include: [{
+              model: EquipType,
+            }],
+          }],
+        },
+      ],
+      transaction,
+    })
+
+    return response
+  }
 }
