@@ -159,8 +159,6 @@ describe('equipDomain', () => {
 
   test('getAll', async () => {
     const equips = await equipDomain.getAll()
-
-    console.log(equips)
     expect(equips.rows.length > 0).toBeTruthy()
   })
 })
