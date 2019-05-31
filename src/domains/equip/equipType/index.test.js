@@ -165,4 +165,14 @@ describe('equipType', () => {
     const equipTypes = await equipTypeDomain.getAll()
     expect(equipTypes.rows.length > 0).toBeTruthy()
   })
+
+  test('getAllMarkByType', async () => {
+    const equips = await equipTypeDomain.getAllMarkByType('catraca')
+    expect(equips).toBeTruthy()
+  })
+
+  test('getAllModelByMark', async () => {
+    const equips = await equipTypeDomain.getAllModelByMark('Hanry')
+    expect(equips).toBeTruthy()
+  })
 })

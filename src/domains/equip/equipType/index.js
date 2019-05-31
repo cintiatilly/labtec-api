@@ -234,4 +234,36 @@ module.exports = class EquipTypeDomain {
     }
     return response
   }
+
+  async getAllMarkByType(type, options = {}) {
+    const { transaction = null } = options
+
+    const arrayMarks = await EquipMark.findAll({
+      include: [{
+        model: EquipType,
+        where: { type },
+      }],
+      transaction,
+    })
+
+    const response = arrayMarks.map(item => item.mark)
+
+    return response
+  }
+
+  async getAllModelByMark(mark, options = {}) {
+    const { transaction = null } = options
+
+    const arrayModel = await EquipModel.findAll({
+      include: [{
+        model: EquipMark,
+        where: { mark },
+      }],
+      transaction,
+    })
+
+    const response = arrayModel.map(item => item.model)
+
+    return response
+  }
 }
