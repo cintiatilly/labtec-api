@@ -39,10 +39,10 @@ describe('equipDomain', () => {
       description: '',
     }
 
-    const equipTypeCreated = await equipTypeDomain.add(equipTypeMock)
+    const equipModelCreated = await equipTypeDomain.add(equipTypeMock)
 
     equipMock = {
-      equipTypeId: equipTypeCreated.id,
+      equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '12345687',
       readerColor: 'Verde',
@@ -53,7 +53,7 @@ describe('equipDomain', () => {
   test('create', async () => {
     const equipCreated = await equipDomain.add(equipMock)
 
-    expect(equipCreated.equipTypeId).toBe(equipMock.equipTypeId)
+    expect(equipCreated.equipModelId).toBe(equipMock.equipModelId)
     expect(equipCreated.companyId).toBe(equipMock.companyId)
     expect(equipCreated.serialNumber).toBe(equipMock.serialNumber)
     expect(equipCreated.readerColor).toBe(equipMock.readerColor)
@@ -63,25 +63,25 @@ describe('equipDomain', () => {
       .rejects.toThrowError(new FieldValidationError())
   })
 
-  test('try add equip with equipTypeId null', async () => {
+  test('try add equip with equipModelId null', async () => {
     const equipCreated = equipMock
-    equipCreated.equipTypeId = ''
+    equipCreated.equipModelId = ''
 
     await expect(equipDomain.add(equipCreated)).rejects
       .toThrowError(new FieldValidationError([{
-        field: 'equipTypeId',
-        message: 'equipTypeId cannot be null',
+        field: 'equipModelId',
+        message: 'equipModelId cannot be null',
       }]))
   })
 
 
-  test('try add equip without equipTypeId', async () => {
-    const equipCreated = R.omit(['equipTypeId'], equipMock)
+  test('try add equip without equipModelId', async () => {
+    const equipCreated = R.omit(['equipModelId'], equipMock)
 
     await expect(equipDomain.add(equipCreated)).rejects
       .toThrowError(new FieldValidationError([{
-        field: 'equipTypeId',
-        message: 'equipTypeId cannot be null',
+        field: 'equipModelId',
+        message: 'equipModelId cannot be null',
       }]))
   })
 
@@ -131,16 +131,16 @@ describe('equipDomain', () => {
   })
 
 
-  test('try add equip without equipTypeId invalid', async () => {
+  test('try add equip without equipModelId invalid', async () => {
     const equipCreated = {
       ...equipMock,
-      equipTypeId: '2360dcfe-4288-4916-b526-078d7da53ec1',
+      equipModelId: '2360dcfe-4288-4916-b526-078d7da53ec1',
     }
 
     await expect(equipDomain.add(equipCreated)).rejects
       .toThrowError(new FieldValidationError([{
-        field: 'equipTypeId',
-        message: 'equipTypeId invalid',
+        field: 'equipModelId',
+        message: 'equipModelId invalid',
       }]))
   })
 
@@ -157,8 +157,10 @@ describe('equipDomain', () => {
       }]))
   })
 
-//   test('getAll', async () => {
-//     const companies = await equipDomain.getAll()
-//     expect(companies.rows.length > 0).toBeTruthy()
-//   })
+  test('getAll', async () => {
+    const equips = await equipDomain.getAll()
+
+    console.log(equips)
+    expect(equips.rows.length > 0).toBeTruthy()
+  })
 })
