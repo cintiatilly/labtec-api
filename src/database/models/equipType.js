@@ -14,12 +14,12 @@ module.exports = (sequelize) => {
     },
   })
 
-  equipType.associate = (models) => {
-    equipType.belongsTo(models.equipMark, {
-      foreignKey: {
-        allowNull: false,
-      },
-    })
-  }
+  // equipType.associate = (models) => {
+  //   equipType.hasMany(models.equipMark, {
+  //     foreignKey: {
+  //       allowNull: false,
+  //     },
+  //   })
+  // }
   return equipType
 }

@@ -12,16 +12,14 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-
-    model: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-
-    description: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
   })
+
+  equipMark.associate = (models) => {
+    equipMark.belongsTo(models.equipType, {
+      foreignKey: {
+        allowNull: false,
+      },
+    })
+  }
   return equipMark
 }

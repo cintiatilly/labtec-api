@@ -6,7 +6,7 @@ const company = require('./company')
 const equip = require('./equip')
 const equipType = require('./equipType')
 const equipMark = require('./equipMark')
-
+const equipModel = require('./equipModel')
 
 module.exports = [
 
@@ -19,4 +19,5 @@ module.exports = [
 
   equipType,
   equipMark,
+  equipModel,
 ]

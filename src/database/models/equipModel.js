@@ -1,41 +1,31 @@
 const Sequelize = require('sequelize')
 
 module.exports = (sequelize) => {
-  const equip = sequelize.define('equip', {
+  const equipModel = sequelize.define('equipModel', {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
 
-    serialNumber: {
+    model: {
       type: Sequelize.STRING,
       allowNull: false,
     },
 
-    readerColor: {
+    description: {
       type: Sequelize.STRING,
       allowNull: true,
     },
 
-    details: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
   })
 
-  equip.associate = (models) => {
-    equip.belongsTo(models.company, {
-      foreignKey: {
-        allowNull: false,
-      },
-    })
-    equip.belongsTo(models.equipModel, {
+  equipModel.associate = (models) => {
+    equipModel.belongsTo(models.equipMark, {
       foreignKey: {
         allowNull: false,
       },
     })
   }
-
-  return equip
+  return equipModel
 }
