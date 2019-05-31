@@ -298,4 +298,16 @@ module.exports = class CompanyDomain {
     }
     return response
   }
+
+  async getOneByCnpj(cnpj, options = {}) {
+    const { transaction = null } = options
+    const response = await Company.findOne({
+      where: {
+        cnpj,
+      },
+      transaction,
+    })
+
+    return response
+  }
 }
