@@ -7,6 +7,7 @@ const { FieldValidationError } = require('../../../helpers/errors')
 
 const EquipType = database.model('equipType')
 const EquipMark = database.model('equipMark')
+const EquipModel = database.model('equipModel')
 
 
 module.exports = class EquipTypeDomain {
@@ -62,68 +63,107 @@ module.exports = class EquipTypeDomain {
       errors = true
     }
 
-    // if (equip.type && equip.mark && equip.model) {
-    //   if (equip.type !== 'peca') {
-    //     const modelHasExist = await Equip.findOne({
-    //       where: {
-    //         type: equip.type,
-    //         mark: equip.mark,
-    //         model: equip.model,
-    //       },
-    //       transaction,
-    //     })
-
-    //     if (modelHasExist) {
-    //       errors = true
-    //       field.model = true
-    //       message.model = 'Equipamento já está cadastrado.'
-    //     }
-    //   } else {
-    //     const pecaHasExist = await Equip.findOne({
-    //       where: {
-    //         mark: equip.mark,
-    //         model: equip.model,
-    //         description: equip.description,
-    //       },
-    //       transaction,
-    //     })
-
-    //     if (pecaHasExist) {
-    //       errors = true
-    //       field.description = true
-    //       message.description = 'Está peça deste equipamento já está registrada.'
-    //     }
-    //   }
-    // }
-
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
 
-    const equipMark = {
-      mark: equip.mark,
-      model: equip.model,
-      description: equip.description,
-    }
-
-    const equipMarkCreated = await EquipMark.create(equipMark, { transaction })
-
     const equipType = {
       type: equip.type,
-      equipMarkId: equipMarkCreated.id,
     }
 
-    const equipTypeCreated = await EquipType.create(equipType, { transaction })
+    let typeHasExist = await EquipType.findOne({
+      where: {
+        type: equipType.type,
+      },
+      transaction,
+    })
 
-    const response = await EquipType.findByPk(equipTypeCreated.id, {
-      include: [
-        {
-          model: EquipMark,
-          // include: [{
-          //   model: EquipModel,
-          // }],
+    if (!typeHasExist) {
+      typeHasExist = await EquipType.create(equipType, { transaction })
+    }
+
+    const equipMark = {
+      mark: equip.mark,
+      equipTypeId: typeHasExist.id,
+    }
+
+    let markHasExist = await EquipMark.findOne({
+      where: {
+        mark: equipMark.mark,
+      },
+      include: [{
+        model: EquipType,
+        where: { id: equipMark.equipTypeId },
+      }],
+      transaction,
+    })
+
+    if (!markHasExist) {
+      markHasExist = await EquipMark.create(equipMark, { transaction })
+    }
+
+    const equipModel = {
+      model: equip.model,
+      description: equip.description,
+      equipMarkId: markHasExist.id,
+    }
+
+    let modelHasExist = await EquipModel.findOne({
+      where: {
+        model: equipModel.model,
+      },
+      include: [{
+        model: EquipMark,
+        where: { id: equipModel.equipMarkId },
+        include: [{
+          model: EquipType,
+          where: { id: equipMark.equipTypeId },
+        }],
+      }],
+      transaction,
+    })
+
+
+    if (equip.type === 'peca') {
+      const pecaHasExist = await EquipModel.findOne({
+        where: {
+          model: equipModel.model,
+          description: equipModel.description,
         },
-      ],
+        include: [{
+          model: EquipMark,
+          where: { id: equipModel.equipMarkId },
+          include: [{
+            model: EquipType,
+            where: { id: equipMark.equipTypeId },
+          }],
+        }],
+        transaction,
+      })
+
+      if (pecaHasExist) {
+        field.equipType = true
+        message.equipType = 'Este equipamento já está registrado.'
+        throw new FieldValidationError([{ field, message }])
+      } else {
+        modelHasExist = await EquipModel.create(equipModel, { transaction })
+      }
+    } else if (modelHasExist) {
+      field.equipType = true
+      message.equipType = 'Este equipamento já está registrado.'
+      throw new FieldValidationError([{ field, message }])
+    } else {
+      modelHasExist = await EquipModel.create(equipModel, { transaction })
+    }
+
+
+    const response = await EquipModel.findByPk(modelHasExist.id, {
+      include: [{
+        model: EquipMark,
+        include: [{
+          model: EquipType,
+        }],
+      }],
       transaction,
     })
 
@@ -155,8 +195,14 @@ module.exports = class EquipTypeDomain {
       pageResponse,
     } = formatQuery(newQuery)
 
-    const equipTypes = await EquipType.findAndCountAll({
-      where: getWhere('equipType'),
+    const equipModels = await EquipModel.findAndCountAll({
+      where: getWhere('equipModel'),
+      include: [{
+        model: EquipMark,
+        include: [{
+          model: EquipType,
+        }],
+      }],
       order: [
         [newOrder.field, newOrder.direction],
       ],
@@ -165,26 +211,26 @@ module.exports = class EquipTypeDomain {
       transaction,
     })
 
-    const { rows } = equipTypes
+    const { rows } = equipModels
 
     const formatData = R.map((equip) => {
       const resp = {
-        type: equip.type,
-        mark: equip.mark,
+        type: equip.equipMark.equipType.type,
+        mark: equip.equipMark.mark,
         model: equip.model,
         description: equip.description,
       }
       return resp
     })
 
-    const equipTypesList = formatData(rows)
+    const equipModelsList = formatData(rows)
 
 
     const response = {
       page: pageResponse,
       show: limit,
-      count: equipTypes.count,
-      rows: equipTypesList,
+      count: equipModels.count,
+      rows: equipModelsList,
     }
     return response
   }

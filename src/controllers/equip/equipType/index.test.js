@@ -33,8 +33,10 @@ describe('equipTypeController', () => {
     const { body, statusCode } = response
 
     expect(statusCode).toBe(200)
-    expect(body.type).toBe(equipTypeMock.type)
-    expect(body.markId).toBe(equipTypeMock.markId)
+    expect(body.equipMark.equipType.type).toBe(equipTypeMock.type)
+    expect(body.equipMark.mark).toBe(equipTypeMock.mark)
+    expect(body.model).toBe(equipTypeMock.model)
+    expect(body.description).toBe(equipTypeMock.description)
   })
 
   test('getall', async () => {

@@ -21,15 +21,13 @@ describe('equipType', () => {
   test('create', async () => {
     const equipTypeCreated = await equipTypeDomain.add(equipTypeMock)
 
-    console.log(JSON.stringify(equipTypeCreated))
+    expect(equipTypeCreated.model).toBe(equipTypeMock.model)
+    expect(equipTypeCreated.description).toBe(equipTypeMock.description)
+    expect(equipTypeCreated.equipMark.mark).toBe(equipTypeMock.mark)
+    expect(equipTypeCreated.equipMark.equipType.type).toBe(equipTypeMock.type)
 
-    expect(equipTypeCreated.type).toBe(equipTypeMock.type)
-    expect(equipTypeCreated.markId).toBe(equipTypeMock.markId)
-    // expect(equipTypeCreated.model).toBe(equipTypeMock.model)
-    // expect(equipTypeCreated.description).toBe(equipTypeMock.description)
-
-    // await expect(equipTypeDomain.add(equipTypeMock))
-    //   .rejects.toThrowError(new FieldValidationError())
+    await expect(equipTypeDomain.add(equipTypeMock))
+      .rejects.toThrowError(new FieldValidationError())
   })
 
   test('try add equipType with description null', async () => {
@@ -113,60 +111,58 @@ describe('equipType', () => {
       }]))
   })
 
-  // test('create equipType with same make and model, but different type', async () => {
-  //   const equipTypeMock1 = {
-  //     type: 'catraca',
-  //     mark: 'GM',
-  //     model: 'Onix',
-  //     description: '',
-  //   }
-  //   const equipTypeMock2 = {
-  //     type: 'relogio',
-  //     mark: 'GM',
-  //     model: 'Onix',
-  //     description: '',
-  //   }
+  test('create equipType with same mark and model, but different type', async () => {
+    const equipTypeMock1 = {
+      type: 'catraca',
+      mark: 'GM',
+      model: 'Onix',
+      description: '',
+    }
+    const equipTypeMock2 = {
+      type: 'relogio',
+      mark: 'GM',
+      model: 'Onix',
+      description: '',
+    }
 
-  //   await equipTypeDomain.add(equipTypeMock1)
+    await equipTypeDomain.add(equipTypeMock1)
 
-  //   const equipTypeCreated = await equipTypeDomain.add(equipTypeMock2)
+    const equipTypeCreated = await equipTypeDomain.add(equipTypeMock2)
 
-  //   expect(equipTypeCreated.type).toBe(equipTypeMock2.type)
-  //   expect(equipTypeCreated.mark).toBe(equipTypeMock2.mark)
-  //   expect(equipTypeCreated.model).toBe(equipTypeMock2.model)
-  //   expect(equipTypeCreated.description).toBe(equipTypeMock2.description)
-  // })
+    expect(equipTypeCreated).toBeTruthy()
+  })
 
-  // test('create quipType of the piece type with the same model and brand', async () => {
-  //   const equipTypeMock1 = {
-  //     type: 'peca',
-  //     mark: 'Ford',
-  //     model: 'Ka',
-  //     description: 'Motor',
-  //   }
-  //   const equipTypeMock2 = {
-  //     type: 'peca',
-  //     mark: 'Ford',
-  //     model: 'Ka',
-  //     description: 'Volante',
-  //   }
 
-  //   const equipTypeCreated1 = await equipTypeDomain.add(equipTypeMock1)
+  test('create quipType of the piece type with the same model and brand', async () => {
+    const equipTypeMock1 = {
+      type: 'peca',
+      mark: 'Ford',
+      model: 'Ka',
+      description: 'Motor',
+    }
+    const equipTypeMock2 = {
+      type: 'peca',
+      mark: 'Ford',
+      model: 'Ka',
+      description: 'Volante',
+    }
 
-  //   const equipTypeCreated2 = await equipTypeDomain.add(equipTypeMock2)
+    const equipTypeCreated1 = await equipTypeDomain.add(equipTypeMock1)
 
-  //   expect(equipTypeCreated1).toBeTruthy()
-  //   expect(equipTypeCreated2).toBeTruthy()
+    const equipTypeCreated2 = await equipTypeDomain.add(equipTypeMock2)
 
-  //   await expect(equipTypeDomain.add(equipTypeMock2)).rejects
-  //     .toThrowError(new FieldValidationError([{
-  //       field: 'description',
-  //       message: 'peca alread exist',
-  //     }]))
-  // })
+    expect(equipTypeCreated1).toBeTruthy()
+    expect(equipTypeCreated2).toBeTruthy()
 
-  // test('getAll', async () => {
-  //   const equipTypes = await equipTypeDomain.getAll()
-  //   expect(equipTypes.rows.length > 0).toBeTruthy()
-  // })
+    await expect(equipTypeDomain.add(equipTypeMock2)).rejects
+      .toThrowError(new FieldValidationError([{
+        field: 'description',
+        message: 'peca alread exist',
+      }]))
+  })
+
+  test('getAll', async () => {
+    const equipTypes = await equipTypeDomain.getAll()
+    expect(equipTypes.rows.length > 0).toBeTruthy()
+  })
 })
