@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       set(oldValue) {
         // eslint-disable-next-line no-useless-escape
-        const newValue = oldValue.replace(/\.|-/gi, '')
+        const newValue = oldValue.replace(/\.|-|\//gi, '')
         this.setDataValue('cnpj', newValue)
       },
     },

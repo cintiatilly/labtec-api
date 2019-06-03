@@ -19,7 +19,9 @@ const add = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   const transaction = await database.transaction()
   try {
-    const company = await companyDomain.getAll()
+    const query = JSON.parse(req.query.query)
+
+    const company = await companyDomain.getAll({ query, transaction })
 
     await transaction.commit()
     res.json(company)

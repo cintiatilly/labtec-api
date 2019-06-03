@@ -72,7 +72,7 @@ module.exports = class CompanyDomain {
       field.cnpj = true
       message.cnpj = 'Por favor informar o cnpj ou cpf.'
     } else {
-      const cnpjOrCpf = company.cnpj
+      const cnpjOrCpf = company.cnpj.replace(/-|\.|\//g, '')
 
       if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
         errors = true
@@ -208,10 +208,10 @@ module.exports = class CompanyDomain {
       direction: 'DESC',
     }
 
-    const { query = null, order = null, transaction = null } = options
+    const { query = null, transaction = null } = options
 
     const newQuery = Object.assign({}, query)
-    const newOrder = Object.assign(inicialOrder, order)
+    const newOrder = Object.assign(inicialOrder, query.order)
 
     if (newOrder.acendent) {
       newOrder.direction = 'DESC'
@@ -284,10 +284,15 @@ module.exports = class CompanyDomain {
 
     const companiesList = formatData(rows)
 
+    let show = limit
+    if (companies.count < show) {
+      show = companies.count
+    }
+
 
     const response = {
       page: pageResponse,
-      show: limit,
+      show,
       count: companies.count,
       rows: companiesList,
     }
