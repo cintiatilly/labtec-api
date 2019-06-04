@@ -3,6 +3,7 @@ const request = require('../../../helpers/request')
 describe('equipTypeController', () => {
   let equipTypeMock = null
   let headers = null
+  let params = null
 
   beforeAll(async () => {
     equipTypeMock = {
@@ -24,6 +25,10 @@ describe('equipTypeController', () => {
     headers = {
       token,
       username,
+    }
+    params = {
+      type: 'relogio',
+      mark: 'Henry',
     }
   })
 
@@ -52,7 +57,7 @@ describe('equipTypeController', () => {
   })
 
   test('getAllMarkByType', async () => {
-    const response = await request().get('/api/equip/equipType/getAllMarkByType', { headers })
+    const response = await request().get('/api/equip/equipType/getAllMarkByType', { headers, params })
 
     const { statusCode } = response
 
@@ -60,7 +65,7 @@ describe('equipTypeController', () => {
   })
 
   test('getAllModelByMark', async () => {
-    const response = await request().get('/api/equip/equipType/getAllModelByMark', { headers })
+    const response = await request().get('/api/equip/equipType/getAllModelByMark', { headers, params })
 
     const { statusCode } = response
 
