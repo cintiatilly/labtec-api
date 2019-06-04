@@ -4,9 +4,11 @@ const login = require('./user/login')
 const session = require('./user/session')
 const company = require('./company')
 const equip = require('./equip')
-const equipType = require('./equipType')
-const equipMark = require('./equipMark')
-const equipModel = require('./equipModel')
+const equipType = require('./equip/equipType')
+const equipMark = require('./equip/equipMark')
+const equipModel = require('./equip/equipModel')
+const entryEquipment = require('./entryEquipment')
+const accessories = require('./entryEquipment/accessories')
 
 module.exports = [
 
@@ -20,4 +22,7 @@ module.exports = [
   equipType,
   equipMark,
   equipModel,
+
+  entryEquipment,
+  accessories,
 ]
