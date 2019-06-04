@@ -50,4 +50,20 @@ describe('equipTypeController', () => {
     expect(body.show).toBeTruthy()
     expect(body.rows).toBeTruthy()
   })
+
+  test('getAllMarkByType', async () => {
+    const response = await request().get('/api/equip/equipType/getAllMarkByType', { headers })
+
+    const { statusCode } = response
+
+    expect(statusCode).toBe(200)
+  })
+
+  test('getAllModelByMark', async () => {
+    const response = await request().get('/api/equip/equipType/getAllModelByMark', { headers })
+
+    const { statusCode } = response
+
+    expect(statusCode).toBe(200)
+  })
 })

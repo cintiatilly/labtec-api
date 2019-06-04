@@ -29,7 +29,35 @@ const getAll = async (req, res, next) => {
   }
 }
 
+const getAllMarkByType = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const equipType = await equipTypeDomain.getAllMarkByType('relogio')
+
+    await transaction.commit()
+    res.json(equipType)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
+
+const getAllModelByMark = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const equipType = await equipTypeDomain.getAllModelByMark('relogio')
+
+    await transaction.commit()
+    res.json(equipType)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
+
 module.exports = {
   add,
   getAll,
+  getAllMarkByType,
+  getAllModelByMark,
 }
