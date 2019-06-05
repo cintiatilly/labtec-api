@@ -8,7 +8,9 @@ const equipTypeDomain = new EquipTypeDomain()
 
 describe('equipController', () => {
   let equipMock = null
+  let equipMarkMock = null
   let headers = null
+  let params = null
 
   beforeAll(async () => {
     const companyMock = {
@@ -27,14 +29,20 @@ describe('equipController', () => {
 
     const companyCreated = await companyDomain.add(companyMock)
 
-    const equipTypeMock = {
+    equipMarkMock = {
       type: 'catraca',
       mark: 'Hanry',
+    }
+
+    const markMock = await equipTypeDomain.addMark(equipMarkMock)
+
+    const equipTypeMock = {
+      equipMarkId: markMock.id,
       model: 'Henry 8.0',
       description: '',
     }
 
-    const equipModelCreated = await equipTypeDomain.add(equipTypeMock)
+    const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
 
     equipMock = {
       equipModelId: equipModelCreated.id,
@@ -56,6 +64,10 @@ describe('equipController', () => {
     headers = {
       token,
       username,
+    }
+
+    params = {
+      serialNumber: '123456789',
     }
   })
 
@@ -85,7 +97,7 @@ describe('equipController', () => {
   })
 
   test('getOneBySerialNumber', async () => {
-    const response = await request().get('/api/equip/serialNumber', { headers })
+    const response = await request().get('/api/equip/serialNumber', { headers, params })
 
     const { body, statusCode } = response
 

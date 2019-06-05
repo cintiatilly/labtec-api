@@ -32,7 +32,9 @@ const getAll = async (req, res, next) => {
 const getOneBySerialNumber = async (req, res, next) => {
   const transaction = await database.transaction()
   try {
-    const equip = await equipDomain.getOneBySerialNumber('123456789')
+    const { serialNumber = null } = req.query
+
+    const equip = await equipDomain.getOneBySerialNumber(serialNumber)
 
     await transaction.commit()
     res.json(equip)
