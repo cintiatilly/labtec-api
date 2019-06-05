@@ -18,6 +18,7 @@ describe('entryEquipmentDomain', () => {
   let companyMock = null
   let entryEquipmentMock = null
   let equipMock = null
+  let equipMarkMock = null
 
   beforeAll(async () => {
     companyMock = {
@@ -36,14 +37,21 @@ describe('entryEquipmentDomain', () => {
 
     const companyCreated = await companyDomain.add(companyMock)
 
-    const equipTypeMock = {
+    equipMarkMock = {
       type: 'catraca',
-      mark: 'Henry',
+      mark: 'Festo',
+    }
+
+    const markMock = await equipTypeDomain.addMark(equipMarkMock)
+
+    const equipTypeMock = {
+      equipMarkId: markMock.id,
       model: 'Henry 7.0',
       description: '',
     }
 
-    const equipModelCreated = await equipTypeDomain.add(equipTypeMock)
+
+    const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
 
     equipMock = {
       equipModelId: equipModelCreated.id,
@@ -91,11 +99,20 @@ describe('entryEquipmentDomain', () => {
     expect(entryEquipmentCreated.equip.serialNumber).toBe(entryEquipmentMock.serialNumber)
   })
 
+  test('try add entryEquipment with externalDamage false and details null', async () => {
+    const entryEquipmentCreated = entryEquipmentMock
+    entryEquipmentCreated.externalDamage = false
+    entryEquipmentCreated.details = ''
+
+    const entryEquipment = await entryEquipmentDomain.add(entryEquipmentCreated)
+    expect(entryEquipment).toBeTruthy()
+  })
+
   test('try add entryEquipment with serialNumber null', async () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.serialNumber = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'serialNumber',
         message: 'serialNumber cannot be null',
@@ -106,7 +123,7 @@ describe('entryEquipmentDomain', () => {
   test('try add entryEquipment without serialNumber', async () => {
     const entryEquipmentCreated = R.omit(['serialNumber'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'serialNumber',
         message: 'serialNumber cannot be null',
@@ -117,7 +134,7 @@ describe('entryEquipmentDomain', () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.externalDamage = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'externalDamage',
         message: 'externalDamage cannot be null',
@@ -128,30 +145,19 @@ describe('entryEquipmentDomain', () => {
   test('try add entryEquipment without externalDamage', async () => {
     const entryEquipmentCreated = R.omit(['externalDamage'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'externalDamage',
         message: 'externalDamage cannot be null',
       }]))
   })
 
-  test('try add entryEquipment with externalDamage false and details null', async () => {
-    const entryEquipmentCreated = entryEquipmentMock
-    entryEquipmentCreated.externalDamage = false
-    entryEquipmentCreated.details = ''
-
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
-      .toThrowError(new FieldValidationError([{
-        field: 'details',
-        message: 'details cannot be null',
-      }]))
-  })
 
   test('try add entryEquipment with details null', async () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.details = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'details',
         message: 'details cannot be null',
@@ -162,7 +168,7 @@ describe('entryEquipmentDomain', () => {
   test('try add entryEquipment without details', async () => {
     const entryEquipmentCreated = R.omit(['details'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'details',
         message: 'details cannot be null',
@@ -173,7 +179,7 @@ describe('entryEquipmentDomain', () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.defect = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'defect',
         message: 'defect cannot be null',
@@ -184,7 +190,7 @@ describe('entryEquipmentDomain', () => {
   test('try add entryEquipment without defect', async () => {
     const entryEquipmentCreated = R.omit(['defect'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'defect',
         message: 'defect cannot be null',
@@ -195,7 +201,7 @@ describe('entryEquipmentDomain', () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.delivery = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -206,7 +212,7 @@ describe('entryEquipmentDomain', () => {
   test('try add entryEquipment without delivery', async () => {
     const entryEquipmentCreated = R.omit(['delivery'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -217,7 +223,7 @@ describe('entryEquipmentDomain', () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.delivery = 'Clientesss'
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery invalid',
@@ -229,7 +235,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Cliente'
     entryEquipmentCreated.clientName = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'clientName',
         message: 'clientName cannot be null',
@@ -241,7 +247,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['clientName'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -253,7 +259,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Cliente'
     entryEquipmentCreated.RG = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'RG',
         message: 'RG cannot be null',
@@ -265,7 +271,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['RG'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -277,7 +283,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Cliente'
     entryEquipmentCreated.Cpf = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'Cpf',
         message: 'Cpf cannot be null',
@@ -289,7 +295,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['Cpf'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -301,7 +307,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Sedex'
     entryEquipmentCreated.senderName = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery invalid',
@@ -313,7 +319,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['senderName'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -325,7 +331,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Sedex'
     entryEquipmentCreated.properlyPacked = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery invalid',
@@ -337,7 +343,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['properlyPacked'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -349,7 +355,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Sedex'
     entryEquipmentCreated.zipCode = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery invalid',
@@ -361,7 +367,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['zipCode'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -373,7 +379,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Motoboy'
     entryEquipmentCreated.RG = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'RG',
         message: 'RG cannot be null',
@@ -385,7 +391,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['RG'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -397,7 +403,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Motoboy'
     entryEquipmentCreated.Cpf = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'Cpf',
         message: 'Cpf cannot be null',
@@ -409,7 +415,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['Cpf'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
@@ -421,7 +427,7 @@ describe('entryEquipmentDomain', () => {
     entryEquipmentCreated.delivery = 'Sedex'
     entryEquipmentCreated.senderName = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery invalid',
@@ -433,18 +439,19 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['senderName'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',
       }]))
   })
+
   test('try add entryEquipment with delivery Motoboy and properlyPacked null ', async () => {
     const entryEquipmentCreated = entryEquipmentMock
     entryEquipmentCreated.delivery = 'Sedex'
     entryEquipmentCreated.properlyPacked = ''
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery invalid',
@@ -456,7 +463,7 @@ describe('entryEquipmentDomain', () => {
 
     const entryEquipmentCreated = R.omit(['properlyPacked'], entryEquipmentMock)
 
-    await expect(equipDomain.add(entryEquipmentCreated)).rejects
+    await expect(entryEquipmentDomain.add(entryEquipmentCreated)).rejects
       .toThrowError(new FieldValidationError([{
         field: 'delivery',
         message: 'delivery cannot be null',

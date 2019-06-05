@@ -8,11 +8,12 @@ const companyDomain = new CompanyDomain()
 const equipTypeDomain = new EquipTypeDomain()
 const equipDomain = new EquipDomain()
 
-describe('entryEquipmentDomain', () => {
+describe('entryEquipmentControllers', () => {
   let companyMock = null
   let entryEquipmentMock = null
   let equipMock = null
   let headers = null
+  let equipMarkMock = null
 
   beforeAll(async () => {
     companyMock = {
@@ -31,14 +32,20 @@ describe('entryEquipmentDomain', () => {
 
     const companyCreated = await companyDomain.add(companyMock)
 
-    const equipTypeMock = {
+    equipMarkMock = {
       type: 'catraca',
       mark: 'Henry',
+    }
+
+    const markMock = await equipTypeDomain.addMark(equipMarkMock)
+
+    const equipTypeMock = {
+      equipMarkId: markMock.id,
       model: 'Henry 11.0',
       description: '',
     }
 
-    const equipModelCreated = await equipTypeDomain.add(equipTypeMock)
+    const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
 
     equipMock = {
       equipModelId: equipModelCreated.id,

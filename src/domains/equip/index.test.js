@@ -15,6 +15,8 @@ const equipTypeDomain = new EquipTypeDomain()
 describe('equipDomain', () => {
   let equipMock = null
   let equipMock1 = null
+  let equipMarkMock = null
+  let equipMarkMock1 = null
 
   beforeAll(async () => {
     const companyMock = {
@@ -33,14 +35,20 @@ describe('equipDomain', () => {
 
     const companyCreated = await companyDomain.add(companyMock)
 
-    const equipTypeMock = {
+    equipMarkMock = {
       type: 'catraca',
       mark: 'Hanry',
+    }
+
+    const markMock = await equipTypeDomain.addMark(equipMarkMock)
+
+    const equipTypeMock = {
+      equipMarkId: markMock.id,
       model: 'Henry 2.0',
       description: '',
     }
 
-    const equipModelCreated = await equipTypeDomain.add(equipTypeMock)
+    const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
 
     equipMock = {
       equipModelId: equipModelCreated.id,
@@ -66,14 +74,20 @@ describe('equipDomain', () => {
 
     const companyCreated1 = await companyDomain.add(companyMock1)
 
-    const equipTypeMock1 = {
+    equipMarkMock1 = {
       type: 'catraca',
       mark: 'Hanrye',
+    }
+
+    const markMock1 = await equipTypeDomain.addMark(equipMarkMock1)
+
+    const equipTypeMock1 = {
+      equipMarkId: markMock1.id,
       model: 'Henry 9.0',
       description: '',
     }
 
-    const equipModelCreated1 = await equipTypeDomain.add(equipTypeMock1)
+    const equipModelCreated1 = await equipTypeDomain.addModel(equipTypeMock1)
 
     equipMock1 = {
       equipModelId: equipModelCreated1.id,
@@ -84,9 +98,9 @@ describe('equipDomain', () => {
     }
   })
 
+
   test('create', async () => {
     const equipCreated = await equipDomain.add(equipMock)
-    // eslint-disable-next-line no-unused-vars
     const equipCreated1 = await equipDomain.add(equipMock1)
 
     expect(equipCreated.equipModelId).toBe(equipMock.equipModelId)
@@ -94,6 +108,8 @@ describe('equipDomain', () => {
     expect(equipCreated.serialNumber).toBe(equipMock.serialNumber)
     expect(equipCreated.readerColor).toBe(equipMock.readerColor)
     expect(equipCreated.details).toBe(equipMock.details)
+
+    expect(equipCreated1).toBeTruthy()
 
     await expect(equipDomain.add(equipMock))
       .rejects.toThrowError(new FieldValidationError())

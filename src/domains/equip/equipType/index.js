@@ -11,7 +11,7 @@ const EquipModel = database.model('equipModel')
 
 
 module.exports = class EquipTypeDomain {
-  async add(bodyData, options = {}) {
+  async addMark(bodyData, options = {}) {
     const { transaction = null } = options
 
     const equip = R.omit(['id'], bodyData)
@@ -21,14 +21,10 @@ module.exports = class EquipTypeDomain {
     const field = {
       type: false,
       mark: false,
-      model: false,
-      description: false,
     }
     const message = {
       type: '',
       mark: '',
-      model: '',
-      description: '',
     }
 
     let errors = false
@@ -53,15 +49,6 @@ module.exports = class EquipTypeDomain {
       message.mark = 'Por favor informar a marca do equipamento.'
     }
 
-    if (equipNotHasProp('model') || !equip.model) {
-      errors = true
-      field.model = true
-      message.model = 'Por favor informar o modelo do equipamento.'
-    }
-
-    if (equipNotHasProp('description')) {
-      errors = true
-    }
 
     if (errors) {
       throw new FieldValidationError([{ field, message }])
@@ -98,8 +85,74 @@ module.exports = class EquipTypeDomain {
       transaction,
     })
 
-    if (!markHasExist) {
+    if (markHasExist) {
+      errors = true
+      field.mark = true
+      message.mark = 'Marca já está cadastrada.'
+    } else {
       markHasExist = await EquipMark.create(equipMark, { transaction })
+    }
+
+    const response = await EquipMark.findByPk(markHasExist.id, {
+      include: [{
+        model: EquipType,
+      }],
+      transaction,
+    })
+
+    return response
+  }
+
+
+  async addModel(bodyData, options = {}) {
+    const { transaction = null } = options
+
+    const equip = R.omit(['id'], bodyData)
+
+    const equipNotHasProp = prop => R.not(R.has(prop, bodyData))
+
+    const field = {
+      equipMarkId: false,
+      model: false,
+      description: false,
+    }
+    const message = {
+      equipMarkId: '',
+      model: '',
+      description: '',
+    }
+
+    let errors = false
+
+
+    if (equipNotHasProp('equipMarkId') || !equip.equipMarkId) {
+      errors = true
+      field.equipMarkId = true
+      message.equipMarkId = 'Por favor informar a marca do equipamento.'
+    }
+
+    if (equipNotHasProp('model') || !equip.model) {
+      errors = true
+      field.model = true
+      message.model = 'Por favor informar o modelo do equipamento.'
+    }
+
+    if (errors) {
+      throw new FieldValidationError([{ field, message }])
+    }
+
+
+    const markHasExist = await EquipMark.findByPk(equip.equipMarkId, {
+      include: [{
+        model: EquipType,
+      }],
+      transaction,
+    })
+
+    if (!markHasExist) {
+      errors = true
+      field.mark = true
+      message.mark = 'Marca não existe.'
     }
 
     const equipModel = {
@@ -117,41 +170,40 @@ module.exports = class EquipTypeDomain {
         where: { id: equipModel.equipMarkId },
         include: [{
           model: EquipType,
-          where: { id: equipMark.equipTypeId },
         }],
       }],
       transaction,
     })
 
+    if (modelHasExist) {
+      const { type } = modelHasExist.equipMark.equipType
 
-    if (equip.type === 'peca') {
-      const pecaHasExist = await EquipModel.findOne({
-        where: {
-          model: equipModel.model,
-          description: equipModel.description,
-        },
-        include: [{
-          model: EquipMark,
-          where: { id: equipModel.equipMarkId },
+      if (type === 'peca') {
+        const pecaHasExist = await EquipModel.findOne({
+          where: {
+            model: equipModel.model,
+            description: equipModel.description,
+          },
           include: [{
-            model: EquipType,
-            where: { id: equipMark.equipTypeId },
+            model: EquipMark,
+            include: [{
+              model: EquipType,
+            }],
           }],
-        }],
-        transaction,
-      })
-
-      if (pecaHasExist) {
+          transaction,
+        })
+        if (pecaHasExist) {
+          field.equipType = true
+          message.equipType = 'Este equipamento já está registrado.'
+          throw new FieldValidationError([{ field, message }])
+        } else {
+          modelHasExist = await EquipModel.create(equipModel, { transaction })
+        }
+      } else {
         field.equipType = true
         message.equipType = 'Este equipamento já está registrado.'
         throw new FieldValidationError([{ field, message }])
-      } else {
-        modelHasExist = await EquipModel.create(equipModel, { transaction })
       }
-    } else if (modelHasExist) {
-      field.equipType = true
-      message.equipType = 'Este equipamento já está registrado.'
-      throw new FieldValidationError([{ field, message }])
     } else {
       modelHasExist = await EquipModel.create(equipModel, { transaction })
     }

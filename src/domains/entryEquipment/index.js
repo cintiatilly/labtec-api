@@ -43,7 +43,7 @@ module.exports = class EntryEquipmentDomain {
 
     const { serialNumber } = bodyData
 
-    let equipReturned = ''
+    let equipReturned = null
 
     if (bodyDataNotHasProp('serialNumber') || !bodyData.serialNumber) {
       errors = true
@@ -52,14 +52,14 @@ module.exports = class EntryEquipmentDomain {
     } else {
       equipReturned = await equipDomain.getOneBySerialNumber(serialNumber)
 
+      entryEquipment.equipId = equipReturned.id
+
       if (!equipReturned) {
         errors = true
         field.serialNumber = true
         message.serialNumber = 'Este equipamento não está registrado.'
       }
     }
-
-    entryEquipment.equipId = equipReturned.id
 
     if (entryEquipmentNotHasProp('externalDamage')) {
       errors = true
