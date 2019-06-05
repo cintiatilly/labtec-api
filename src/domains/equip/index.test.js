@@ -14,6 +14,9 @@ const equipTypeDomain = new EquipTypeDomain()
 
 describe('equipDomain', () => {
   let equipMock = null
+  let equipMock1 = null
+  let equipMarkMock = null
+  let equipMarkMock1 = null
 
   beforeAll(async () => {
     const companyMock = {
@@ -32,56 +35,105 @@ describe('equipDomain', () => {
 
     const companyCreated = await companyDomain.add(companyMock)
 
-    const equipTypeMock = {
+    equipMarkMock = {
       type: 'catraca',
       mark: 'Hanry',
+    }
+
+    const markMock = await equipTypeDomain.addMark(equipMarkMock)
+
+    const equipTypeMock = {
+      equipMarkId: markMock.id,
       model: 'Henry 2.0',
       description: '',
     }
 
-    const equipTypeCreated = await equipTypeDomain.add(equipTypeMock)
+    const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
 
     equipMock = {
-      equipTypeId: equipTypeCreated.id,
+      equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '12345687',
       readerColor: 'Verde',
       details: '',
     }
+
+    const companyMock1 = {
+      razaoSocial: 'teste 54321 LTDA',
+      cnpj: '70128209000110',
+      street: 'jaime rodrigues',
+      number: '69',
+      city: 'São Paulo',
+      state: 'UF',
+      neighborhood: 'JD. Avelino',
+      zipCode: '03465-080',
+      telphone: '(11)0999-4568',
+      nameContact: 'jaimeldom',
+      email: 'jaime@gmasi.com',
+    }
+
+    const companyCreated1 = await companyDomain.add(companyMock1)
+
+    equipMarkMock1 = {
+      type: 'catraca',
+      mark: 'Hanrye',
+    }
+
+    const markMock1 = await equipTypeDomain.addMark(equipMarkMock1)
+
+    const equipTypeMock1 = {
+      equipMarkId: markMock1.id,
+      model: 'Henry 9.0',
+      description: '',
+    }
+
+    const equipModelCreated1 = await equipTypeDomain.addModel(equipTypeMock1)
+
+    equipMock1 = {
+      equipModelId: equipModelCreated1.id,
+      companyId: companyCreated1.id,
+      serialNumber: '987654321',
+      readerColor: 'Verde',
+      details: '',
+    }
   })
+
 
   test('create', async () => {
     const equipCreated = await equipDomain.add(equipMock)
+    const equipCreated1 = await equipDomain.add(equipMock1)
 
-    expect(equipCreated.equipTypeId).toBe(equipMock.equipTypeId)
+    expect(equipCreated.equipModelId).toBe(equipMock.equipModelId)
     expect(equipCreated.companyId).toBe(equipMock.companyId)
     expect(equipCreated.serialNumber).toBe(equipMock.serialNumber)
     expect(equipCreated.readerColor).toBe(equipMock.readerColor)
     expect(equipCreated.details).toBe(equipMock.details)
 
+    expect(equipCreated1).toBeTruthy()
+
     await expect(equipDomain.add(equipMock))
       .rejects.toThrowError(new FieldValidationError())
   })
 
-  test('try add equip with equipTypeId null', async () => {
+  test('try add equip with equipModelId null', async () => {
     const equipCreated = equipMock
-    equipCreated.equipTypeId = ''
+    equipCreated.equipModelId = ''
 
     await expect(equipDomain.add(equipCreated)).rejects
       .toThrowError(new FieldValidationError([{
-        field: 'equipTypeId',
-        message: 'equipTypeId cannot be null',
+        field: 'equipModelId',
+        message: 'equipModelId cannot be null',
       }]))
   })
 
 
-  test('try add equip without equipTypeId', async () => {
-    const equipCreated = R.omit(['equipTypeId'], equipMock)
+  test('try add equip without equipModelId', async () => {
+    const equipCreated = R.omit(['equipModelId'], equipMock)
 
     await expect(equipDomain.add(equipCreated)).rejects
       .toThrowError(new FieldValidationError([{
-        field: 'equipTypeId',
-        message: 'equipTypeId cannot be null',
+        field: 'equipModelId',
+        message: 'equipModelId cannot be null',
       }]))
   })
 
@@ -131,16 +183,16 @@ describe('equipDomain', () => {
   })
 
 
-  test('try add equip without equipTypeId invalid', async () => {
+  test('try add equip without equipModelId invalid', async () => {
     const equipCreated = {
       ...equipMock,
-      equipTypeId: '2360dcfe-4288-4916-b526-078d7da53ec1',
+      equipModelId: '2360dcfe-4288-4916-b526-078d7da53ec1',
     }
 
     await expect(equipDomain.add(equipCreated)).rejects
       .toThrowError(new FieldValidationError([{
-        field: 'equipTypeId',
-        message: 'equipTypeId invalid',
+        field: 'equipModelId',
+        message: 'equipModelId invalid',
       }]))
   })
 
@@ -157,8 +209,13 @@ describe('equipDomain', () => {
       }]))
   })
 
-//   test('getAll', async () => {
-//     const companies = await equipDomain.getAll()
-//     expect(companies.rows.length > 0).toBeTruthy()
-//   })
+  test('getAll', async () => {
+    const equips = await equipDomain.getAll()
+    expect(equips.rows.length > 0).toBeTruthy()
+  })
+
+  test('getOneBySerialNumber', async () => {
+    const equips = await equipDomain.getOneBySerialNumber('12345687')
+    expect(equips).toBeTruthy()
+  })
 })

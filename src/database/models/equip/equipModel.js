@@ -1,21 +1,11 @@
 const Sequelize = require('sequelize')
 
 module.exports = (sequelize) => {
-  const equipType = sequelize.define('equipType', {
+  const equipModel = sequelize.define('equipModel', {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
-    },
-
-    type: {
-      type: Sequelize.ENUM(['catraca', 'relogio', 'controleAcesso', 'peca', 'sirene']),
-      allowNull: false,
-    },
-
-    mark: {
-      type: Sequelize.STRING,
-      allowNull: false,
     },
 
     model: {
@@ -27,6 +17,15 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: true,
     },
+
   })
-  return equipType
+
+  equipModel.associate = (models) => {
+    equipModel.belongsTo(models.equipMark, {
+      foreignKey: {
+        allowNull: false,
+      },
+    })
+  }
+  return equipModel
 }

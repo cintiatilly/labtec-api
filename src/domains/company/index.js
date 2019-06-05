@@ -208,10 +208,10 @@ module.exports = class CompanyDomain {
       direction: 'DESC',
     }
 
-    const { query = null, transaction = null } = options
+    const { query = null, order = null, transaction = null } = options
 
     const newQuery = Object.assign({}, query)
-    const newOrder = Object.assign(inicialOrder, query.order)
+    const newOrder = Object.assign(inicialOrder, order)
 
     if (newOrder.acendent) {
       newOrder.direction = 'DESC'
@@ -296,6 +296,18 @@ module.exports = class CompanyDomain {
       count: companies.count,
       rows: companiesList,
     }
+    return response
+  }
+
+  async getOneByCnpj(cnpj, options = {}) {
+    const { transaction = null } = options
+    const response = await Company.findOne({
+      where: {
+        cnpj,
+      },
+      transaction,
+    })
+
     return response
   }
 }

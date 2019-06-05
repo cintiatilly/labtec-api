@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
     })
-    equip.belongsTo(models.equipType, {
+    equip.belongsTo(models.equipModel, {
       foreignKey: {
         allowNull: false,
       },

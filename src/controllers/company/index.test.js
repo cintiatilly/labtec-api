@@ -3,6 +3,7 @@ const request = require('../../helpers/request')
 describe('companyController', () => {
   let companyMock = null
   let headers = null
+  let params = null
 
   beforeAll(async () => {
     companyMock = {
@@ -32,6 +33,10 @@ describe('companyController', () => {
       token,
       username,
     }
+
+    params = {
+      cnpj: '32478461000160',
+    }
   })
 
   test('create', async () => {
@@ -49,7 +54,6 @@ describe('companyController', () => {
     expect(body.neighborhood).toBe(companyMock.neighborhood)
     expect(body.zipCode).toBe(companyMock.zipCode)
     expect(body.telphone).toBe(companyMock.telphone)
-    expect(body.telphone).toBe(companyMock.telphone)
   })
 
   test('getall', async () => {
@@ -62,5 +66,22 @@ describe('companyController', () => {
     expect(body.page).toBeTruthy()
     expect(body.show).toBeTruthy()
     expect(body.rows).toBeTruthy()
+  })
+
+  test('getOneByCnpj', async () => {
+    const response = await request().get('/api/company/getOneByCnpj', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.razaoSocial).toBeTruthy()
+    expect(body.cnpj).toBeTruthy()
+    expect(body.street).toBeTruthy()
+    expect(body.number).toBeTruthy()
+    expect(body.city).toBeTruthy()
+    expect(body.state).toBeTruthy()
+    expect(body.neighborhood).toBeTruthy()
+    expect(body.zipCode).toBeTruthy()
+    expect(body.telphone).toBeTruthy()
   })
 })

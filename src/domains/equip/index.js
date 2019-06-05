@@ -1,9 +1,13 @@
 const R = require('ramda')
 
+const formatQuery = require('../../helpers/lazyLoad')
+
 const database = require('../../database')
 
 const { FieldValidationError } = require('../../helpers/errors')
 
+const EquipModel = database.model('equipModel')
+const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
@@ -18,14 +22,14 @@ module.exports = class EquipDomain {
     const equipNotHasProp = prop => R.not(R.has(prop, equip))
 
     const field = {
-      equipTypeId: false,
+      equipModelId: false,
       companyId: false,
       serialNumber: false,
       readerColor: false,
       details: false,
     }
     const message = {
-      equipTypeId: '',
+      equipModelId: '',
       companyId: '',
       serialNumber: '',
       readerColor: '',
@@ -34,20 +38,20 @@ module.exports = class EquipDomain {
 
     let errors = false
 
-    if (equipNotHasProp('equipTypeId') || !equip.equipTypeId) {
+    if (equipNotHasProp('equipModelId') || !equip.equipModelId) {
       errors = true
-      field.equipTypeId = true
-      message.equipTypeId = 'Por favor selecione o tipo de equipamento.'
+      field.equipModelId = true
+      message.equipModelId = 'Por favor selecione o tipo de equipamento.'
     } else {
-      const equipTypeReturned = await EquipType.findOne({
-        where: { id: equip.equipTypeId },
+      const equipModelReturned = await EquipModel.findOne({
+        where: { id: equip.equipModelId },
         transaction,
       })
 
-      if (!equipTypeReturned) {
+      if (!equipModelReturned) {
         errors = true
-        field.equipTypeId = true
-        message.equipTypeId = 'Esse tipo de quipamento não existe.'
+        field.equipModelId = true
+        message.equipModelId = 'Esse tipo de quipamento não existe.'
       }
     }
 
@@ -89,8 +93,142 @@ module.exports = class EquipDomain {
       throw new FieldValidationError([{ field, message }])
     }
 
-    const equipCreated = Equip.create(equip, { transaction })
+    const equipCreated = await Equip.create(equip, { transaction })
 
-    return equipCreated
+    const response = await Equip.findByPk(equipCreated.id, {
+      include: [
+        {
+          model: Company,
+        },
+        {
+          model: EquipModel,
+          include: [
+            {
+              model: EquipMark,
+              include: [{
+                model: EquipType,
+              }],
+            },
+          ],
+        },
+      ],
+      transaction,
+    })
+
+    return response
+  }
+
+  async getAll(options = {}) {
+    const inicialOrder = {
+      field: 'createdAt',
+      acendent: true,
+      direction: 'DESC',
+    }
+
+    const { query = null, order = null, transaction = null } = options
+
+    const newQuery = Object.assign({}, query)
+    const newOrder = Object.assign(inicialOrder, order)
+
+    if (newOrder.acendent) {
+      newOrder.direction = 'DESC'
+    } else {
+      newOrder.direction = 'ASC'
+    }
+
+    const {
+      getWhere,
+      limit,
+      offset,
+      pageResponse,
+    } = formatQuery(newQuery)
+
+    const equips = await Equip.findAndCountAll({
+      where: getWhere('equip'),
+      include: [
+        {
+          model: Company,
+        },
+        {
+          model: EquipModel,
+          include: [{
+            model: EquipMark,
+            include: [{
+              model: EquipType,
+            }],
+          }],
+        },
+      ],
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
+      limit,
+      offset,
+      transaction,
+    })
+
+    const { rows } = equips
+
+    const formatData = R.map((equip) => {
+      const resp = {
+        razaoSocial: equip.company.razaoSocial,
+        cnpj: equip.company.cnpj,
+        street: equip.company.street,
+        number: equip.company.number,
+        city: equip.company.city,
+        state: equip.company.state,
+        neighborhood: equip.company.neighborhood,
+        referencePoint: equip.company.referencePoint,
+        zipCode: equip.company.zipCode,
+        telphone: equip.company.telphone,
+        email: equip.company.email,
+        nameContact: equip.company.nameContact,
+        type: equip.equipModel.equipMark.equipType.type,
+        mark: equip.equipModel.equipMark.mark,
+        model: equip.equipModel.model,
+        description: equip.equipModel.description,
+        serialNumber: equip.serialNumber,
+        readerColor: equip.readerColor,
+        details: equip.details,
+      }
+      return resp
+    })
+
+    const equipsList = formatData(rows)
+
+
+    const response = {
+      page: pageResponse,
+      show: limit,
+      count: equips.count,
+      rows: equipsList,
+    }
+    return response
+  }
+
+  async getOneBySerialNumber(serialNumber, options = {}) {
+    const { transaction = null } = options
+    const response = await Equip.findOne({
+      where: {
+        serialNumber,
+      },
+      include: [
+        {
+          model: Company,
+        },
+        {
+          model: EquipModel,
+          include: [{
+            model: EquipMark,
+            include: [{
+              model: EquipType,
+            }],
+          }],
+        },
+      ],
+      transaction,
+    })
+
+    return response
   }
 }

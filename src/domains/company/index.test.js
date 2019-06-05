@@ -374,4 +374,9 @@ describe('companyDomain', () => {
     const companies = await companyDomain.getAll()
     expect(companies.rows.length > 0).toBeTruthy()
   })
+
+  test('getOneByCnpj', async () => {
+    const company = await companyDomain.getOneByCnpj('40190041000102')
+    expect(company).toBeTruthy()
+  })
 })
