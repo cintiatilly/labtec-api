@@ -3,6 +3,7 @@ const request = require('../../helpers/request')
 describe('companyController', () => {
   let companyMock = null
   let headers = null
+  let params = null
 
   beforeAll(async () => {
     companyMock = {
@@ -31,6 +32,10 @@ describe('companyController', () => {
     headers = {
       token,
       username,
+    }
+
+    params = {
+      cnpj: '32478461000160',
     }
   })
 
@@ -64,7 +69,7 @@ describe('companyController', () => {
   })
 
   test('getOneByCnpj', async () => {
-    const response = await request().get('/api/company/getOneByCnpj', { headers })
+    const response = await request().get('/api/company/getOneByCnpj', { headers, params })
 
     const { body, statusCode } = response
 

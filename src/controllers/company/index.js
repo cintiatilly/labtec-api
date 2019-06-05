@@ -34,7 +34,8 @@ const getAll = async (req, res, next) => {
 const getOneByCnpj = async (req, res, next) => {
   const transaction = await database.transaction()
   try {
-    const company = await companyDomain.getOneByCnpj('32478461000160')
+    const { cnpj } = req.query
+    const company = await companyDomain.getOneByCnpj(cnpj)
 
     await transaction.commit()
     res.json(company)
