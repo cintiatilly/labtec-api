@@ -16,6 +16,7 @@ const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
+const Accessories = database.model('accessories')
 
 
 module.exports = class EntryEquipmentDomain {
@@ -30,13 +31,43 @@ module.exports = class EntryEquipmentDomain {
 
     const field = {
       equipId: false,
+      defect: true,
       externalDamage: false,
       delivery: false,
+      clientName: false,
+      RG: false,
+      Cpf: false,
+      senderName: false,
+      properlyPacked: false,
+      zipCode: false,
+      state: false,
+      city: false,
+      neighborhood: false,
+      street: false,
+      number: false,
+      motoboyName: false,
+      responsibleName: false,
+      technicianName: false,
     }
     const message = {
       equipId: '',
+      defect: '',
       externalDamage: '',
       delivery: '',
+      clientName: '',
+      RG: '',
+      Cpf: '',
+      senderName: '',
+      properlyPacked: '',
+      zipCode: '',
+      state: '',
+      city: '',
+      neighborhood: '',
+      street: '',
+      number: '',
+      motoboyName: '',
+      responsibleName: '',
+      technicianName: '',
     }
 
     let errors = false
@@ -211,6 +242,13 @@ module.exports = class EntryEquipmentDomain {
 
     const entryEquipmentCreated = await EntryEquipment.create(entryEquipment, { transaction })
 
+
+    if (R.has('accessories', bodyData)) {
+      const { accessories } = bodyData
+
+      await entryEquipmentCreated.addAccessories(accessories, { transaction })
+    }
+
     const response = await EntryEquipment.findByPk(entryEquipmentCreated.id, {
       include: [
         {
@@ -230,9 +268,13 @@ module.exports = class EntryEquipmentDomain {
             },
           ],
         },
+        {
+          model: Accessories,
+        },
       ],
       transaction,
     })
+
     return response
   }
 }

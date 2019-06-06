@@ -1,5 +1,6 @@
 const R = require('ramda')
 
+const database = require('../../database')
 const CompanyDomain = require('../company')
 const EntryEquipmentDomain = require('./')
 const EquipTypeDomain = require('../equip/equipType')
@@ -13,12 +14,16 @@ const entryEquipmentDomain = new EntryEquipmentDomain()
 const equipTypeDomain = new EquipTypeDomain()
 const equipDomain = new EquipDomain()
 
+const Accessories = database.model('accessories')
 
 describe('entryEquipmentDomain', () => {
   let companyMock = null
   let entryEquipmentMock = null
   let equipMock = null
   let equipMarkMock = null
+  let accessoriesMock1 = null
+  let accessoriesMock2 = null
+
 
   beforeAll(async () => {
     companyMock = {
@@ -63,6 +68,16 @@ describe('entryEquipmentDomain', () => {
 
     await equipDomain.add(equipMock)
 
+    accessoriesMock1 = {
+      accessories: 'fonte',
+    }
+    accessoriesMock2 = {
+      accessories: 'teclado',
+    }
+
+    const accessory1 = await Accessories.create(accessoriesMock1)
+    const accessory2 = await Accessories.create(accessoriesMock2)
+
     entryEquipmentMock = {
       serialNumber: '696969',
       externalDamage: true,
@@ -83,6 +98,7 @@ describe('entryEquipmentDomain', () => {
       neighborhood: 'Pauliceia',
       street: 'Rua dos bobo',
       number: '0',
+      accessories: [accessory1, accessory2],
     }
   })
 
@@ -97,6 +113,8 @@ describe('entryEquipmentDomain', () => {
     expect(entryEquipmentCreated.RG).toBe(entryEquipmentMock.RG)
     expect(entryEquipmentCreated.Cpf).toBe(entryEquipmentMock.Cpf)
     expect(entryEquipmentCreated.equip.serialNumber).toBe(entryEquipmentMock.serialNumber)
+
+    expect(await entryEquipmentDomain.add(entryEquipmentMock)).toBeTruthy()
   })
 
   test('try add entryEquipment with externalDamage false and details null', async () => {

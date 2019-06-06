@@ -88,7 +88,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
     })
+    entryEquipment.hasMany(models.accessories)
   }
-
   return entryEquipment
 }
