@@ -30,7 +30,6 @@ module.exports = (sequelize) => {
 
   part.associate = (models) => {
     part.hasMany(models.equipModel, {
-    //   through: 'partModel',
     })
   }
 
