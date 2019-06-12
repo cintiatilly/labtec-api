@@ -47,6 +47,7 @@ describe('equipDomain', () => {
     expect(partCreated.descripinon).toBe(partMock.descripinon)
     expect(partCreated.costPrice).toBe('10000')
     expect(partCreated.salePrice).toBe('15000')
+    expect(partCreated.obsolete).toBe(false)
 
     expect(await partDomain.add(partMock)).toBeTruthy()
   })

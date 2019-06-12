@@ -26,6 +26,10 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    obsolete: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   })
 
   part.associate = (models) => {
