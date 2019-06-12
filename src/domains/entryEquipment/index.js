@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const R = require('ramda')
 const Cpf = require('@fnando/cpf/dist/node')
 
@@ -26,6 +27,7 @@ module.exports = class EntryEquipmentDomain {
     const entryEquipment = R.omit(['id', 'serialNumber'], bodyData)
 
     const entryEquipmentNotHasProp = prop => R.not(R.has(prop, entryEquipment))
+    const entryEquipmentHasProp = prop => R.has(prop, entryEquipment)
     const bodyDataNotHasProp = prop => R.not(R.has(prop, bodyData))
 
 
@@ -234,6 +236,19 @@ module.exports = class EntryEquipmentDomain {
       motoboy()
     } else if (entryEquipment.delivery === 'Técnico externo') {
       externalTechnician()
+    }
+
+    if (entryEquipmentHasProp('RG')) {
+      const { RG } = entryEquipment
+      entryEquipment.RG = RG.replace(/\D/g, '')
+    }
+    if (entryEquipmentHasProp('Cpf')) {
+      const { Cpf } = entryEquipment
+      entryEquipment.Cpf = Cpf.replace(/\D/g, '')
+    }
+    if (entryEquipmentHasProp('zipCode')) {
+      const { zipCode } = entryEquipment
+      entryEquipment.zipCode = zipCode.replace(/\D/g, '')
     }
 
     if (errors) {

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const R = require('ramda')
 const moment = require('moment')
 
@@ -72,7 +73,7 @@ module.exports = class CompanyDomain {
       field.cnpj = true
       message.cnpj = 'Por favor informar o cnpj ou cpf.'
     } else {
-      const cnpjOrCpf = company.cnpj.replace(/-|\.|\//g, '')
+      const cnpjOrCpf = company.cnpj.replace(/\D/g, '')
 
       if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
         errors = true
@@ -155,7 +156,7 @@ module.exports = class CompanyDomain {
       message.zipCode = 'Por favor informar o CEP.'
     } else {
       const { zipCode } = company
-      company.zipCode = zipCode.replace(/-/, '')
+      company.zipCode = zipCode.replace(/\D/, '')
 
       if (!/^\d{8}$/.test(company.zipCode)) {
         errors = true
@@ -170,7 +171,7 @@ module.exports = class CompanyDomain {
       message.telphone = 'Por favor informar o número de telefone para contato.'
     } else {
       const { telphone } = company
-      company.telphone = telphone.replace(/\(*\)*-*/g, '')
+      company.telphone = telphone.replace(/\D/g, '')
 
       if (!/^\d+$/.test(company.telphone)) {
         errors = true
@@ -246,38 +247,38 @@ module.exports = class CompanyDomain {
       return dateformated
     }
 
-    const formatTelphoneFunct = (phone) => {
-      const numberOfDigits = phone.length
-      let phoneFormated = phone
+    // const formatTelphoneFunct = (phone) => {
+    //   const numberOfDigits = phone.length
+    //   let phoneFormated = phone
 
-      if (numberOfDigits === 10) {
-        phoneFormated = phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
-      } else {
-        phoneFormated = phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
-      }
-      return phoneFormated
-    }
+    //   if (numberOfDigits === 10) {
+    //     phoneFormated = phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
+    //   } else {
+    //     phoneFormated = phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+    //   }
+    //   return phoneFormated
+    // }
 
-    const formetedCnpjOuCpf = (cnpjOrCpf) => {
-      const numberOfDigits = cnpjOrCpf.length
-      let cnpjOrCpfFormated = cnpjOrCpf
+    // const formetedCnpjOuCpf = (cnpjOrCpf) => {
+    //   const numberOfDigits = cnpjOrCpf.length
+    //   let cnpjOrCpfFormated = cnpjOrCpf
 
-      if (numberOfDigits === 11) {
-        cnpjOrCpfFormated = cnpjOrCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{3})/, '$1.$2.$3.-$4')
-      } else {
-        cnpjOrCpfFormated = cnpjOrCpf.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
-      }
-      return cnpjOrCpfFormated
-    }
+    //   if (numberOfDigits === 11) {
+    //     cnpjOrCpfFormated = cnpjOrCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{3})/, '$1.$2.$3.-$4')
+    //   } else {
+    //     cnpjOrCpfFormated = cnpjOrCpf.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
+    //   }
+    //   return cnpjOrCpfFormated
+    // }
 
     const formatData = R.map((comp) => {
       const resp = {
-        cnpj: formetedCnpjOuCpf(comp.cnpj),
+        cnpj: comp.cnpj,
         razaoSocial: comp.razaoSocial,
         createdAt: formatDateFunct(comp.createdAt),
         updatedAt: formatDateFunct(comp.updatedAt),
         nameContact: comp.nameContact,
-        telphone: formatTelphoneFunct(comp.telphone),
+        telphone: comp.telphone,
       }
       return resp
     })

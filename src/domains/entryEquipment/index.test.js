@@ -110,8 +110,8 @@ describe('entryEquipmentDomain', () => {
     expect(entryEquipmentCreated.defect).toBe(entryEquipmentMock.defect)
     expect(entryEquipmentCreated.delivery).toBe(entryEquipmentMock.delivery)
     expect(entryEquipmentCreated.clientName).toBe(entryEquipmentMock.clientName)
-    expect(entryEquipmentCreated.RG).toBe(entryEquipmentMock.RG)
-    expect(entryEquipmentCreated.Cpf).toBe(entryEquipmentMock.Cpf)
+    expect(entryEquipmentCreated.RG).toBe('955466542')
+    expect(entryEquipmentCreated.Cpf).toBe('93892472092')
     expect(entryEquipmentCreated.equip.serialNumber).toBe(entryEquipmentMock.serialNumber)
 
     expect(await entryEquipmentDomain.add(entryEquipmentMock)).toBeTruthy()
