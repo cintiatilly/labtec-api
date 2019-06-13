@@ -33,8 +33,8 @@ module.exports = (sequelize) => {
   })
 
   part.associate = (models) => {
-    part.hasMany(models.equipModel, {
-    })
+    part.belongsToMany(models.equipModel,
+      { through: 'partEquipModel' })
   }
 
   return part
