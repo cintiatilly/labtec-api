@@ -38,7 +38,7 @@ module.exports = class AnalyzeDomain {
             ...item,
             analyzeId: analyzeCreated.id,
           }
-          return analysisPartDomain.add(analysisPartBody)
+          return analysisPartDomain.add(analysisPartBody, { transaction })
         })
 
         const analysisPartCreatedList = await Promise.all(analysisPartCreatedPromises)
