@@ -9,9 +9,10 @@ const partDomain = new PartDomain()
 const equipTypeDomain = new EquipTypeDomain()
 
 
-describe('equipDomain', () => {
+describe('partDomain', () => {
   let partMock = null
   let equipModelMock = null
+  let equipModelMock1 = null
   let equipMarkMock = null
 
   beforeAll(async () => {
@@ -27,15 +28,21 @@ describe('equipDomain', () => {
       model: 'Samsung 2.0',
       description: '',
     }
+    equipModelMock1 = {
+      equipMarkId: markMock.id,
+      model: 'Samsung 3.0',
+      description: '',
+    }
 
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
+    const modelMock1 = await equipTypeDomain.addModel(equipModelMock1)
 
     partMock = {
       item: 'display',
       description: '',
       costPrice: '100,00',
       salePrice: '150,00',
-      equipModels: [modelMock.id],
+      equipModels: [modelMock.id, modelMock1.id],
     }
   })
 
