@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const R = require('ramda')
 const Cpf = require('@fnando/cpf/dist/node')
 
@@ -16,6 +17,7 @@ const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
+const Accessories = database.model('accessories')
 
 
 module.exports = class EntryEquipmentDomain {
@@ -25,18 +27,49 @@ module.exports = class EntryEquipmentDomain {
     const entryEquipment = R.omit(['id', 'serialNumber'], bodyData)
 
     const entryEquipmentNotHasProp = prop => R.not(R.has(prop, entryEquipment))
+    const entryEquipmentHasProp = prop => R.has(prop, entryEquipment)
     const bodyDataNotHasProp = prop => R.not(R.has(prop, bodyData))
 
 
     const field = {
       equipId: false,
+      defect: true,
       externalDamage: false,
       delivery: false,
+      clientName: false,
+      RG: false,
+      Cpf: false,
+      senderName: false,
+      properlyPacked: false,
+      zipCode: false,
+      state: false,
+      city: false,
+      neighborhood: false,
+      street: false,
+      number: false,
+      motoboyName: false,
+      responsibleName: false,
+      technicianName: false,
     }
     const message = {
       equipId: '',
+      defect: '',
       externalDamage: '',
       delivery: '',
+      clientName: '',
+      RG: '',
+      Cpf: '',
+      senderName: '',
+      properlyPacked: '',
+      zipCode: '',
+      state: '',
+      city: '',
+      neighborhood: '',
+      street: '',
+      number: '',
+      motoboyName: '',
+      responsibleName: '',
+      technicianName: '',
     }
 
     let errors = false
@@ -205,11 +238,31 @@ module.exports = class EntryEquipmentDomain {
       externalTechnician()
     }
 
+    if (entryEquipmentHasProp('RG')) {
+      const { RG } = entryEquipment
+      entryEquipment.RG = RG.replace(/\D/g, '')
+    }
+    if (entryEquipmentHasProp('Cpf')) {
+      const { Cpf } = entryEquipment
+      entryEquipment.Cpf = Cpf.replace(/\D/g, '')
+    }
+    if (entryEquipmentHasProp('zipCode')) {
+      const { zipCode } = entryEquipment
+      entryEquipment.zipCode = zipCode.replace(/\D/g, '')
+    }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
 
     const entryEquipmentCreated = await EntryEquipment.create(entryEquipment, { transaction })
+
+
+    if (R.has('accessories', bodyData)) {
+      const { accessories } = bodyData
+
+      await entryEquipmentCreated.addAccessories(accessories, { transaction })
+    }
 
     const response = await EntryEquipment.findByPk(entryEquipmentCreated.id, {
       include: [
@@ -230,9 +283,13 @@ module.exports = class EntryEquipmentDomain {
             },
           ],
         },
+        {
+          model: Accessories,
+        },
       ],
       transaction,
     })
+
     return response
   }
 }

@@ -9,6 +9,9 @@ const equipMark = require('./equip/equipMark')
 const equipModel = require('./equip/equipModel')
 const entryEquipment = require('./entryEquipment')
 const accessories = require('./entryEquipment/accessories')
+const part = require('./part')
+const analyze = require('./analyze')
+const analysisPart = require('./analyze/analysisPart')
 
 module.exports = [
 
@@ -25,4 +28,8 @@ module.exports = [
 
   entryEquipment,
   accessories,
+
+  part,
+  analyze,
+  analysisPart,
 ]

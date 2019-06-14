@@ -12,14 +12,5 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
     },
   })
-
-  accessories.associate = (models) => {
-    accessories.hasMany(models.entryEquipment, {
-      foreignKey: {
-        allowNull: true,
-      },
-    })
-  }
-
   return accessories
 }
