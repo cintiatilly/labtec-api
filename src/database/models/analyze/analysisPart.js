@@ -23,6 +23,11 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
+    finalPrice: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+
     approved: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,

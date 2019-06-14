@@ -15,7 +15,25 @@ const add = async (req, res, next) => {
     next(error)
   }
 }
+const analyzeUpdate = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const { id = null } = req.body
+    const { analyzeUpdateMock = null } = req.body
+
+    const analyze = await analyzeDomain.analyzeUpdate(id,
+      analyzeUpdateMock,
+      { transaction })
+
+    await transaction.commit()
+    res.json(analyze)
+  } catch (error) {
+    await transaction.rollback()
+    next(error)
+  }
+}
 
 module.exports = {
   add,
+  analyzeUpdate,
 }

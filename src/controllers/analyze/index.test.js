@@ -14,6 +14,8 @@ describe('analyzecontroller', () => {
   let analyzeMock = null
   let analysisPartMock = null
   let headers = null
+  let bodyData = null
+  let analyzeUpdateMock = null
 
   beforeAll(async () => {
     const equipMarkMock = {
@@ -47,11 +49,6 @@ describe('analyzecontroller', () => {
     }
 
     analyzeMock = {
-      //   humidity,
-      //   fall,
-      //   misuse,
-      //   brokenSeal,
-      //   factory,
       analysisPart: [analysisPartMock, analysisPartMock],
     }
 
@@ -68,6 +65,17 @@ describe('analyzecontroller', () => {
       token,
       username,
     }
+
+    analyzeUpdateMock = {
+      status: 'aprovado',
+    }
+
+    const analyzeCreated = await analyzeDomain.add(analyzeMock)
+
+    bodyData = {
+      id: analyzeCreated.id,
+      analyzeUpdateMock,
+    }
   })
 
   test('create', async () => {
@@ -81,5 +89,14 @@ describe('analyzecontroller', () => {
     expect(body.misuse).toBe(false)
     expect(body.brokenSeal).toBe(false)
     expect(body.factory).toBe(false)
+  })
+
+  test('analyzeUpdate', async () => {
+    const response = await request().put('/api/analyze/Update', bodyData, { headers })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.status).toBe(analyzeUpdateMock.status)
   })
 })
