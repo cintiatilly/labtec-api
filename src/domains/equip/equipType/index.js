@@ -314,7 +314,12 @@ module.exports = class EquipTypeDomain {
       transaction,
     })
 
-    const response = arrayModel.map(item => item.model)
+    const response = arrayModel.map(item => ({
+      model: item.model,
+      id: item.id,
+    }))
+
+    console.log(response)
 
     return response
   }
