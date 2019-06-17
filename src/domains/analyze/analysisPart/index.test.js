@@ -18,6 +18,7 @@ describe('analysisPartDomain', () => {
   let equipModelMock = null
   let equipMarkMock = null
   let analysisPartMock = null
+  let analyzeMock = null
 
   beforeAll(async () => {
     equipMarkMock = {
@@ -45,7 +46,12 @@ describe('analysisPartDomain', () => {
 
     const partCreated = await partDomain.add(partMock)
 
-    const analyzeCreated = await analyzeDomain.add()
+    analyzeMock = {
+      garantia: 'externa',
+      conditionType: 'avulso',
+    }
+
+    const analyzeCreated = await analyzeDomain.add(analyzeMock)
 
     analysisPartMock = {
       analyzeId: analyzeCreated.id,

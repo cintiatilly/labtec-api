@@ -4,7 +4,7 @@ const database = require('../../database')
 
 const AnalysisPartDomain = require('./analysisPart')
 
-// const { FieldValidationError } = require('../../helpers/errors')
+const { FieldValidationError } = require('../../helpers/errors')
 
 const analysisPartDomain = new AnalysisPartDomain()
 
@@ -24,8 +24,34 @@ module.exports = class AnalyzeDomain {
 
     const analyzeCreated = await Analyze.create(analyze, { transaction })
 
+    const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
+
+    const field = {
+      garantia: false,
+      conditionType: false,
+    }
+    const message = {
+      garantia: '',
+      conditionType: '',
+    }
+
+    let errors = false
+    
+    if (analyzeNotHasProp('garantia') || !analyze.garantia) {
+      errors = true
+      field.garantia = true
+      message.garantia = 'Por favor informar o tipo de garantia.'
+    }
+
+    if (analyzeNotHasProp('conditionType') || !analyze.conditionType) {
+      errors = true
+      field.conditionType = true
+      message.conditionType = 'Por favor informar o tipo de condição.'
+    }
+
     if (bodyData) {
       const bodyHasProp = prop => R.has(prop, bodyData)
+
 
       if (bodyHasProp('analysisPart')) {
         const { analysisPart } = bodyData
@@ -43,6 +69,10 @@ module.exports = class AnalyzeDomain {
 
         await analyzeCreated.addAnalysisParts(analysisPartCreatedList, { transaction })
       }
+    }
+
+    if (errors) {
+      throw new FieldValidationError([{ field, message }])
     }
 
 
@@ -83,8 +113,8 @@ module.exports = class AnalyzeDomain {
       ...analyze,
     }
 
-    if (updatesHasProp('status') && updates.status) {
-      updatedAnalyze.status = updates.status
+    if (updatesHasProp('budgetStatus') && updates.budgetStatus) {
+      updatedAnalyze.budgetStatus = updates.budgetStatus
     }
 
     await analyze.update(updatedAnalyze, { transaction })

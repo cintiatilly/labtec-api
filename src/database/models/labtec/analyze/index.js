@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
 
-    status: {
+    budgetStatus: {
       type: Sequelize.ENUM(['recusado', 'aprovado', 'aguardando aprovação']),
       allowNull: false,
       defaultValue: 'aguardando aprovação',
@@ -34,9 +34,14 @@ module.exports = (sequelize) => {
       defaultValue: false,
     },
 
-    factory: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
+    garantia: {
+      type: Sequelize.ENUM(['externa', 'laboratorio', 'venda', 'semg garantia']),
+      allowNull: false,
+    },
+
+    conditionType: {
+      type: Sequelize.ENUM(['avulso', 'contrato', 'emprestimo']),
+      allowNull: false,
     },
   })
 

@@ -47,6 +47,8 @@ describe('analyzeDomain', () => {
     }
 
     analyzeMock = {
+      garantia: 'externa',
+      conditionType: 'avulso',
       analysisPart: [analysisPartMock, analysisPartMock],
     }
   })

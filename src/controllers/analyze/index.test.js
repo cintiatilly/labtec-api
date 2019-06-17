@@ -49,6 +49,8 @@ describe('analyzecontroller', () => {
     }
 
     analyzeMock = {
+      garantia: 'externa',
+      conditionType: 'avulso',
       analysisPart: [analysisPartMock, analysisPartMock],
     }
 
@@ -67,7 +69,7 @@ describe('analyzecontroller', () => {
     }
 
     analyzeUpdateMock = {
-      status: 'aprovado',
+      budgetStatus: 'aprovado',
     }
 
     const analyzeCreated = await analyzeDomain.add(analyzeMock)
@@ -88,7 +90,6 @@ describe('analyzecontroller', () => {
     expect(body.fall).toBe(false)
     expect(body.misuse).toBe(false)
     expect(body.brokenSeal).toBe(false)
-    expect(body.factory).toBe(false)
   })
 
   test('analyzeUpdate', async () => {
@@ -97,6 +98,6 @@ describe('analyzecontroller', () => {
     const { body, statusCode } = response
 
     expect(statusCode).toBe(200)
-    expect(body.status).toBe(analyzeUpdateMock.status)
+    expect(body.budgetStatus).toBe(analyzeUpdateMock.budgetStatus)
   })
 })

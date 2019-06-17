@@ -13,13 +13,14 @@ const analyzeDomain = new AnalyzeDomain()
 const analysisPartDomain = new AnalysisPartDomain()
 
 describe('analysisPartController', () => {
-  let partMock = null
-  let equipModelMock = null
-  let equipMarkMock = null
+  let analyzeMock = null
   let analysisPartMock = null
-  let headers = null
-  let bodyData = null
   let analysisPartUpdateMock = null
+  let bodyData = null
+  let equipMarkMock = null
+  let equipModelMock = null
+  let headers = null
+  let partMock = null
 
   beforeAll(async () => {
     equipMarkMock = {
@@ -47,7 +48,12 @@ describe('analysisPartController', () => {
 
     const partCreated = await partDomain.add(partMock)
 
-    const analyzeCreated = await analyzeDomain.add()
+    analyzeMock = {
+      garantia: 'externa',
+      conditionType: 'avulso',
+    }
+
+    const analyzeCreated = await analyzeDomain.add(analyzeMock)
 
     analysisPartMock = {
       analyzeId: analyzeCreated.id,
