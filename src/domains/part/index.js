@@ -43,7 +43,7 @@ module.exports = class PartDomain {
       message.costPrice = 'Por favor digite o preço de custo.'
     } else {
       const { costPrice } = part
-      part.costPrice = costPrice.replace(/\D/, '')
+      part.costPrice = costPrice.replace(/\D/g, '')
     }
 
     if (partNotHasProp('salePrice') || !part.salePrice) {
@@ -52,7 +52,7 @@ module.exports = class PartDomain {
       message.salePrice = 'Por favor digite o preço de venda.'
     } else {
       const { salePrice } = part
-      part.salePrice = salePrice.replace(/\D/, '')
+      part.salePrice = salePrice.replace(/\D/g, '')
     }
 
     if (errors) {
@@ -89,7 +89,7 @@ module.exports = class PartDomain {
 
     const partUpdating = await Part.findByPk(partId, { transaction })
 
-    const newCostPrinceFormatted = newCostPrince.replace(/\D/, '')
+    const newCostPrinceFormatted = newCostPrince.replace(/\D/g, '')
 
     const partUpdated = {
       ...partUpdating,
@@ -117,7 +117,7 @@ module.exports = class PartDomain {
 
     const partUpdating = await Part.findByPk(partId, { transaction })
 
-    const newSalePriceFormatted = newSalePrice.replace(/\D/, '')
+    const newSalePriceFormatted = newSalePrice.replace(/\D/g, '')
 
     const partUpdated = {
       ...partUpdating,

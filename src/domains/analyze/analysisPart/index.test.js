@@ -51,7 +51,6 @@ describe('analysisPartDomain', () => {
       analyzeId: analyzeCreated.id,
       partId: partCreated.id,
       description: 'fonte queimada.',
-      analysisPart: [],
     }
   })
 
@@ -62,5 +61,22 @@ describe('analysisPartDomain', () => {
 
     expect(analysisPartCreated).toBeTruthy()
     expect(analysisPartCreated1).toBeTruthy()
+  })
+
+
+  test('analysisPartUpdate', async () => {
+    const analysisPartUpdateMock = {
+      discount: ' 12,5%',
+      effectivePrice: '100.00',
+      approved: true,
+    }
+
+    const analysisPartCreated = await analysisPartDomain.add(analysisPartMock)
+
+    const analysisPartUpdate = await analysisPartDomain.analysisPartUpdate(analysisPartCreated.id,
+      analysisPartUpdateMock)
+
+    expect(analysisPartCreated).toBeTruthy()
+    expect(analysisPartUpdate).toBeTruthy()
   })
 })

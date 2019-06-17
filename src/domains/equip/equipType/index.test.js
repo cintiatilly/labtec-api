@@ -195,7 +195,7 @@ describe('equipType', () => {
   })
 
   test('getAllModelByMark', async () => {
-    const equips = await equipTypeDomain.getAllModelByMark('Hanry')
+    const equips = await equipTypeDomain.getAllModelByMark('GM')
     expect(equips).toBeTruthy()
   })
 })

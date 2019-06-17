@@ -47,11 +47,6 @@ describe('analyzeDomain', () => {
     }
 
     analyzeMock = {
-    //   humidity,
-    //   fall,
-    //   misuse,
-    //   brokenSeal,
-    //   factory,
       analysisPart: [analysisPartMock, analysisPartMock],
     }
   })
@@ -65,13 +60,18 @@ describe('analyzeDomain', () => {
     expect(analyzeCreated1).toBeTruthy()
   })
 
-  // test('analyzeUpdateById', async () => {
-  //   const analyzeCreated = await analyzeDomain.add(analyzeMock)
-  //   analyzeCreated.status = 'aprovado'
-  //   const analyzeUpdate = {
-  //     ...analyzeCreated,
-  //   }
 
-  //   await analyzeDomain.analyzeUpdateById(analyzeCreated.id, analyzeUpdate)
-  // })
+  test('analyzeUpdate', async () => {
+    const analyzeUpdateMock = {
+      status: 'aprovado',
+    }
+
+    const analyzeCreated = await analyzeDomain.add(analyzeMock)
+
+    const analyzeUpdate = await analyzeDomain.analyzeUpdate(analyzeCreated.id,
+      analyzeUpdateMock)
+
+    expect(analyzeCreated).toBeTruthy()
+    expect(analyzeUpdate).toBeTruthy()
+  })
 })
