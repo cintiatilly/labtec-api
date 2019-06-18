@@ -18,7 +18,7 @@ const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
 const Accessories = database.model('accessories')
-
+const Process = database.model('process')
 
 module.exports = class EntryEquipmentDomain {
   async add(bodyData, options = {}) {
@@ -255,6 +255,16 @@ module.exports = class EntryEquipmentDomain {
       throw new FieldValidationError([{ field, message }])
     }
 
+
+    const process = {
+      status: 'pre analise',
+    }
+
+    const processCreated = await Process.create(process, { transaction })
+
+    entryEquipment.processId = processCreated.id
+
+
     const entryEquipmentCreated = await EntryEquipment.create(entryEquipment, { transaction })
 
 
@@ -289,6 +299,7 @@ module.exports = class EntryEquipmentDomain {
       ],
       transaction,
     })
+
 
     return response
   }
