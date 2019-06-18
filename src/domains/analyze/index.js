@@ -14,6 +14,7 @@ const EquipType = database.model('equipType')
 const AnalysisPart = database.model('analysisPart')
 const Part = database.model('part')
 const Analyze = database.model('analyze')
+const Process = database.model('process')
 
 
 module.exports = class AnalyzeDomain {
@@ -22,21 +23,22 @@ module.exports = class AnalyzeDomain {
 
     const analyze = R.omit(['id'], bodyData)
 
-    const analyzeCreated = await Analyze.create(analyze, { transaction })
-
     const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
+    const analyzeHasProp = prop => R.has(prop, bodyData)
 
     const field = {
       garantia: false,
       conditionType: false,
+      processId: false,
     }
     const message = {
       garantia: '',
       conditionType: '',
+      processId: '',
     }
 
     let errors = false
-    
+
     if (analyzeNotHasProp('garantia') || !analyze.garantia) {
       errors = true
       field.garantia = true
@@ -48,6 +50,24 @@ module.exports = class AnalyzeDomain {
       field.conditionType = true
       message.conditionType = 'Por favor informar o tipo de condição.'
     }
+
+    if (analyzeHasProp('processId')) {
+      if (!analyze.processId) {
+        errors = true
+        field.processId = true
+        message.processId = 'Id não pode ser nulo.'
+      } else {
+        const processHasExist = await Process.findByPk(analyze.processId, { transaction })
+
+        if (!processHasExist) {
+          errors = true
+          field.processId = true
+          message.processId = 'Id não existe em processos'
+        }
+      }
+    }
+
+    const analyzeCreated = await Analyze.create(analyze, { transaction })
 
     if (bodyData) {
       const bodyHasProp = prop => R.has(prop, bodyData)

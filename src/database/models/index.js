@@ -12,6 +12,8 @@ const accessories = require('./labtec/entryEquipment/accessories')
 const part = require('./labtec/part')
 const analyze = require('./labtec/analyze')
 const analysisPart = require('./labtec/analyze/analysisPart')
+const process = require('./labtec/process')
+const time = require('./labtec/process/time')
 
 module.exports = [
 
@@ -32,4 +34,7 @@ module.exports = [
   part,
   analyze,
   analysisPart,
+
+  process,
+  time,
 ]
