@@ -298,7 +298,7 @@ module.exports = class EquipTypeDomain {
       transaction,
     })
 
-    const response = arrayMarks.map(item => item.mark)
+    const response = arrayMarks.map(item => ({ mark: item.mark, id: item.id }))
 
     return response
   }
@@ -318,8 +318,6 @@ module.exports = class EquipTypeDomain {
       model: item.model,
       id: item.id,
     }))
-
-    console.log(response)
 
     return response
   }
