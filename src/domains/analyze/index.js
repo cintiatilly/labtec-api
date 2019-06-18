@@ -69,31 +69,6 @@ module.exports = class AnalyzeDomain {
 
     const analyzeCreated = await Analyze.create(analyze, { transaction })
 
-    const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
-
-    const field = {
-      garantia: false,
-      conditionType: false,
-    }
-    const message = {
-      garantia: '',
-      conditionType: '',
-    }
-
-    let errors = false
-    
-    if (analyzeNotHasProp('garantia') || !analyze.garantia) {
-      errors = true
-      field.garantia = true
-      message.garantia = 'Por favor informar o tipo de garantia.'
-    }
-
-    if (analyzeNotHasProp('conditionType') || !analyze.conditionType) {
-      errors = true
-      field.conditionType = true
-      message.conditionType = 'Por favor informar o tipo de condição.'
-    }
-
     if (bodyData) {
       const bodyHasProp = prop => R.has(prop, bodyData)
 

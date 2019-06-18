@@ -42,7 +42,7 @@ describe('partDomain', () => {
       description: '',
       costPrice: '100,00',
       salePrice: '150,00',
-      equipModels: [modelMock.id, modelMock1.id],
+      equipModels: [{ id: modelMock.id }, { id: modelMock1.id }],
     }
   })
 

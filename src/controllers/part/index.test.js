@@ -6,7 +6,7 @@ const PartDomain = require('../../domains/part')
 const equipTypeDomain = new EquipTypeDomain()
 const partDomain = new PartDomain()
 
-describe('equipController', () => {
+describe('partController', () => {
   let partMock = null
   let equipModelMock = null
   let equipMarkMock = null
@@ -34,7 +34,7 @@ describe('equipController', () => {
       description: '',
       costPrice: '100,00',
       salePrice: '150,00',
-      equipModels: [modelMock.id],
+      equipModels: [{ id: modelMock.id }],
     }
 
     const partCreated = await partDomain.add(partMock)

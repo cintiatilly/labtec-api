@@ -64,7 +64,9 @@ module.exports = class PartDomain {
     if (R.has('equipModels', bodyData) && bodyData.equipModels) {
       const { equipModels } = bodyData
 
-      await partCreated.addEquipModels(equipModels, { transaction })
+      const equipModelsIds = equipModels.map(item => item.id)
+
+      await partCreated.addEquipModels(equipModelsIds, { transaction })
     } else {
       errors = true
       field.equipModels = true

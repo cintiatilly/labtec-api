@@ -43,7 +43,7 @@ describe('analysisPartController', () => {
       description: '',
       costPrice: '100,00',
       salePrice: '150,00',
-      equipModels: [modelMock.id],
+      equipModels: [{ id: modelMock.id }],
     }
 
     const partCreated = await partDomain.add(partMock)
