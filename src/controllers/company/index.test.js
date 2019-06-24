@@ -36,6 +36,33 @@ describe('companyController', () => {
 
     params = {
       cnpj: '32478461000160',
+      query: {
+        filters: {
+          company: {
+            global: {
+              fields: [
+                'cnpj',
+                'razaoSocial',
+                'nameContact',
+                'telphone',
+              ],
+              value: '',
+            },
+            specific: {
+              cnpj: '',
+              razaoSocial: '',
+              nameContact: '',
+              telphone: '',
+            },
+          },
+        },
+        page: 1,
+        total: 25,
+        order: {
+          field: 'createdAt',
+          acendent: true,
+        },
+      },
     }
   })
 
@@ -57,7 +84,7 @@ describe('companyController', () => {
   })
 
   test('getall', async () => {
-    const response = await request().get('/api/company', { headers })
+    const response = await request().get('/api/company', { headers, params })
 
     const { body, statusCode } = response
 
