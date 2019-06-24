@@ -170,4 +170,9 @@ describe('partDomain', () => {
         message: 'equipModels cannot be null',
       }]))
   })
+
+  test('getAll', async () => {
+    const parts = await partDomain.getAllParts()
+    expect(parts.rows.length > 0).toBeTruthy()
+  })
 })

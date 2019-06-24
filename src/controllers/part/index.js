@@ -48,8 +48,24 @@ const updateBySalePrice = async (req, res, next) => {
   }
 }
 
+const getAllParts = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const query = JSON.parse(req.query.query)
+
+    const part = await partDomain.getAllParts({ query, transaction })
+
+    await transaction.commit()
+    res.json(part)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
+
 module.exports = {
   add,
   updateByCostPrince,
   updateBySalePrice,
+  getAllParts,
 }

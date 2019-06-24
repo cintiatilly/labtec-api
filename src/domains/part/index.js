@@ -1,10 +1,14 @@
 const R = require('ramda')
+const moment = require('moment')
 
+const formatQuery = require('../../helpers/lazyLoad')
 const database = require('../../database')
 
 const { FieldValidationError } = require('../../helpers/errors')
 
 const EquipModel = database.model('equipModel')
+const EquipMark = database.model('equipMark')
+const EquipType = database.model('equipType')
 const Part = database.model('part')
 
 
@@ -139,6 +143,89 @@ module.exports = class PartDomain {
       transaction,
     })
 
+    return response
+  }
+
+  async getAllParts(options = {}) {
+    const inicialOrder = {
+      field: 'createdAt',
+      acendent: true,
+      direction: 'DESC',
+    }
+
+    const { query = null, order = null, transaction = null } = options
+
+    const newQuery = Object.assign({}, query)
+    const newOrder = Object.assign(inicialOrder, order)
+
+    if (newOrder.acendent) {
+      newOrder.direction = 'DESC'
+    } else {
+      newOrder.direction = 'ASC'
+    }
+
+    const {
+      getWhere,
+      limit,
+      offset,
+      pageResponse,
+    } = formatQuery(newQuery)
+
+    const parts = await Part.findAndCountAll({
+      where: getWhere('part'),
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
+      include: [{
+        model: EquipModel,
+        include: [{
+          model: EquipMark,
+          include: [{
+            model: EquipType,
+          }],
+        }],
+      }],
+      limit,
+      offset,
+      transaction,
+    })
+
+    const { rows } = parts
+
+    const formatDateFunct = (date) => {
+      moment.locale('pt-br')
+      const formatDate = moment(date).format('L')
+      const formatHours = moment(date).format('LT')
+      const dateformated = `${formatDate} ${formatHours}`
+      return dateformated
+    }
+
+    const formatData = R.map((comp) => {
+      const resp = {
+        item: comp.item,
+        description: comp.description,
+        costPrice: comp.costPrice,
+        salePrice: comp.salePrice,
+        equipModels: comp.equipModels,
+        createdAt: formatDateFunct(comp.createdAt),
+        updatedAt: formatDateFunct(comp.updatedAt),
+      }
+      return resp
+    })
+
+    const partsList = formatData(rows)
+
+    let show = limit
+    if (parts.count < show) {
+      show = parts.count
+    }
+
+    const response = {
+      page: pageResponse,
+      show,
+      count: parts.count,
+      rows: partsList,
+    }
     return response
   }
 }
