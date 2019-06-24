@@ -12,6 +12,7 @@ describe('partController', () => {
   let equipMarkMock = null
   let headers = null
   let bodyData = null
+  let params = null
 
   beforeAll(async () => {
     equipMarkMock = {
@@ -59,6 +60,30 @@ describe('partController', () => {
       newCostPrince: '500,00',
       newSalePrice: '550,00',
     }
+
+    params = {
+      query: {
+        filters: {
+          company: {
+            global: {
+              fields: [
+                'item',
+              ],
+              value: '',
+            },
+            specific: {
+              item: '',
+            },
+          },
+        },
+        page: 1,
+        total: 25,
+        order: {
+          field: 'createdAt',
+          acendent: true,
+        },
+      },
+    }
   })
 
   test('create', async () => {
@@ -95,5 +120,17 @@ describe('partController', () => {
     expect(body.description).toBe(partMock.description)
     expect(body.costPrice).toBe('50000')
     expect(body.salePrice).toBe('55000')
+  })
+
+  test('getAllParts', async () => {
+    const response = await request().get('/api/part', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.count).toBeTruthy()
+    expect(body.page).toBeTruthy()
+    expect(body.show).toBeTruthy()
+    expect(body.rows).toBeTruthy()
   })
 })
