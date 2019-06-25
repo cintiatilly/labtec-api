@@ -25,12 +25,16 @@ module.exports = class PartDomain {
       costPrice: false,
       salePrice: false,
       equipModels: false,
+      mark: false,
+      modelListCard: false,
     }
     const message = {
       item: '',
       costPrice: '',
       salePrice: '',
       equipModels: '',
+      mark: '',
+      modelListCard: '',
     }
 
     let errors = false
@@ -59,6 +63,14 @@ module.exports = class PartDomain {
       part.salePrice = salePrice.replace(/\D/g, '')
     }
 
+    if (R.not(R.has('equipModels', bodyData)) || bodyData.equipModels.length === 0) {
+      errors = true
+      field.equipModels = true
+
+      field.modelListCard = true
+      message.modelListCard = 'Selecione ao menos um modelo.'
+    }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
@@ -71,10 +83,6 @@ module.exports = class PartDomain {
       const equipModelsIds = equipModels.map(item => item.id)
 
       await partCreated.addEquipModels(equipModelsIds, { transaction })
-    } else {
-      errors = true
-      field.equipModels = true
-      message.equipModels = 'Por favor selecione pelo menos um equipamento.'
     }
 
 
