@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 const R = require('ramda')
 const moment = require('moment')
+const axios = require('axios')
 
 const Cnpj = require('@fnando/cnpj/dist/node')
 const Cpf = require('@fnando/cpf/dist/node')
@@ -158,10 +159,18 @@ module.exports = class CompanyDomain {
       const { zipCode } = company
       company.zipCode = zipCode.replace(/\D/, '')
 
-      if (!/^\d{8}$/.test(company.zipCode)) {
+      const url = getZipCode => `https://viacep.com.br/ws/${getZipCode}/json/`
+
+      const address = await axios.get(url(company.zipCode))
+
+      // console.log(address.data)
+
+      if (!/^\d{8}$/.test(company.zipCode)
+      || R.has('erro', address.data)
+      ) {
         errors = true
         field.zipCode = true
-        message.zipCode = 'O cep informado está inválido.'
+        message.zipCode = 'Cep inválido.'
       }
     }
 
