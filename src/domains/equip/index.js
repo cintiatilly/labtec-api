@@ -41,7 +41,7 @@ module.exports = class EquipDomain {
     if (equipNotHasProp('equipModelId') || !equip.equipModelId) {
       errors = true
       field.equipModelId = true
-      message.equipModelId = 'Por favor selecione o tipo de equipamento.'
+      message.equipModelId = 'Por favor selecione o modelo de equipamento.'
     } else {
       const equipModelReturned = await EquipModel.findOne({
         where: { id: equip.equipModelId },
@@ -57,6 +57,10 @@ module.exports = class EquipDomain {
 
     if (equipNotHasProp('companyId') || !equip.companyId) {
       errors = true
+
+      field.cnpj = true
+      message.cnpj = 'Cnpj não cadastrado'
+
       field.companyId = true
       message.companyId = 'Por favor selecione uma empresa.'
     } else {
@@ -84,8 +88,8 @@ module.exports = class EquipDomain {
 
       if (serialNumberReturned) {
         errors = true
-        field.companyId = true
-        message.companyId = 'Esse equipamento já está cadastrado.'
+        field.serialNumber = true
+        message.serialNumber = 'Esse equipamento já está cadastrado.'
       }
     }
 
