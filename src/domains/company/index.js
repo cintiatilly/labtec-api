@@ -221,7 +221,7 @@ module.exports = class CompanyDomain {
     const { query = null, transaction = null } = options
 
     const newQuery = Object.assign({}, query)
-    const newOrder = Object.assign(inicialOrder, query.order)
+    const newOrder = (query && query.order) ? query.order : inicialOrder
 
     if (newOrder.acendent) {
       newOrder.direction = 'DESC'
