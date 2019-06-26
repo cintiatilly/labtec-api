@@ -67,7 +67,7 @@ describe('analyzeDomain', () => {
       city: 'São Paulo',
       state: 'UF',
       neighborhood: 'JD. Avelino',
-      zipCode: '03299-080',
+      zipCode: '09930-210',
       telphone: '(11)8565-4118',
       nameContact: 'josi',
       email: 'josi@gmail.com',

@@ -21,7 +21,7 @@ describe('equipController', () => {
       city: 'São Paulo',
       state: 'UF',
       neighborhood: 'JD. Avelino',
-      zipCode: '03465-080',
+      zipCode: '09930-210',
       telphone: '(11)0985-4568',
       nameContact: 'jaimeldom',
       email: 'jaime@gmasi.com',

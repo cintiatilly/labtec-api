@@ -18,7 +18,7 @@ describe('companyDomain', () => {
       city: 'São Paulo',
       state: 'UF',
       neighborhood: 'JD. Avelino',
-      zipCode: '03265-080',
+      zipCode: '09930-210',
       telphone: '(11)0965-4568',
       nameContact: 'joseildom',
       email: 'josealdo@gmasi.com',
@@ -35,7 +35,7 @@ describe('companyDomain', () => {
     expect(companyCreated.city).toBe(companyMock.city)
     expect(companyCreated.state).toBe(companyMock.state)
     expect(companyCreated.neighborhood).toBe(companyMock.neighborhood)
-    expect(companyCreated.zipCode).toBe('03265080')
+    expect(companyCreated.zipCode).toBe('09930210')
     expect(companyCreated.telphone).toBe('1109654568')
     expect(companyCreated.nameContact).toBe(companyMock.nameContact)
     expect(companyCreated.email).toBe(companyMock.email)
@@ -279,53 +279,6 @@ describe('companyDomain', () => {
       }]))
   })
 
-  test('try add company without zipCode invalid', async () => {
-    const companyCreated1 = {
-      ...companyMock,
-      zipCode: '12354',
-    }
-
-    const companyCreated2 = {
-      ...companyMock,
-      zipCode: '123dfg54',
-    }
-
-    const companyCreated3 = {
-      ...companyMock,
-      zipCode: '123456789',
-    }
-
-    const companyCreated4 = {
-      ...companyMock,
-      zipCode: '12345 678',
-    }
-
-    await expect(companyDomain.add(companyCreated1)).rejects
-      .toThrowError(new FieldValidationError([{
-        field: 'zipCode',
-        message: 'cannot contains space',
-      }]))
-
-    await expect(companyDomain.add(companyCreated2)).rejects
-      .toThrowError(new FieldValidationError([{
-        field: 'zipCode',
-        message: 'zipCode is invalid',
-      }]))
-
-
-    await expect(companyDomain.add(companyCreated3)).rejects
-      .toThrowError(new FieldValidationError([{
-        field: 'zipCode',
-        message: 'zipCode is invalid',
-      }]))
-
-    await expect(companyDomain.add(companyCreated4)).rejects
-      .toThrowError(new FieldValidationError([{
-        field: 'zipCode',
-        message: 'cannot contains space',
-      }]))
-  })
-
   test('try add company with telphone null', async () => {
     const companyCreated = companyMock
     companyCreated.telphone = ''
@@ -336,7 +289,6 @@ describe('companyDomain', () => {
         message: 'telphone cannot be null',
       }]))
   })
-
 
   test('try add company without telphone', async () => {
     const companyCreated = R.omit(['telphone'], companyMock)

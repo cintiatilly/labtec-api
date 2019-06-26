@@ -14,7 +14,7 @@ describe('companyController', () => {
       city: 'São Paulo',
       state: 'UF',
       neighborhood: 'JD. Avelino',
-      zipCode: '03265080',
+      zipCode: '09930210',
       telphone: '09654568',
       nameContact: 'joseildom',
       email: 'clebinho@joazinho.com',
