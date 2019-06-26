@@ -14,7 +14,7 @@ describe('ProcessDomain', () => {
 
   beforeAll(async () => {
     processMock = {
-      status: 'pre analise',
+      status: 'preAnalise',
     }
 
     process = await Process.create(processMock)

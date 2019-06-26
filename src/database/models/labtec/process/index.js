@@ -9,9 +9,9 @@ module.exports = (sequelize) => {
     },
 
     status: {
-      type: Sequelize.ENUM(['pre analise', 'analise', 'fabrica',
-        'revisao1', 'pos analise', 'revisao 2', 'pos analise 2',
-        'revisao 3', 'orçamento', 'manutenção', 'revisao final', 'estoque']),
+      type: Sequelize.ENUM(['preAnalise', 'analise', 'fabrica',
+        'revisao1', 'posAnalise', 'revisao2', 'posAnalise2',
+        'revisao3', 'orcamento', 'manutencao', 'revisaoFinal', 'estoque']),
       allowNull: false,
     },
   })
