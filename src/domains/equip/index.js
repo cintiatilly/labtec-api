@@ -1,4 +1,5 @@
 const R = require('ramda')
+const moment = require('moment')
 
 const formatQuery = require('../../helpers/lazyLoad')
 
@@ -173,6 +174,14 @@ module.exports = class EquipDomain {
 
     const { rows } = equips
 
+    const formatDateFunct = (date) => {
+      moment.locale('pt-br')
+      const formatDate = moment(date).format('L')
+      const formatHours = moment(date).format('LT')
+      const dateformated = `${formatDate} ${formatHours}`
+      return dateformated
+    }
+
     const formatData = R.map((equip) => {
       const resp = {
         razaoSocial: equip.company.razaoSocial,
@@ -194,6 +203,8 @@ module.exports = class EquipDomain {
         serialNumber: equip.serialNumber,
         readerColor: equip.readerColor,
         details: equip.details,
+        createdAt: formatDateFunct(equip.createdAt),
+        updatedAt: formatDateFunct(equip.updatedAt),
       }
       return resp
     })
