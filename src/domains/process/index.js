@@ -34,8 +34,9 @@ module.exports = class ProcessDomain {
     let errors = false
 
 
-    const arrayStatus = ['pre analise', 'analise', 'fabrica', 'revisao1', 'pos analise', 'revisao 2',
-      'pos analise 2', 'revisao 3', 'orçamento', 'manutenção', 'revisao final', 'estoque']
+    const arrayStatus = ['preAnalise', 'analise', 'fabrica',
+      'revisao1', 'posAnalise', 'revisao2', 'posAnalise2',
+      'revisao3', 'orcamento', 'manutencao', 'revisaoFinal', 'estoque']
 
     if (updatesHasProp('status')) {
       if (arrayStatus.filter(value => value === updates.status)) {

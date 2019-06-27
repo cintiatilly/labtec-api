@@ -257,7 +257,7 @@ module.exports = class EntryEquipmentDomain {
 
 
     const process = {
-      status: 'pre analise',
+      status: 'preAnalise',
     }
 
     const processCreated = await Process.create(process, { transaction })
