@@ -38,8 +38,8 @@ describe('partDomain', () => {
     const modelMock1 = await equipTypeDomain.addModel(equipModelMock1)
 
     partMock = {
-      item: 'display',
-      description: '',
+      item: 'displayyyy',
+      description: 'adsd',
       costPrice: '100,00',
       salePrice: '150,00',
       equipModels: [{ id: modelMock.id }, { id: modelMock1.id }],
@@ -56,10 +56,12 @@ describe('partDomain', () => {
     expect(partCreated.salePrice).toBe('15000')
     expect(partCreated.obsolete).toBe(false)
 
-    expect(await partDomain.add(partMock)).toBeTruthy()
+    await expect(partDomain.add(partMock))
+      .rejects.toThrowError(new FieldValidationError())
   })
 
   test('updateByCostPrince', async () => {
+    partMock.item = 'mouse'
     const partCreated = await partDomain.add(partMock)
     const newCostPrince = '500,00'
     const partUpdated = await partDomain.updateByCostPrince(partCreated.id, { newCostPrince })
@@ -72,6 +74,7 @@ describe('partDomain', () => {
 
 
   test('updateBySalePrice', async () => {
+    partMock.item = 'tecla'
     const partCreated = await partDomain.add(partMock)
     const newSalePrice = '550,00'
     const partUpdated = await partDomain.updateBySalePrice(partCreated.id, { newSalePrice })
