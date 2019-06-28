@@ -68,6 +68,25 @@ describe('equipController', () => {
 
     params = {
       serialNumber: '123456789',
+      query: {
+        filters: {
+          equip: {
+            global: {
+              fields: ['serialNumber'],
+              value: '',
+            },
+            specific: {
+              serialNumber: '',
+            },
+          },
+        },
+        page: 1,
+        total: 25,
+        order: {
+          field: 'createdAt',
+          acendent: true,
+        },
+      },
     }
   })
 
@@ -82,6 +101,18 @@ describe('equipController', () => {
     expect(body.details).toBe(equipMock.details)
     expect(body.company.id).toBe(equipMock.companyId)
     expect(body.equipModel.id).toBe(equipMock.equipModelId)
+  })
+
+  test('getall, query', async () => {
+    const response = await request().get('/api/equip', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.count).toBeTruthy()
+    expect(body.page).toBeTruthy()
+    expect(body.show).toBeTruthy()
+    expect(body.rows).toBeTruthy()
   })
 
   test('getall', async () => {

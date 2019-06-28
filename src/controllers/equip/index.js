@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const EquipDomain = require('../../domains/equip')
 const database = require('../../database')
 
@@ -19,7 +21,14 @@ const add = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   const transaction = await database.transaction()
   try {
-    const equip = await equipDomain.getAll()
+    let query = null
+    if (R.has('query', req)) {
+      if (R.has('query', req.query)) {
+        query = JSON.parse(req.query.query)
+      }
+    }
+
+    const equip = await equipDomain.getAll({ query, transaction })
 
     await transaction.commit()
     res.json(equip)

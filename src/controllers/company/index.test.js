@@ -83,8 +83,20 @@ describe('companyController', () => {
     expect(body.telphone).toBe(companyMock.telphone)
   })
 
-  test('getall', async () => {
+  test('getall, query', async () => {
     const response = await request().get('/api/company', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.count).toBeTruthy()
+    expect(body.page).toBeTruthy()
+    expect(body.show).toBeTruthy()
+    expect(body.rows).toBeTruthy()
+  })
+
+  test('getall', async () => {
+    const response = await request().get('/api/company', { headers })
 
     const { body, statusCode } = response
 

@@ -39,7 +39,7 @@ describe('analysisPartController', () => {
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
 
     partMock = {
-      item: 'fonte',
+      item: 'celular',
       description: '',
       costPrice: '100,00',
       salePrice: '150,00',

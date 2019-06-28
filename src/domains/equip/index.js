@@ -130,10 +130,12 @@ module.exports = class EquipDomain {
       direction: 'DESC',
     }
 
-    const { query = null, order = null, transaction = null } = options
+    const { query = null, transaction = null } = options
+
+    // console.log(query)
 
     const newQuery = Object.assign({}, query)
-    const newOrder = Object.assign(inicialOrder, order)
+    const newOrder = (query && query.order) ? query.order : inicialOrder
 
     if (newOrder.acendent) {
       newOrder.direction = 'DESC'
