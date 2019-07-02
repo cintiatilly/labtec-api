@@ -288,6 +288,15 @@ module.exports = class CompanyDomain {
         updatedAt: formatDateFunct(comp.updatedAt),
         nameContact: comp.nameContact,
         telphone: comp.telphone,
+        street: comp.street,
+        number: comp.number,
+        city: comp.city,
+        state: comp.state,
+        neighborhood: comp.neighborhood,
+        referencePoint: comp.referencePoint,
+        zipCode: comp.zipCode,
+        email: comp.email,
+        complement: comp.complement,
       }
       return resp
     })
