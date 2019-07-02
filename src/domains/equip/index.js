@@ -132,8 +132,6 @@ module.exports = class EquipDomain {
 
     const { query = null, transaction = null } = options
 
-    // console.log(query)
-
     const newQuery = Object.assign({}, query)
     const newOrder = (query && query.order) ? query.order : inicialOrder
 
@@ -155,6 +153,7 @@ module.exports = class EquipDomain {
       include: [
         {
           model: Company,
+          where: getWhere('company'),
         },
         {
           model: EquipModel,
