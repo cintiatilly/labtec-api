@@ -99,4 +99,22 @@ describe('/login', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.name).toBe('User UNAUTHORIZED')
   })
+
+  test('logout', async () => {
+    const loginBody = {
+      username: userMock.username,
+      password: userMock.username,
+    }
+
+    const response = await request().post('/oapi/login', loginBody)
+
+    const params = {
+      token: response.body.token,
+    }
+
+    const logout = await request().delete('/oapi/logout', { params })
+
+    expect(logout.statusCode).toBe(200)
+    expect(logout.body.logout).toBe(true)
+  })
 })

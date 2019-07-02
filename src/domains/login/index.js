@@ -52,22 +52,23 @@ class LoginDomain {
       token: session.id,
       userId: user.id,
       username: user.username,
+      active: session.active,
     }
-
+    console.log(response)
     return response
   }
 
-  async logout(sessionId) {
-    await sessionDomain.turnInvalidSession(sessionId)
+  async logout(token) {
+    await sessionDomain.turnInvalidSession(token)
 
-    const isValid = await sessionDomain.checkSessionIsValid(sessionId)
+    // const isValid = await sessionDomain.checkSessionIsValid(sessionId)
 
-    if (isValid) {
-      throw new FieldValidationError([{
-        field: 'logout',
-        message: 'logout failed',
-      }])
-    }
+    // if (isValid) {
+    //   throw new FieldValidationError([{
+    //     field: 'logout',
+    //     message: 'logout failed',
+    //   }])
+    // }
 
     const sucess = {
       logout: true,

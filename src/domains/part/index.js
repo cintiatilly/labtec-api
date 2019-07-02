@@ -19,6 +19,7 @@ module.exports = class PartDomain {
     const part = R.omit(['id', 'equipModels'], bodyData)
 
     const partNotHasProp = prop => R.not(R.has(prop, part))
+    const partHasProp = prop => R.has(prop, part)
 
     const field = {
       item: false,
@@ -27,6 +28,7 @@ module.exports = class PartDomain {
       equipModels: false,
       mark: false,
       modelListCard: false,
+      part: false,
     }
     const message = {
       item: '',
@@ -35,6 +37,7 @@ module.exports = class PartDomain {
       equipModels: '',
       mark: '',
       modelListCard: '',
+      part: '',
     }
 
     let errors = false
@@ -69,6 +72,22 @@ module.exports = class PartDomain {
 
       field.modelListCard = true
       message.modelListCard = 'Selecione ao menos um modelo.'
+    }
+
+    if (partHasProp('description') && partHasProp('item')) {
+      const partReturned = await Part.findOne({
+        where: {
+          item: part.item,
+          description: part.description,
+        },
+        transaction,
+      })
+
+      if (partReturned) {
+        errors = true
+        field.item = true
+        message.item = 'Peça já existe.'
+      }
     }
 
     if (errors) {
@@ -161,10 +180,12 @@ module.exports = class PartDomain {
       direction: 'DESC',
     }
 
-    const { query = null, order = null, transaction = null } = options
+    const { query = null, transaction = null } = options
+
+    // console.log(query)
 
     const newQuery = Object.assign({}, query)
-    const newOrder = Object.assign(inicialOrder, order)
+    const newOrder = (query && query.order) ? query.order : inicialOrder
 
     if (newOrder.acendent) {
       newOrder.direction = 'DESC'

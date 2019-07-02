@@ -17,6 +17,20 @@ const loginController = async (req, res, next) => {
   }
 }
 
+const logoutController = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const logout = await loginDomain.logout(req.query.token, { transaction })
+
+    await transaction.commit()
+    res.json(logout)
+  } catch (error) {
+    await transaction.rollback()
+    next(new UnauthorizedError())
+  }
+}
+
 module.exports = {
   loginController,
+  logoutController,
 }

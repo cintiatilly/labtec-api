@@ -87,13 +87,17 @@ describe('partController', () => {
   })
 
   test('create', async () => {
-    const response = await request().post('/api/part', partMock, { headers })
+    const partMock1 = {
+      ...partMock,
+    }
+    partMock1.item = 'test'
+    const response = await request().post('/api/part', partMock1, { headers })
 
     const { body, statusCode } = response
 
     expect(statusCode).toBe(200)
-    expect(body.item).toBe(partMock.item)
-    expect(body.description).toBe(partMock.description)
+    expect(body.item).toBe(partMock1.item)
+    expect(body.description).toBe(partMock1.description)
     expect(body.costPrice).toBe('10000')
     expect(body.salePrice).toBe('15000')
   })
