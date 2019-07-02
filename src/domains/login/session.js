@@ -58,6 +58,8 @@ class SessionDomain {
 
     await sessionInstance.update({ active: false })
 
+    await sessionInstance.destroy({ force: true })
+
     const sessionUpdated = await Session.findByPk(
       sessionInstance.id,
       { transaction },
