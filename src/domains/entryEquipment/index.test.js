@@ -487,4 +487,9 @@ describe('entryEquipmentDomain', () => {
         message: 'delivery cannot be null',
       }]))
   })
+
+  test('getAll', async () => {
+    const entry = await entryEquipmentDomain.getAll()
+    expect(entry.rows.length > 0).toBeTruthy()
+  })
 })

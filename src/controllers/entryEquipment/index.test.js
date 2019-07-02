@@ -106,4 +106,16 @@ describe('entryEquipmentControllers', () => {
     expect(body.defect).toBe(entryEquipmentMock.defect)
     expect(body.delivery).toBe(entryEquipmentMock.delivery)
   })
+
+  test('getall', async () => {
+    const response = await request().get('/api/entryEquipment', { headers })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.count).toBeTruthy()
+    expect(body.page).toBeTruthy()
+    expect(body.show).toBeTruthy()
+    expect(body.rows).toBeTruthy()
+  })
 })

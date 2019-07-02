@@ -54,7 +54,6 @@ class LoginDomain {
       username: user.username,
       active: session.active,
     }
-    console.log(response)
     return response
   }
 

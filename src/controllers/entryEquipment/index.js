@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const EntryEquipmentDomain = require('../../domains/entryEquipment')
 const database = require('../../database')
 
@@ -15,7 +17,26 @@ const add = async (req, res, next) => {
     next(error)
   }
 }
+const getAll = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    let query
+    if (R.has('query', req)) {
+      if (R.has('query', req.query)) {
+        query = JSON.parse(req.query.query)
+      }
+    }
+    const entry = await entryEquipmentDomain.getAll({ query, transaction })
+
+    await transaction.commit()
+    res.json(entry)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
 
 module.exports = {
   add,
+  getAll,
 }
