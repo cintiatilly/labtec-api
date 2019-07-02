@@ -14,9 +14,15 @@ module.exports = (sequelize) => {
     },
 
     readerColor: {
-      type: Sequelize.STRING,
-      allowNull: true,
+      type: Sequelize.ENUM(['Branco', 'Vermelho', 'Azul', 'Verde',
+        'DedoVivo', 'BioLFD', 'BioLC', 'NaoSeAplica']),
+      allowNull: false,
     },
+
+    // readerColor: {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // },
 
     details: {
       type: Sequelize.STRING,
