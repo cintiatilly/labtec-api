@@ -264,7 +264,6 @@ module.exports = class EntryEquipmentDomain {
 
     entryEquipment.processId = processCreated.id
 
-
     const entryEquipmentCreated = await EntryEquipment.create(entryEquipment, { transaction })
 
 
