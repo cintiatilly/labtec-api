@@ -15,6 +15,8 @@ describe('typeAccountDomain', () => {
       addCompany: true,
       addPart: true,
       addAnalyze: true,
+      addEquip: false,
+      addEntry: false,
     }
   })
 

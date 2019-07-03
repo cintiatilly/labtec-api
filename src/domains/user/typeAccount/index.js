@@ -26,6 +26,7 @@ module.exports = class TypeAccountDomain {
     ], bodyData)
 
     const typeAccountNotHasProp = prop => R.not(R.has(prop, typeAccount))
+    const resourcesNotHasProp = prop => R.not(R.has(prop, resources))
 
     const field = {
       typeName: false,
@@ -62,6 +63,40 @@ module.exports = class TypeAccountDomain {
         message.typeName = 'Essa tipo de conta já existe em nosso sistema.'
       }
     }
+
+    if (resourcesNotHasProp('addCompany') || typeof resources.addCompany !== 'boolean') {
+      errors = true
+      field.addCompany = true
+      message.addCompany = 'addCompany não é um booleano'
+    }
+
+    if (resourcesNotHasProp('addPart') || typeof resources.addPart !== 'boolean') {
+      errors = true
+      field.addPart = true
+      message.addPart = 'addPart não é um booleano'
+    }
+
+
+    if (resourcesNotHasProp('addAnalyze') || typeof resources.addAnalyze !== 'boolean') {
+      errors = true
+      field.addAnalyze = true
+      message.addAnalyze = 'addAnalyze não é um booleano'
+    }
+
+
+    if (resourcesNotHasProp('addEquip') || typeof resources.addEquip !== 'boolean') {
+      errors = true
+      field.addEquip = true
+      message.addEquip = 'addEquip não é um booleano'
+    }
+
+
+    if (resourcesNotHasProp('addEntry') || typeof resources.addEntry !== 'boolean') {
+      errors = true
+      field.addEntry = true
+      message.addEntry = 'addEntry não é um booleano'
+    }
+
 
     if (errors) {
       throw new FieldValidationError([{ field, message }])
