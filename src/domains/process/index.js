@@ -103,9 +103,8 @@ module.exports = class ProcessDomain {
       pageResponse,
     } = formatQuery(newQuery)
 
-
     const process = await Process.findAndCountAll({
-      // where: getWhere('process'),
+      where: getWhere('process'),
       // where: { status: 'analise' },
       include: [{
         model: EntryEquipment,

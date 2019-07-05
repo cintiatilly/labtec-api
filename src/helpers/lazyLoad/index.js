@@ -17,7 +17,7 @@ const isKeyInvalid = key => R.contains(key, invalidFieldsToSearchList)
 
 const isEnum = type => type instanceof Sequelize.ENUM
 const assocEnum = (inputSearch) => {
-  const searchformated = { [operators.iRegexp]: inputSearch }
+  const searchformated = inputSearch
   return searchformated
 }
 

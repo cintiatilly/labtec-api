@@ -81,7 +81,7 @@ describe('ProcessDomain', () => {
     }
   })
 
-  test('create', async () => {
+  test('update', async () => {
     const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
 
     expect(updateProcess).toBeTruthy()
