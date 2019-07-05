@@ -4,9 +4,24 @@ describe('companyController', () => {
   let companyMock = null
   let headers = null
   let params = null
+  let updateCompanyMock = null
 
   beforeAll(async () => {
     companyMock = {
+      razaoSocial: 'teste 12sa3 LTDA',
+      cnpj: '32478461000160',
+      street: 'jadaisom rodrigues',
+      number: '6969',
+      city: 'São Paulo',
+      state: 'UF',
+      neighborhood: 'JD. Avelino',
+      zipCode: '09930210',
+      telphone: '09654568',
+      nameContact: 'joseildom',
+      email: 'clebinho@joazinho.com',
+    }
+
+    updateCompanyMock = {
       razaoSocial: 'teste 12sa3 LTDA',
       cnpj: '32478461000160',
       street: 'jadaisom rodrigues',
@@ -109,6 +124,23 @@ describe('companyController', () => {
 
   test('getOneByCnpj', async () => {
     const response = await request().get('/api/company/getOneByCnpj', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.razaoSocial).toBeTruthy()
+    expect(body.cnpj).toBeTruthy()
+    expect(body.street).toBeTruthy()
+    expect(body.number).toBeTruthy()
+    expect(body.city).toBeTruthy()
+    expect(body.state).toBeTruthy()
+    expect(body.neighborhood).toBeTruthy()
+    expect(body.zipCode).toBeTruthy()
+    expect(body.telphone).toBeTruthy()
+  })
+
+  test('update', async () => {
+    const response = await request().put('/api/company/update', updateCompanyMock, { headers })
 
     const { body, statusCode } = response
 

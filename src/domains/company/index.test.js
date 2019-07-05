@@ -44,6 +44,41 @@ describe('companyDomain', () => {
       .rejects.toThrowError(new FieldValidationError())
   })
 
+  test('update', async () => {
+    const companyCreated = await companyDomain.update(companyMock)
+
+    expect(companyCreated.razaoSocial).toBe(companyMock.razaoSocial)
+    expect(companyCreated.cnpj).toBe(companyMock.cnpj)
+    expect(companyCreated.street).toBe(companyMock.street)
+    expect(companyCreated.number).toBe(companyMock.number)
+    expect(companyCreated.city).toBe(companyMock.city)
+    expect(companyCreated.state).toBe(companyMock.state)
+    expect(companyCreated.neighborhood).toBe(companyMock.neighborhood)
+    expect(companyCreated.zipCode).toBe('09930210')
+    expect(companyCreated.telphone).toBe('1109654568')
+    expect(companyCreated.nameContact).toBe(companyMock.nameContact)
+    expect(companyCreated.email).toBe(companyMock.email)
+  })
+
+  test('update', async () => {
+    const newCompanyMock = {
+      ...companyMock,
+      razaoSocial: 'teste Update',
+    }
+    const companyCreated = await companyDomain.update(newCompanyMock)
+
+    expect(companyCreated.razaoSocial).toBe(newCompanyMock.razaoSocial)
+    expect(companyCreated.cnpj).toBe(newCompanyMock.cnpj)
+    expect(companyCreated.street).toBe(newCompanyMock.street)
+    expect(companyCreated.number).toBe(newCompanyMock.number)
+    expect(companyCreated.city).toBe(newCompanyMock.city)
+    expect(companyCreated.state).toBe(newCompanyMock.state)
+    expect(companyCreated.neighborhood).toBe(newCompanyMock.neighborhood)
+    expect(companyCreated.zipCode).toBe('09930210')
+    expect(companyCreated.telphone).toBe('1109654568')
+    expect(companyCreated.nameContact).toBe(newCompanyMock.nameContact)
+    expect(companyCreated.email).toBe(newCompanyMock.email)
+  })
   test('try add company with razaoSocial null', async () => {
     const companyCreated = companyMock
     companyCreated.razaoSocial = ''

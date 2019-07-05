@@ -51,8 +51,23 @@ const getOneByCnpj = async (req, res, next) => {
   }
 }
 
+const update = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const company = await companyDomain.update(req.body,
+      { transaction })
+
+    await transaction.commit()
+    res.json(company)
+  } catch (error) {
+    await transaction.rollback()
+    next(error)
+  }
+}
+
 module.exports = {
   add,
   getAll,
   getOneByCnpj,
+  update,
 }
