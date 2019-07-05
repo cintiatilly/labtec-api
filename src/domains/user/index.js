@@ -6,10 +6,13 @@ const database = require('../../database')
 
 const User = database.model('user')
 const Login = database.model('login')
+const TypeAccount = database.model('typeAccount')
 
 class UserDomain {
   // eslint-disable-next-line camelcase
   async user_Create(bodyData, options = {}) {
+    const { transaction = null } = options
+
     const userNotFormatted = R.omit(['id', 'password'], bodyData)
 
     const noHasUsername = R.not(R.has('username', userNotFormatted))
@@ -32,8 +35,6 @@ class UserDomain {
 
     const password = R.prop('username', user)
 
-    const { transaction = null } = options
-
     const userFormatted = {
       ...user,
       login: {
@@ -41,14 +42,14 @@ class UserDomain {
       },
     }
 
-    const optionsForCreate = {
+    const userCreated = await User.create(userFormatted, {
       include: [Login],
       transaction,
-    }
-    const userCreated = await User.create(userFormatted, optionsForCreate)
+    })
 
     const userReturned = await User.findByPk(userCreated.id, {
       attributes: { exclude: ['loginId'] },
+      include: [{ model: TypeAccount }],
     })
 
     return userReturned

@@ -117,4 +117,38 @@ module.exports = class TypeAccountDomain {
 
     return response
   }
+
+  async getAll(options = {}) {
+    const newOrder = {
+      field: 'createdAt',
+      acendent: true,
+      direction: 'ASC',
+    }
+
+    const { transaction = null } = options
+
+    const typeAccounts = await TypeAccount.findAndCountAll({
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
+      transaction,
+    })
+
+    const { rows } = typeAccounts
+
+
+    const formatData = R.map((comp) => {
+      const resp = {
+        typeName: comp.typeName,
+      }
+      return resp
+    })
+
+    const companiesList = formatData(rows)
+
+    const response = {
+      rows: companiesList,
+    }
+    return response
+  }
 }

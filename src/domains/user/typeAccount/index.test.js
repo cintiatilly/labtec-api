@@ -55,4 +55,9 @@ describe('typeAccountDomain', () => {
         message: 'typeName cannot be null',
       }]))
   })
+
+  test('getAll', async () => {
+    const typeAccounts = await typeAccountDomain.getAll()
+    expect(typeAccounts.rows.length > 0).toBeTruthy()
+  })
 })

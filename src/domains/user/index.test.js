@@ -1,15 +1,32 @@
 const UserDomain = require('./')
+const TypeAccount = require('./typeAccount')
 
 const userDomain = new UserDomain()
+const typeAccount = new TypeAccount()
 
 
 describe('create user', () => {
+
+  let typeAccountMock = null
+
+  beforeAll(async () => {
+    typeAccountMock = {
+      typeName: 'TECNICO',
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: false,
+      addEntry: false,
+    }
+  })
+
   test('', async () => {
+    const typeAccountCreate = await typeAccount.add(typeAccountMock)
+
     const userMock = {
       username: 'teste1',
-      type: 'tecnico',
+      typeAccountId: typeAccountCreate.id,
     }
-
     const userCreated = await userDomain.user_Create(userMock)
 
     expect(userCreated.username).toEqual(userMock.username)
@@ -20,53 +37,53 @@ describe('create user', () => {
   })
 })
 
-//   describe('update password', () => {
-//     let userMockGenerated = {}
-//     let counter = 1
-//     let userCreated = {}
+  // describe('update password', () => {
+  //   let userMockGenerated = {}
+  //   let counter = 1
+  //   let userCreated = {}
 
-//     beforeEach(async () => {
-//       userMockGenerated = generateUser(`updatepassword_user_domain_${counter.toString()}`)
-//       counter += 1
-//       userCreated = await userDomain.user_Create(userMockGenerated)
-//     })
+  //   beforeEach(async () => {
+  //     userMockGenerated = generateUser(`updatepassword_user_domain_${counter.toString()}`)
+  //     counter += 1
+  //     userCreated = await userDomain.user_Create(userMockGenerated)
+  //   })
 
-//     test('update password', async () => {
-//       const login = await Login.findOne({
-//         include: [{
-//           model: User,
-//           where: { username: userCreated.username },
-//         }],
-//       })
+  //   test('update password', async () => {
+  //     const login = await Login.findOne({
+  //       include: [{
+  //         model: User,
+  //         where: { username: userCreated.username },
+  //       }],
+  //     })
 
-//       const checkPwd1 = await login.checkPassword(userCreated.username)
-//       const checkPwd2 = await login.checkPassword('senha')
+  //     const checkPwd1 = await login.checkPassword(userCreated.username)
+  //     const checkPwd2 = await login.checkPassword('senha')
 
-//       expect(checkPwd1).toBeTruthy()
-//       expect(checkPwd2).toBeFalsy()
+  //     expect(checkPwd1).toBeTruthy()
+  //     expect(checkPwd2).toBeFalsy()
 
-//       const body = {
-//         username: userCreated.username,
-//         oldPassword: userCreated.username,
-//         newPassword: 'senha',
-//       }
+  //     const body = {
+  //       username: userCreated.username,
+  //       oldPassword: userCreated.username,
+  //       newPassword: 'senha',
+  //     }
 
-//       await userDomain.user_PasswordUpdate(body)
+  //     await userDomain.user_PasswordUpdate(body)
 
-//       const login2 = await Login.findOne({
-//         include: [{
-//           model: User,
-//           where: { username: userCreated.username },
-//         }],
-//       })
+  //     const login2 = await Login.findOne({
+  //       include: [{
+  //         model: User,
+  //         where: { username: userCreated.username },
+  //       }],
+  //     })
 
-//       const checkPwd3 = await login2.checkPassword(userCreated.username)
-//       const checkPwd4 = await login2.checkPassword('senha')
+  //     const checkPwd3 = await login2.checkPassword(userCreated.username)
+  //     const checkPwd4 = await login2.checkPassword('senha')
 
-//       expect(checkPwd4).toBeTruthy()
-//       expect(checkPwd3).toBeFalsy()
-//     })
-//   })
+  //     expect(checkPwd4).toBeTruthy()
+  //     expect(checkPwd3).toBeFalsy()
+  //   })
+  // })
 
 //   describe('update user', () => {
 //     let userCreated = {}

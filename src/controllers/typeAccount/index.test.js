@@ -42,4 +42,13 @@ describe('typeAccountController', () => {
     expect(body.resource.addEquip).toBe(typeAccountMock.addEquip)
     expect(body.resource.addEntry).toBe(typeAccountMock.addEntry)
   })
+
+  test('getall', async () => {
+    const response = await request().get('/api/typeAccount', { headers })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.rows).toBeTruthy()
+  })
 })
