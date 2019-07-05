@@ -12,14 +12,11 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    type: {
-      type: Sequelize.ENUM(['admin', 'tecnico', 'finac', 'recep']),
-      allowNull: false,
-    },
   })
 
   user.associate = (models) => {
     user.belongsTo(models.login)
+    user.belongsTo(models.typeAccount)
   }
 
   return user
