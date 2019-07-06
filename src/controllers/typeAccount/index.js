@@ -16,7 +16,21 @@ const add = async (req, res, next) => {
   }
 }
 
+const getAll = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const typeAccounts = await typeAccountDomain.getAll({ transaction })
+
+    await transaction.commit()
+    res.json(typeAccounts)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
+
 
 module.exports = {
   add,
+  getAll,
 }

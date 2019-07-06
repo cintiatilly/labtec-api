@@ -150,6 +150,8 @@ module.exports = class EquipDomain {
 
     const equips = await Equip.findAndCountAll({
       where: getWhere('equip'),
+      // where: { serialNumber: 'Branco' },
+      // where: { readerColor: 'Branco' },
       include: [
         {
           model: Company,
@@ -157,10 +159,14 @@ module.exports = class EquipDomain {
         },
         {
           model: EquipModel,
+          where: getWhere('equipModel'),
           include: [{
             model: EquipMark,
+            where: getWhere('equipMark'),
             include: [{
               model: EquipType,
+              // where: { type: 'catraca' || 'relogio' },
+              // where: getWhere('equipType'),
             }],
           }],
         },

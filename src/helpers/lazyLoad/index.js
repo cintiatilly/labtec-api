@@ -15,6 +15,12 @@ const invalidFieldsToSearchList = ['password', 'companyId', 'accountId']
 
 const isKeyInvalid = key => R.contains(key, invalidFieldsToSearchList)
 
+const isEnum = type => type instanceof Sequelize.ENUM
+const assocEnum = (inputSearch) => {
+  const searchformated = inputSearch
+  return searchformated
+}
+
 // string formartter
 const isString = type => type instanceof Sequelize.STRING
 const assocString = (inputSearch) => {
@@ -160,6 +166,7 @@ const getspecificSearchFormated = (filter, model) => {
   const getOperatorsAnd = (type, inputSearch) => {
     if (isString(type)) return assocString(inputSearch)
     if (isDate(type)) return assocDate(inputSearch)
+    if (isEnum(type)) return assocEnum(inputSearch)
     return { }
   }
 

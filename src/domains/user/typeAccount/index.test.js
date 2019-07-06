@@ -15,6 +15,8 @@ describe('typeAccountDomain', () => {
       addCompany: true,
       addPart: true,
       addAnalyze: true,
+      addEquip: false,
+      addEntry: false,
     }
   })
 
@@ -52,5 +54,10 @@ describe('typeAccountDomain', () => {
         field: 'typeName',
         message: 'typeName cannot be null',
       }]))
+  })
+
+  test('getAll', async () => {
+    const typeAccounts = await typeAccountDomain.getAll()
+    expect(typeAccounts.rows.length > 0).toBeTruthy()
   })
 })

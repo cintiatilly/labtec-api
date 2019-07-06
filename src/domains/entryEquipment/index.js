@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
 const R = require('ramda')
+const moment = require('moment')
 const Cpf = require('@fnando/cpf/dist/node')
 
-// const formatQuery = require('../../helpers/lazyLoad')
-
+const formatQuery = require('../../helpers/lazyLoad')
 const database = require('../../database')
 const EquipDomain = require('../equip')
 
@@ -264,7 +264,6 @@ module.exports = class EntryEquipmentDomain {
 
     entryEquipment.processId = processCreated.id
 
-
     const entryEquipmentCreated = await EntryEquipment.create(entryEquipment, { transaction })
 
 
@@ -301,6 +300,110 @@ module.exports = class EntryEquipmentDomain {
     })
 
 
+    return response
+  }
+
+  async getAll(options = {}) {
+    const inicialOrder = {
+      field: 'createdAt',
+      acendent: true,
+      direction: 'ASC',
+    }
+
+    const { query = null, transaction = null } = options
+
+    const newQuery = Object.assign({}, query)
+    const newOrder = (query && query.order) ? query.order : inicialOrder
+
+    if (newOrder.acendent) {
+      newOrder.direction = 'DESC'
+    } else {
+      newOrder.direction = 'ASC'
+    }
+
+    const {
+      getWhere,
+      limit,
+      offset,
+      pageResponse,
+    } = formatQuery(newQuery)
+
+    const entry = await EntryEquipment.findAndCountAll({
+      where: getWhere('entryEquipment'),
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
+      include: [
+        {
+          model: Equip,
+          include: [{
+            model: EquipModel,
+            include: [{
+              model: EquipMark,
+              include: [{
+                model: EquipType,
+              }],
+            }],
+          }],
+        },
+        { model: Accessories },
+      ],
+      limit,
+      offset,
+      transaction,
+    })
+
+    const { rows } = entry
+
+    const formatDateFunct = (date) => {
+      moment.locale('pt-br')
+      const formatDate = moment(date).format('L')
+      const formatHours = moment(date).format('LT')
+      const dateformated = `${formatDate} ${formatHours}`
+      return dateformated
+    }
+
+    const extrectAccessories = (accessories) => {
+      let Accessories = []
+      if (accessories) {
+        Accessories = accessories.map(item => item.accessories)
+      }
+      return Accessories
+    }
+
+    const formatData = R.map((comp) => {
+      const resp = {
+        externalDamage: comp.externalDamage,
+        detailsDamage: comp.details,
+        defect: comp.defect,
+        observation: comp.observation,
+        serialNumber: comp.equip.serialNumber,
+        readerColor: comp.equip.readerColor,
+        details: comp.equip.details,
+        model: comp.equip.equipModel.model,
+        description: comp.equip.equipModel.description,
+        mark: comp.equip.equipModel.equipMark.mark,
+        type: comp.equip.equipModel.equipMark.equipType.type,
+        accessories: extrectAccessories(comp.accessories),
+        createdAt: formatDateFunct(comp.createdAt),
+        updatedAt: formatDateFunct(comp.updatedAt),
+      }
+      return resp
+    })
+
+    const entryList = formatData(rows)
+
+    let show = limit
+    if (entry.count < show) {
+      show = entry.count
+    }
+
+    const response = {
+      page: pageResponse,
+      show,
+      count: entry.count,
+      rows: entryList,
+    }
     return response
   }
 }
