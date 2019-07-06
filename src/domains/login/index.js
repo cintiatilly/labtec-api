@@ -3,7 +3,7 @@ const database = require('../../database')
 const SessionDomain = require('./session')
 
 const { UnauthorizedError } = require('../../helpers/errors')
-const { FieldValidationError } = require('../../helpers/errors')
+// const { FieldValidationError } = require('../../helpers/errors')
 
 const User = database.model('user')
 const Login = database.model('login')
@@ -57,8 +57,9 @@ class LoginDomain {
     return response
   }
 
-  async logout(token) {
-    await sessionDomain.turnInvalidSession(token)
+  async logout(token, options = {}) {
+    const { transaction = null } = options
+    await sessionDomain.turnInvalidSession(token, { transaction })
 
     // const isValid = await sessionDomain.checkSessionIsValid(sessionId)
 
