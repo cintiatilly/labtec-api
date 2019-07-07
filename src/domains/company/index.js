@@ -263,7 +263,7 @@ module.exports = class CompanyDomain {
         errors = true
         field.razaoSocial = true
         message.razaoSocial = 'Essa razão social já existe em nosso sistema.'
-      }update
+      }
     }
 
 
