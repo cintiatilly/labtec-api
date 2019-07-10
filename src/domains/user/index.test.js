@@ -6,7 +6,6 @@ const typeAccount = new TypeAccount()
 
 
 describe('create user', () => {
-
   let typeAccountMock = null
 
   beforeAll(async () => {
@@ -18,19 +17,24 @@ describe('create user', () => {
       addEquip: false,
       addEntry: false,
     }
+    await typeAccount.add(typeAccountMock)
   })
 
-  test('', async () => {
-    const typeAccountCreate = await typeAccount.add(typeAccountMock)
-
+  test('create', async () => {
     const userMock = {
       username: 'teste1',
-      typeAccountId: typeAccountCreate.id,
+      typeName: 'TECNICO',
+      customized: false,
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: true,
+      addEntry: true,
     }
     const userCreated = await userDomain.user_Create(userMock)
 
     expect(userCreated.username).toEqual(userMock.username)
-    expect(userCreated.type).toEqual(userMock.type)
+    expect(userCreated.typeAccount.typeName).toEqual(userMock.typeName)
 
     expect(userCreated).not.toHaveProperty('login')
     expect(userCreated).not.toHaveProperty('password')

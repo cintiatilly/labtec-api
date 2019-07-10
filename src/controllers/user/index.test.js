@@ -20,11 +20,17 @@ describe('userController', () => {
       addEntry: false,
     }
 
-    const typeAccountCreate = await typeAccount.add(typeAccountMock)
+    await typeAccount.add(typeAccountMock)
 
     userMock = {
       username: 'teste9',
-      typeAccountId: typeAccountCreate.id,
+      typeName: 'RECEPÇAO',
+      customized: true,
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: true,
+      addEntry: true,
     }
 
     const loginBody = {

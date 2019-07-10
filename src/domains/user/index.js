@@ -7,21 +7,127 @@ const database = require('../../database')
 const User = database.model('user')
 const Login = database.model('login')
 const TypeAccount = database.model('typeAccount')
+const Resources = database.model('resources')
 
 class UserDomain {
   // eslint-disable-next-line camelcase
   async user_Create(bodyData, options = {}) {
     const { transaction = null } = options
 
-    const userNotFormatted = R.omit(['id', 'password'], bodyData)
+    const userNotFormatted = R.omit(['id', 'password', 'addCompany', 'addPart', 'addAnalyze', 'addEquip', 'addEntry'], bodyData)
 
-    const noHasUsername = R.not(R.has('username', userNotFormatted))
+    const notHasProps = props => R.not(R.has(props, userNotFormatted))
+    const bodyNotHasProps = props => R.not(R.has(props, bodyData))
 
-    if (noHasUsername) {
+    if (notHasProps('username') || !userNotFormatted.username) {
       throw new FieldValidationError([{
         field: 'username',
         message: 'username cannot be null',
       }])
+    }
+
+
+    if (notHasProps('typeName')) {
+      throw new FieldValidationError([{
+        field: 'typeName',
+        message: 'typeName undefined',
+      }])
+    }
+
+    const { typeName } = userNotFormatted
+
+    const typeAccountRetorned = await TypeAccount.findOne({
+      where: { typeName },
+      include: [{
+        model: Resources,
+      }],
+      transaction,
+    })
+
+    if (!typeAccountRetorned) {
+      throw new FieldValidationError([{
+        field: 'typeName',
+        message: 'typeName invalid',
+      }])
+    }
+
+    userNotFormatted.typeAccountId = typeAccountRetorned.id
+
+    if (notHasProps('customized')) {
+      throw new FieldValidationError([{
+        field: 'customized',
+        message: 'customized undefined',
+      }])
+    }
+
+    const field = {
+      typeName: false,
+      addCompany: false,
+      addPart: false,
+      addAnalyze: false,
+      addEquip: false,
+      addEntry: false,
+    }
+    const message = {
+      typeName: '',
+      addCompany: '',
+      addPart: '',
+      addAnalyze: '',
+      addEquip: '',
+      addEntry: '',
+    }
+
+    let errors = null
+
+    if (bodyNotHasProps('addCompany') || typeof bodyData.addCompany !== 'boolean') {
+      errors = true
+      field.addCompany = true
+      message.addCompany = 'addCompany não é um booleano'
+    }
+
+    if (bodyNotHasProps('addPart') || typeof bodyData.addPart !== 'boolean') {
+      errors = true
+      field.addPart = true
+      message.addPart = 'addPart não é um booleano'
+    }
+
+
+    if (bodyNotHasProps('addAnalyze') || typeof bodyData.addAnalyze !== 'boolean') {
+      errors = true
+      field.addAnalyze = true
+      message.addAnalyze = 'addAnalyze não é um booleano'
+    }
+
+
+    if (bodyNotHasProps('addEquip') || typeof bodyData.addEquip !== 'boolean') {
+      errors = true
+      field.addEquip = true
+      message.addEquip = 'addEquip não é um booleano'
+    }
+
+
+    if (bodyNotHasProps('addEntry') || typeof bodyData.addEntry !== 'boolean') {
+      errors = true
+      field.addEntry = true
+      message.addEntry = 'addEntry não é um booleano'
+    }
+
+    if (errors) {
+      throw new FieldValidationError([{ field, message }])
+    }
+
+    const resources = {
+      addCompany: bodyData.addCompany,
+      addPart: bodyData.addPart,
+      addAnalyze: bodyData.addAnalyze,
+      addEquip: bodyData.addEquip,
+      addEntry: bodyData.addEntry,
+    }
+
+    if (userNotFormatted.customized) {
+      const resourcesRenorned = await Resources.create(resources)
+
+      userNotFormatted.resourceId = resourcesRenorned.id
     }
 
     const formatBody = R.evolve({
@@ -42,15 +148,35 @@ class UserDomain {
       },
     }
 
+
     const userCreated = await User.create(userFormatted, {
       include: [Login],
       transaction,
     })
 
-    const userReturned = await User.findByPk(userCreated.id, {
-      attributes: { exclude: ['loginId'] },
-      include: [{ model: TypeAccount }],
-    })
+    let userReturned = null
+
+    if (userNotFormatted.customized) {
+      userReturned = await User.findByPk(userCreated.id, {
+        attributes: { exclude: ['loginId'] },
+        include: [
+          { model: TypeAccount },
+          { model: Resources },
+        ],
+      })
+    } else {
+      userReturned = await User.findByPk(userCreated.id, {
+        attributes: { exclude: ['loginId'] },
+        include: [{
+          model: TypeAccount,
+          include: [{
+            model: Resources,
+          }],
+        }],
+      })
+    }
+
+    // console.log(JSON.stringify(userReturned))
 
     return userReturned
   }

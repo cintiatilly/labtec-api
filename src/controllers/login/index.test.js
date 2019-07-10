@@ -1,16 +1,37 @@
 const request = require('../../helpers/request')
 const UserDomain = require('../../domains/user')
+const TypeAccount = require('../../domains/user/typeAccount')
 
 const userDomain = new UserDomain()
+const typeAccount = new TypeAccount()
 
-describe('/login', () => {
-  const userMock = {
-    username: 'teste4',
-    type: 'tecnico',
-  }
+describe('logincontroller', () => {
   let user = null
+  let userMock = null
 
   beforeAll(async () => {
+    const typeAccountMock = {
+      typeName: 'TESTE5',
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: true,
+      addEntry: true,
+    }
+
+    await typeAccount.add(typeAccountMock)
+
+    userMock = {
+      username: 'teste5',
+      typeName: 'TESTE5',
+      customized: false,
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: true,
+      addEntry: true,
+    }
+
     user = await userDomain.user_Create(userMock)
   })
 

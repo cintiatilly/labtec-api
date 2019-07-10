@@ -12,11 +12,18 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+    customized: Sequelize.BOOLEAN,
+    // allowNull: false,
   })
 
   user.associate = (models) => {
     user.belongsTo(models.login)
-    user.belongsTo(models.typeAccount)
+    user.belongsTo(models.resources)
+    user.belongsTo(models.typeAccount, {
+      // foreignKey: {
+      //   allowNull: false,
+      // },
+    })
   }
 
   return user
