@@ -100,7 +100,7 @@ describe('analyzeDomain', () => {
       externalDamage: true,
       details: 'tá zuado',
       defect: 'fonte',
-      delivery: 'Técnico externo',
+      delivery: 'externo',
       technicianName: 'Carlos',
       properlyPacked: true,
       accessories: [accessory1, accessory2],

@@ -26,7 +26,7 @@ describe('processcontroller', () => {
       externalDamage: true,
       details: 'tá zuado',
       defect: 'fonte',
-      delivery: 'Técnico externo',
+      delivery: 'externo',
       technicianName: 'Jose',
       properlyPacked: true,
     }
@@ -103,7 +103,6 @@ describe('processcontroller', () => {
     const response = await request().put('/api/process/update', bodyData, { headers })
 
     const { body, statusCode } = response
-
     expect(statusCode).toBe(200)
     expect(body.status).toBe(updateProcessMock.status)
   })

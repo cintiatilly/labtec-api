@@ -29,10 +29,10 @@ module.exports = (sequelize) => {
 
     delivery: {
       type: Sequelize.ENUM(
-        'Cliente',
-        'Sedex',
-        'Motoboy',
-        'Técnico externo',
+        'cliente',
+        'sedex',
+        'motoboy',
+        'externo',
       ),
       allowNull: false,
     },

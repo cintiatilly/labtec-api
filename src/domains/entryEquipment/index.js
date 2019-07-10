@@ -30,7 +30,6 @@ module.exports = class EntryEquipmentDomain {
     const entryEquipmentHasProp = prop => R.has(prop, entryEquipment)
     const bodyDataNotHasProp = prop => R.not(R.has(prop, bodyData))
 
-
     const field = {
       equipId: false,
       defect: true,
@@ -221,20 +220,20 @@ module.exports = class EntryEquipmentDomain {
     }
 
     if (entryEquipmentNotHasProp('delivery')
-      || (entryEquipment.delivery !== 'Cliente'
-      && entryEquipment.delivery !== 'Sedex'
-      && entryEquipment.delivery !== 'Motoboy'
-      && entryEquipment.delivery !== 'Técnico externo')) {
+      || (entryEquipment.delivery !== 'cliente'
+      && entryEquipment.delivery !== 'sedex'
+      && entryEquipment.delivery !== 'motoboy'
+      && entryEquipment.delivery !== 'externo')) {
       errors = true
       field.delivery = true
       message.delivery = 'Por favor informar como chegou.'
-    } else if (entryEquipment.delivery === 'Cliente') {
+    } else if (entryEquipment.delivery === 'cliente') {
       client()
-    } else if (entryEquipment.delivery === 'Sedex') {
+    } else if (entryEquipment.delivery === 'sedex') {
       sedex()
-    } else if (entryEquipment.delivery === 'Motoboy') {
+    } else if (entryEquipment.delivery === 'motoboy') {
       motoboy()
-    } else if (entryEquipment.delivery === 'Técnico externo') {
+    } else if (entryEquipment.delivery === 'externo') {
       externalTechnician()
     }
 

@@ -62,7 +62,7 @@ describe('entryEquipmentControllers', () => {
       externalDamage: true,
       details: 'tá zuado',
       defect: 'fonte',
-      delivery: 'Técnico externo',
+      delivery: 'externo',
       technicianName: 'Carlos',
       motoboyName: 'vanderlei',
       responsibleName: 'cleiton',
