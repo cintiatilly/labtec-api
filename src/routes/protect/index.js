@@ -8,6 +8,7 @@ const analyzeRoute = require('./analyze')
 const processRoute = require('./process')
 const typeAccountRoute = require('./typeAccount')
 const userRoute = require('./user')
+const accessoriesRoute = require('./accessories')
 
 
 router.use('/company', companyRoute)
@@ -19,5 +20,6 @@ router.use('/analyze', analyzeRoute)
 router.use('/process', processRoute)
 router.use('/typeAccount', typeAccountRoute)
 router.use('/user', userRoute)
+router.use('/accessories', accessoriesRoute)
 
 module.exports = router

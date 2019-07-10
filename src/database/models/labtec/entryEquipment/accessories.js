@@ -10,6 +10,7 @@ module.exports = (sequelize) => {
 
     accessories: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
   })
   return accessories
