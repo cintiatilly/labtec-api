@@ -29,8 +29,24 @@ const getAll = async (req, res, next) => {
   }
 }
 
+const getResourcesByTypeAccount = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const { typeName } = req.query
+
+    const typeAccount = await typeAccountDomain.getResourcesByTypeAccount(typeName)
+
+    await transaction.commit()
+    res.json(typeAccount)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
+
 
 module.exports = {
   add,
   getAll,
+  getResourcesByTypeAccount,
 }

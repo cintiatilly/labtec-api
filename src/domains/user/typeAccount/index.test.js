@@ -60,4 +60,15 @@ describe('typeAccountDomain', () => {
     const typeAccounts = await typeAccountDomain.getAll()
     expect(typeAccounts.rows.length > 0).toBeTruthy()
   })
+
+  test('getResourcesByTypeAccount', async () => {
+    const typeAccount = await typeAccountDomain.getResourcesByTypeAccount('Adm')
+
+    expect(typeAccount.typeName).toBe('Adm')
+    expect(typeAccount.addCompany).toBe(true)
+    expect(typeAccount.addPart).toBe(true)
+    expect(typeAccount.addAnalyze).toBe(true)
+    expect(typeAccount.addEquip).toBe(false)
+    expect(typeAccount.addEntry).toBe(false)
+  })
 })
