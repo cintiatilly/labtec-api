@@ -210,7 +210,6 @@ const getspecificSearchFormated = (filter, model) => {
 
   const whereAndFormatted = destructureList(whereAndList)
 
-  console.log(whereAndFormatted)
   return whereAndFormatted
 }
 
