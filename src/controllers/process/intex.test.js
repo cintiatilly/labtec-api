@@ -29,6 +29,8 @@ describe('processcontroller', () => {
       delivery: 'externo',
       technicianName: 'Jose',
       properlyPacked: true,
+      conditionType: 'avulso',
+      garantia: 'externo',
     }
     companyMock = {
       razaoSocial: 'Real teste 321/ .LTDA',

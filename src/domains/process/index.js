@@ -38,7 +38,6 @@ module.exports = class ProcessDomain {
 
     let errors = false
 
-
     const arrayStatus = ['preAnalise', 'analise', 'fabrica',
       'revisao1', 'posAnalise', 'revisao2', 'posAnalise2',
       'revisao3', 'orcamento', 'manutencao', 'revisaoFinal', 'estoque']

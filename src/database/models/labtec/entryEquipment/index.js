@@ -8,6 +8,16 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
 
+    conditionType: {
+      type: Sequelize.ENUM(['contrato', 'avulso', 'emprestimo']),
+      allowNull: false,
+    },
+
+    garantia: {
+      type: Sequelize.ENUM(['semGarantia', 'externo', 'venda', 'laboratorio']),
+      allowNull: false,
+    },
+
     externalDamage: {
       type: Sequelize.BOOLEAN,
     },

@@ -77,6 +77,8 @@ describe('entryEquipmentControllers', () => {
       neighborhood: 'Pauliceia',
       street: 'Rua dos bobo',
       number: '0',
+      conditionType: 'avulso',
+      garantia: 'externo',
     }
 
     const loginBody = {

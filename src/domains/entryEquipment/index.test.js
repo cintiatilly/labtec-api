@@ -98,6 +98,8 @@ describe('entryEquipmentDomain', () => {
       neighborhood: 'Pauliceia',
       street: 'Rua dos bobo',
       number: '0',
+      conditionType: 'avulso',
+      garantia: 'externo',
       accessories: [accessory1, accessory2],
     }
   })

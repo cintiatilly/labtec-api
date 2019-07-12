@@ -109,6 +109,25 @@ module.exports = class EntryEquipmentDomain {
       message.defect = 'Por favor informar o defeito.'
     }
 
+    if (entryEquipmentNotHasProp('conditionType')
+      || (entryEquipment.conditionType !== 'contrato'
+      && entryEquipment.conditionType !== 'avulso'
+      && entryEquipment.conditionType !== 'emprestimo')) {
+      errors = true
+      field.conditionType = true
+      message.conditionType = 'conditionType invalid.'
+    }
+
+    if (entryEquipmentNotHasProp('garantia')
+    || (entryEquipment.garantia !== 'semGarantia'
+    && entryEquipment.garantia !== 'externo'
+    && entryEquipment.garantia !== 'venda'
+    && entryEquipment.garantia !== 'laboratorio')) {
+      errors = true
+      field.garantia = true
+      message.garantia = 'garantia invalida'
+    }
+
     const client = () => {
       if (entryEquipmentNotHasProp('clientName') || !entryEquipment.clientName) {
         errors = true
