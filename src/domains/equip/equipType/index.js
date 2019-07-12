@@ -303,13 +303,20 @@ module.exports = class EquipTypeDomain {
     return response
   }
 
-  async getAllModelByMark(mark, options = {}) {
+  async getAllModelByMark(bodyData, options = {}) {
     const { transaction = null } = options
+
+    const { mark } = bodyData
+    const { type } = bodyData
 
     const arrayModel = await EquipModel.findAll({
       include: [{
         model: EquipMark,
         where: { mark },
+        include: [{
+          model: EquipType,
+          where: { type },
+        }],
       }],
       transaction,
     })
@@ -318,7 +325,6 @@ module.exports = class EquipTypeDomain {
       model: item.model,
       id: item.id,
     }))
-
     return response
   }
 }

@@ -3,6 +3,7 @@ const request = require('../../helpers/request')
 describe('typeAccountController', () => {
   let headers = null
   let typeAccountMock = null
+  let params = null
 
   beforeAll(async () => {
     typeAccountMock = {
@@ -27,6 +28,10 @@ describe('typeAccountController', () => {
       token,
       username,
     }
+
+    params = {
+      typeName: 'ADM',
+    }
   })
 
   test('create', async () => {
@@ -50,5 +55,18 @@ describe('typeAccountController', () => {
 
     expect(statusCode).toBe(200)
     expect(body.rows).toBeTruthy()
+  })
+
+  test('getResourcesByTypeAccount', async () => {
+    const response = await request().get('/api/typeAccount/getResourcesByTypeAccount', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.addCompany).toBe(true)
+    expect(body.addPart).toBe(false)
+    expect(body.addAnalyze).toBe(true)
+    expect(body.addEquip).toBe(true)
+    expect(body.addEntry).toBe(true)
   })
 })

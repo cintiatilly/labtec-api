@@ -14,7 +14,12 @@ const createUserAdmin = async () => {
 
   const userAdmin = {
     username: 'modrp',
-    type: 'admin',
+    typeName: 'ADM',
+    addCompany: true,
+    addPart: true,
+    addAnalyze: true,
+    addEquip: false,
+    addEntry: false,
     login: {
       password: '102030',
     },

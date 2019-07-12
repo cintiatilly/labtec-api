@@ -28,7 +28,7 @@ describe('ProcessDomain', () => {
       externalDamage: true,
       details: 'tá zuado',
       defect: 'fonte',
-      delivery: 'Técnico externo',
+      delivery: 'externo',
       technicianName: 'Carlos',
       properlyPacked: true,
     }

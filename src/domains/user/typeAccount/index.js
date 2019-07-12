@@ -128,6 +128,9 @@ module.exports = class TypeAccountDomain {
     const { transaction = null } = options
 
     const typeAccounts = await TypeAccount.findAndCountAll({
+      include: [{
+        model: Resources,
+      }],
       order: [
         [newOrder.field, newOrder.direction],
       ],
@@ -149,6 +152,33 @@ module.exports = class TypeAccountDomain {
     const response = {
       rows: companiesList,
     }
+
+    return response
+  }
+
+  async getResourcesByTypeAccount(typeName, options = {}) {
+    const { transaction = null } = options
+
+    const typeAccount = await TypeAccount.findOne({
+      where: {
+        typeName,
+      },
+      include: [{
+        model: Resources,
+      }],
+      transaction,
+    })
+
+    const response = {
+      typeName: typeAccount.typeName,
+      addCompany: typeAccount.resource.addCompany,
+      addPart: typeAccount.resource.addPart,
+      addAnalyze: typeAccount.resource.addAnalyze,
+      addEquip: typeAccount.resource.addEquip,
+      addEntry: typeAccount.resource.addEntry,
+    }
+
+
     return response
   }
 }

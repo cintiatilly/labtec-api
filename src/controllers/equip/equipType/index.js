@@ -60,8 +60,14 @@ const getAllModelByMark = async (req, res, next) => {
   const transaction = await database.transaction()
   try {
     const { mark = null } = req.query
+    const { type = null } = req.query
 
-    const modelArray = await equipTypeDomain.getAllModelByMark(mark)
+    const obj = {
+      mark,
+      type,
+    }
+
+    const modelArray = await equipTypeDomain.getAllModelByMark(obj)
 
     await transaction.commit()
     res.json(modelArray)
