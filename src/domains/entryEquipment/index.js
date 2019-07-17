@@ -93,7 +93,7 @@ module.exports = class EntryEquipmentDomain {
       }
     }
 
-    if (entryEquipmentNotHasProp('externalDamage')) {
+    if (entryEquipmentNotHasProp('externalDamage') || typeof entryEquipment.externalDamage !== 'boolean') {
       errors = true
       field.externalDamage = true
       message.externalDamage = 'Selecione sim ou não.'
@@ -129,6 +129,8 @@ module.exports = class EntryEquipmentDomain {
     }
 
     const client = () => {
+      if (entryEquipment.properlyPacked === '') entryEquipment.properlyPacked = true
+
       if (entryEquipmentNotHasProp('clientName') || !entryEquipment.clientName) {
         errors = true
         field.clientName = true
@@ -156,7 +158,7 @@ module.exports = class EntryEquipmentDomain {
         field.senderName = true
         message.senderName = 'Por favor informar o nome do remetente.'
       }
-      if (entryEquipmentNotHasProp('properlyPacked') || !entryEquipment.properlyPacked) {
+      if (entryEquipmentNotHasProp('properlyPacked') || typeof entryEquipment.properlyPacked !== 'boolean') {
         errors = true
         field.properlyPacked = true
         message.properlyPacked = 'Por favor informar se está devidamente embalado.'
@@ -218,7 +220,7 @@ module.exports = class EntryEquipmentDomain {
         field.responsibleName = true
         message.responsibleName = 'Por favor informar o nome do responsável.'
       }
-      if (entryEquipmentNotHasProp('properlyPacked') || !entryEquipment.properlyPacked) {
+      if (entryEquipmentNotHasProp('properlyPacked') || typeof entryEquipment.properlyPacked !== 'boolean') {
         errors = true
         field.properlyPacked = true
         message.properlyPacked = 'Por favor informar se está devidamente embalado.'
@@ -231,7 +233,7 @@ module.exports = class EntryEquipmentDomain {
         field.technicianName = true
         message.technicianName = 'Por favor informar o nome do técnico externo.'
       }
-      if (entryEquipmentNotHasProp('properlyPacked') || !entryEquipment.properlyPacked) {
+      if (entryEquipmentNotHasProp('properlyPacked') || typeof entryEquipment.properlyPacked !== 'boolean') {
         errors = true
         field.properlyPacked = true
         message.properlyPacked = 'Por favor informar se está devidamente embalado.'
@@ -317,6 +319,7 @@ module.exports = class EntryEquipmentDomain {
       transaction,
     })
 
+    console.log(response.id)
 
     return response
   }
