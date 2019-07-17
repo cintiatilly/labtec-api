@@ -94,6 +94,20 @@ module.exports = class EquipDomain {
       }
     }
 
+    // if (equipNotHasProp('readerColor')
+    // || (equip.readerColor !== 'Branco'
+    // && equip.readerColor !== 'Vermelho'
+    // && equip.readerColor !== 'Azul'
+    // && equip.readerColor !== 'Verde'
+    // && equip.readerColor !== 'DedoVivo'
+    // && equip.readerColor !== 'BioLFD'
+    // && equip.readerColor !== 'BioLC'
+    // && equip.readerColor !== 'NaoSeAplica')) {
+    //   errors = true
+    //   field.readerColor = true
+    //   message.readerColor = 'leitor inválido.'
+    // }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
@@ -188,6 +202,9 @@ module.exports = class EquipDomain {
 
     const formatData = R.map((equip) => {
       const resp = {
+        id: equip.id,
+        companyId: equip.companyId,
+        equipModelId: equip.equipModelId,
         razaoSocial: equip.company.razaoSocial,
         cnpj: equip.company.cnpj,
         street: equip.company.street,
@@ -224,6 +241,120 @@ module.exports = class EquipDomain {
     }
     return response
   }
+
+
+  async update(bodyData, options = {}) {
+    const { transaction = null } = options
+
+    const equip = R.omit(['id'], bodyData)
+
+    const equipNotHasProp = prop => R.not(R.has(prop, equip))
+
+    const oldEquip = await Equip.findByPk(bodyData.id)
+
+    const newEquip = {
+      ...oldEquip,
+    }
+
+    const field = {
+      type: false,
+      mark: false,
+      model: false,
+      equipModelId: false,
+      serialNumber: false,
+      readerColor: false,
+    }
+    const message = {
+      type: '',
+      mark: '',
+      model: '',
+      equipModelId: '',
+      serialNumber: '',
+      readerColor: '',
+    }
+
+    let errors = false
+
+    if (equipNotHasProp('serialNumber') || !equip.serialNumber) {
+      errors = true
+      field.serialNumber = true
+      message.serialNumber = 'informe o número de série.'
+    } else {
+      const serialNumberReturned = await Equip.findOne({
+        where: { serialNumber: equip.serialNumber },
+        transaction,
+      })
+
+      if (serialNumberReturned && equip.serialNumber !== oldEquip.serialNumber) {
+        errors = true
+        field.serialNumber = true
+        message.serialNumber = 'já está cadastrado.'
+      }
+    }
+
+    if (equipNotHasProp('readerColor')
+    || (equip.readerColor !== 'Branco'
+    && equip.readerColor !== 'Vermelho'
+    && equip.readerColor !== 'Azul'
+    && equip.readerColor !== 'Verde'
+    && equip.readerColor !== 'DedoVivo'
+    && equip.readerColor !== 'BioLFD'
+    && equip.readerColor !== 'BioLC'
+    && equip.readerColor !== 'NaoSeAplica')) {
+      errors = true
+      field.readerColor = true
+      message.readerColor = 'leitor inválido.'
+    }
+
+    if (equipNotHasProp('type') || !equip.type) {
+      errors = true
+      field.type = true
+      message.type = 'informe o tipo.'
+    }
+
+    if (equipNotHasProp('mark') || !equip.mark) {
+      errors = true
+      field.mark = true
+      message.mark = 'informe a marca.'
+    }
+
+    if (equipNotHasProp('model') || !equip.model) {
+      errors = true
+      field.model = true
+      message.model = 'informe o modelo.'
+    }
+
+    const equipModel = await EquipModel.findOne({
+      where: { model: equip.model },
+      include: [{
+        model: EquipMark,
+        where: { mark: equip.mark },
+        include: [{
+          model: EquipType,
+          where: { type: equip.type },
+        }],
+      }],
+    })
+
+    if (!equipModel) {
+      errors = true
+      field.model = true
+      message.model = 'Modelo não encontrado.'
+    }
+
+    if (errors) {
+      throw new FieldValidationError([{ field, message }])
+    }
+
+    newEquip.equipModelId = equip.equipModelId
+    newEquip.serialNumber = equip.serialNumber
+    newEquip.readerColor = equip.readerColor
+
+    const response = await oldEquip.update(newEquip, { transaction })
+
+    return response
+  }
+
 
   async getOneBySerialNumber(serialNumber, options = {}) {
     const { transaction = null } = options
