@@ -7,6 +7,8 @@ const { UnauthorizedError } = require('../../helpers/errors')
 
 const User = database.model('user')
 const Login = database.model('login')
+const Resources = database.model('resources')
+const TypeAccount = database.model('typeAccount')
 
 const sessionDomain = new SessionDomain()
 
@@ -44,11 +46,58 @@ class LoginDomain {
         attributes: [
           'id',
           'username',
+          'customized',
+          'resourceId',
+          'typeAccountId',
         ],
       },
     )
 
+    let resource = {}
+
+    if (user.customized) {
+      const { resourceid } = user
+
+      const resourceReturn = await Resources.findByPk(resourceid, { transaction })
+
+      resource = {
+        addCompany: resourceReturn.addCompany,
+        addPart: resourceReturn.addPart,
+        addAnalyze: resourceReturn.addAnalyze,
+        addEquip: resourceReturn.addEquip,
+        addEntry: resourceReturn.addEntry,
+        addEquipType: resourceReturn.addEquipType,
+        tecnico: resourceReturn.tecnico,
+        addAccessories: resourceReturn.addAccessories,
+        addUser: resourceReturn.addUser,
+        addTypeAccount: resourceReturn.addTypeAccount,
+      }
+    } else {
+      const { typeAccountId } = user
+
+      const typeAccountReturn = await TypeAccount.findByPk(typeAccountId, {
+        include: [{
+          model: Resources,
+        }],
+        transaction,
+      })
+
+      resource = {
+        addCompany: typeAccountReturn.resource.addCompany,
+        addPart: typeAccountReturn.resource.addPart,
+        addAnalyze: typeAccountReturn.resource.addAnalyze,
+        addEquip: typeAccountReturn.resource.addEquip,
+        addEntry: typeAccountReturn.resource.addEntry,
+        addEquipType: typeAccountReturn.resource.addEquipType,
+        tecnico: typeAccountReturn.resource.tecnico,
+        addAccessories: typeAccountReturn.resource.addAccessories,
+        addUser: typeAccountReturn.resource.addUser,
+        addTypeAccount: typeAccountReturn.resource.addTypeAccount,
+      }
+    }
+
     const response = {
+      ...resource,
       token: session.id,
       userId: user.id,
       username: user.username,

@@ -12,8 +12,11 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    customized: Sequelize.BOOLEAN,
-    // allowNull: false,
+    customized: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      // defaultValue: false,
+    },
   })
 
   user.associate = (models) => {

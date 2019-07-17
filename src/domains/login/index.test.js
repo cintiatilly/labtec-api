@@ -1,12 +1,14 @@
 const LoginDomain = require('./')
 const UserDomain = require('../user')
 const TypeAccount = require('../user/typeAccount')
+const SessionDomain = require('./session')
 
 const { UnauthorizedError } = require('../../helpers/errors')
 
 const loginDomain = new LoginDomain()
 const userDomain = new UserDomain()
 const typeAccount = new TypeAccount()
+const sessionDomain = new SessionDomain()
 
 describe('loginDomain', () => {
   let userMock = null
@@ -19,6 +21,11 @@ describe('loginDomain', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     await typeAccount.add(typeAccountMock)
@@ -32,6 +39,11 @@ describe('loginDomain', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
   })
 
@@ -81,6 +93,11 @@ describe('logoutTest', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     await typeAccount.add(typeAccountMock)
@@ -94,6 +111,11 @@ describe('logoutTest', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
   })
 
@@ -114,5 +136,57 @@ describe('logoutTest', () => {
     }
 
     expect(logoutSucess).toEqual(sucess)
+  })
+})
+
+describe('sessionDomain', () => {
+  let userMock = null
+
+  beforeAll(async () => {
+    const typeAccountMock = {
+      typeName: 'TESTE78',
+      addCompany: false,
+      addPart: false,
+      addAnalyze: false,
+      addEquip: false,
+      addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+
+    await typeAccount.add(typeAccountMock)
+
+    userMock = {
+      username: 'teste78',
+      typeName: 'TESTE78',
+      customized: false,
+      addCompany: false,
+      addPart: false,
+      addAnalyze: false,
+      addEquip: false,
+      addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+  })
+
+  test('checkSessionIsValid', async () => {
+    const user = await userDomain.user_Create(userMock)
+    const loginMock = {
+      username: user.username,
+      password: user.username,
+    }
+    const login = await loginDomain.login(loginMock)
+
+    const session = await sessionDomain.checkSessionIsValid(login.token, login.username)
+
+    expect(session).toEqual(true)
+    expect(await sessionDomain.checkSessionIsValid()).toEqual(false)
   })
 })

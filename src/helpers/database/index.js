@@ -1,4 +1,9 @@
 const db = require('../../database')
+const TypeAccount = require('../../domains/user/typeAccount')
+const UserDomain = require('../../domains/user')
+
+const typeAccount = new TypeAccount()
+const userDomain = new UserDomain()
 
 const dropAllTable = () => db.dropAllSchemas()
 
@@ -9,23 +14,45 @@ const forceCreateTables = () => isDatabaseConnected()
   .then(() => db.sync({ force: true }))
 
 const createUserAdmin = async () => {
-  const User = db.model('user')
-  const Login = db.model('login')
+  // const User = db.model('user')
+  // const Login = db.model('login')
 
-  const userAdmin = {
-    username: 'modrp',
-    typeName: 'ADM',
+  const typeAccountMock = {
+    typeName: 'ADM2',
     addCompany: true,
     addPart: true,
     addAnalyze: true,
-    addEquip: false,
-    addEntry: false,
-    login: {
-      password: '102030',
-    },
+    addEquip: true,
+    addEntry: true,
+    addEquipType: true,
+    tecnico: true,
+    addAccessories: true,
+    addUser: true,
+    addTypeAccount: true,
+  }
+  await typeAccount.add(typeAccountMock)
+
+  const userAdmin = {
+    username: 'modrp',
+    typeName: 'ADM2',
+    customized: false,
+    addCompany: true,
+    addPart: true,
+    addAnalyze: true,
+    addEquip: true,
+    addEntry: true,
+    addEquipType: true,
+    tecnico: true,
+    addAccessories: true,
+    addUser: true,
+    addTypeAccount: true,
+    // login: {
+    //   password: '102030',
+    // },
   }
 
-  await User.create(userAdmin, { include: [Login] })
+  // await User.create(userAdmin, { include: [Login] })
+  await userDomain.user_Create(userAdmin)
 }
 
 const dropAndDisconnectDatabase = () => db

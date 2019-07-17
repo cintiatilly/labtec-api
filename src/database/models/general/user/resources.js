@@ -27,6 +27,26 @@ module.exports = (sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    addEquipType: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    tecnico: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    addAccessories: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    addUser: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    addTypeAccount: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   })
 
   return resources

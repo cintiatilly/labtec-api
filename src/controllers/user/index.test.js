@@ -18,6 +18,11 @@ describe('userController', () => {
       addAnalyze: true,
       addEquip: false,
       addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     await typeAccount.add(typeAccountMock)
@@ -31,11 +36,16 @@ describe('userController', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     const loginBody = {
       username: 'modrp',
-      password: '102030',
+      password: 'modrp',
     }
 
     const login = await request().post('/oapi/login', loginBody)
@@ -60,5 +70,39 @@ describe('userController', () => {
     // expect(body.resource.addAnalyze).toBe(typeAccountMock.addAnalyze)
     // expect(body.resource.addEquip).toBe(typeAccountMock.addEquip)
     // expect(body.resource.addEntry).toBe(typeAccountMock.addEntry)
+  })
+
+  test('getResourceByUsername', async () => {
+    userMock = {
+      username: 'teste97',
+      typeName: 'RECEPÇAO',
+      customized: true,
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: true,
+      addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+
+    await request().post('/api/user', userMock, { headers })
+
+    const params = {
+      username: 'teste97',
+    }
+    const response = await request().get('/api/user/getResourceByUsername', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.addCompany).toBe(userMock.addCompany)
+    expect(body.addPart).toBe(userMock.addPart)
+    expect(body.addAnalyze).toBe(userMock.addAnalyze)
+    expect(body.addEquip).toBe(userMock.addEquip)
+    expect(body.addEntry).toBe(userMock.addEntry)
   })
 })

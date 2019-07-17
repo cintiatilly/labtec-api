@@ -54,7 +54,7 @@ describe('equipController', () => {
 
     const loginBody = {
       username: 'modrp',
-      password: '102030',
+      password: 'modrp',
     }
 
     const login = await request().post('/oapi/login', loginBody)
@@ -137,5 +137,33 @@ describe('equipController', () => {
     expect(body.readerColor).toBeTruthy()
     expect(body.equipModelId).toBeTruthy()
     expect(body.companyId).toBeTruthy()
+  })
+
+  test('update', async () => {
+    const equipMockUp = {
+      ...equipMock,
+    }
+    equipMockUp.serialNumber = '787878'
+
+    const equipCreated = await request().post('/api/equip', equipMockUp, { headers })
+
+    const updateEquipMock = {
+      id: equipCreated.body.id,
+      serialNumber: '88778877',
+      readerColor: 'Vermelho',
+      type: 'catraca',
+      mark: 'Hanry',
+      model: 'Henry 8.0',
+    }
+
+    const response = await request().put('/api/equip/update', updateEquipMock, { headers })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body.serialNumber).toBeTruthy()
+    expect(body.readerColor).toBeTruthy()
+    expect(body.companyId).toBeTruthy()
+    expect(body.equipModelId).toBeTruthy()
   })
 })
