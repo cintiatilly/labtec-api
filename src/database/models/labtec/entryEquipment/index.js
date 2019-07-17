@@ -2,11 +2,11 @@ const Sequelize = require('sequelize')
 
 module.exports = (sequelize) => {
   const entryEquipment = sequelize.define('entryEquipment', {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+    // id: {
+    //   type: Sequelize.UUID,
+    //   defaultValue: Sequelize.UUIDV4,
+    //   primaryKey: true,
+    // },
 
     conditionType: {
       type: Sequelize.ENUM(['contrato', 'avulso', 'emprestimo']),
@@ -53,9 +53,6 @@ module.exports = (sequelize) => {
     senderName: {
       type: Sequelize.STRING,
     },
-    properlyPacked: {
-      type: Sequelize.BOOLEAN,
-    },
     zipCode: {
       type: Sequelize.STRING,
     },
@@ -89,7 +86,13 @@ module.exports = (sequelize) => {
     technicianName: {
       type: Sequelize.STRING,
     },
-
+    properlyPacked: {
+      type: Sequelize.BOOLEAN,
+    },
+    packingDetails: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
   })
 
   entryEquipment.associate = (models) => {
