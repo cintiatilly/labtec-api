@@ -17,6 +17,11 @@ describe('typeAccountDomain', () => {
       addAnalyze: true,
       addEquip: false,
       addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
   })
 

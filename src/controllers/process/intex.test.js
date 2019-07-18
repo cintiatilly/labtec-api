@@ -29,6 +29,8 @@ describe('processcontroller', () => {
       delivery: 'externo',
       technicianName: 'Jose',
       properlyPacked: true,
+      conditionType: 'avulso',
+      garantia: 'externo',
     }
     companyMock = {
       razaoSocial: 'Real teste 321/ .LTDA',
@@ -81,7 +83,7 @@ describe('processcontroller', () => {
 
     const loginBody = {
       username: 'modrp',
-      password: '102030',
+      password: 'modrp',
     }
 
     const login = await request().post('/oapi/login', loginBody)

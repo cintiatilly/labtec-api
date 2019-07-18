@@ -97,6 +97,35 @@ module.exports = class TypeAccountDomain {
       message.addEntry = 'addEntry não é um booleano'
     }
 
+    if (resourcesNotHasProp('addEquipType') || typeof resources.addEquipType !== 'boolean') {
+      errors = true
+      field.addEquipType = true
+      message.addEquipType = 'addEquipType não é um booleano'
+    }
+
+    if (resourcesNotHasProp('tecnico') || typeof resources.tecnico !== 'boolean') {
+      errors = true
+      field.tecnico = true
+      message.tecnico = 'tecnico não é um booleano'
+    }
+
+    if (resourcesNotHasProp('addAccessories') || typeof resources.addAccessories !== 'boolean') {
+      errors = true
+      field.addAccessories = true
+      message.addAccessories = 'addAccessories não é um booleano'
+    }
+
+    if (resourcesNotHasProp('addUser') || typeof resources.addUser !== 'boolean') {
+      errors = true
+      field.addUser = true
+      message.addUser = 'addUser não é um booleano'
+    }
+
+    if (resourcesNotHasProp('addTypeAccount') || typeof resources.addTypeAccount !== 'boolean') {
+      errors = true
+      field.addTypeAccount = true
+      message.addTypeAccount = 'addTypeAccount não é um booleano'
+    }
 
     if (errors) {
       throw new FieldValidationError([{ field, message }])

@@ -17,7 +17,7 @@ const isKeyInvalid = key => R.contains(key, invalidFieldsToSearchList)
 
 const isEnum = type => type instanceof Sequelize.ENUM
 const assocEnum = (inputSearch) => {
-  const searchformated = inputSearch
+  const searchformated = { [operators.eq]: inputSearch }
   return searchformated
 }
 
@@ -178,6 +178,10 @@ const getspecificSearchFormated = (filter, model) => {
   // eslint-disable-next-line no-underscore-dangle
   const getPropInspecificFields = R.prop(R.__, specificFields)
 
+  const validatorType = (type, inputSearch, key) => {
+    if (isEnum(type) && !inputSearch) return {}
+    return { [key]: getOperatorsAnd(type, inputSearch) }
+  }
 
   const makeSearchEspecifField = (key) => {
     if (isKeyInvalid(key)) { throw new MaliciousError() }
@@ -188,10 +192,7 @@ const getspecificSearchFormated = (filter, model) => {
 
     const inputSearch = getPropInspecificFields(key)
 
-    const attributesAndSearch = {
-      [key]: getOperatorsAnd(type, inputSearch),
-    }
-
+    const attributesAndSearch = validatorType(type, inputSearch, key)
     return attributesAndSearch
   }
 

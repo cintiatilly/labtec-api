@@ -31,6 +31,8 @@ describe('ProcessDomain', () => {
       delivery: 'externo',
       technicianName: 'Carlos',
       properlyPacked: true,
+      conditionType: 'avulso',
+      garantia: 'externo',
     }
     companyMock = {
       razaoSocial: 'Real teste 123/ .LTDA',

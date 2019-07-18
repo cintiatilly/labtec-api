@@ -176,8 +176,6 @@ class UserDomain {
       })
     }
 
-    // console.log(JSON.stringify(userReturned))
-
     return userReturned
   }
 
@@ -338,6 +336,57 @@ class UserDomain {
     }
 
     return login.checkPassword(password)
+  }
+
+  async getResourceByUsername(username, options = {}) {
+    const { transaction = null } = options
+
+    const user = await User.findOne({
+      where: { username },
+      transaction,
+    })
+
+    let userResources = null
+    let response = null
+
+    const { customized } = user
+
+    if (customized) {
+      userResources = await User.findByPk(user.id, {
+        include: [{
+          model: Resources,
+        }],
+        transaction,
+      })
+
+      response = {
+        addCompany: userResources.resource.addCompany,
+        addPart: userResources.resource.addPart,
+        addAnalyze: userResources.resource.addAnalyze,
+        addEquip: userResources.resource.addEquip,
+        addEntry: userResources.resource.addEntry,
+      }
+    } else {
+      userResources = await User.findByPk(user.id, {
+        include: [{
+          model: TypeAccount,
+          include: [{
+            model: Resources,
+          }],
+        }],
+        transaction,
+      })
+
+      response = {
+        addCompany: userResources.typeAccount.resource.addCompany,
+        addPart: userResources.typeAccount.resource.addPart,
+        addAnalyze: userResources.typeAccount.resource.addAnalyze,
+        addEquip: userResources.typeAccount.resource.addEquip,
+        addEntry: userResources.typeAccount.resource.addEntry,
+      }
+    }
+
+    return response
   }
 }
 

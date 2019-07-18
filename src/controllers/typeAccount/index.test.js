@@ -13,11 +13,16 @@ describe('typeAccountController', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     const loginBody = {
       username: 'modrp',
-      password: '102030',
+      password: 'modrp',
     }
 
     const login = await request().post('/oapi/login', loginBody)

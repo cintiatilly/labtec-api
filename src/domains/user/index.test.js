@@ -16,6 +16,11 @@ describe('create user', () => {
       addAnalyze: true,
       addEquip: false,
       addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
     await typeAccount.add(typeAccountMock)
   })
@@ -30,6 +35,11 @@ describe('create user', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
     const userCreated = await userDomain.user_Create(userMock)
 
@@ -38,6 +48,99 @@ describe('create user', () => {
 
     expect(userCreated).not.toHaveProperty('login')
     expect(userCreated).not.toHaveProperty('password')
+  })
+
+  test('getResourceByUsername', async () => {
+    const userMock = {
+      username: 'teste98',
+      typeName: 'TECNICO',
+      customized: true,
+      addCompany: false,
+      addPart: false,
+      addAnalyze: false,
+      addEquip: false,
+      addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+    await userDomain.user_Create(userMock)
+
+    const username = 'teste98'
+
+    const userReturn = await userDomain.getResourceByUsername(username)
+
+    expect(userReturn.addCompany).toEqual(userMock.addCompany)
+    expect(userReturn.addPart).toEqual(userMock.addPart)
+    expect(userReturn.addAnalyze).toEqual(userMock.addAnalyze)
+    expect(userReturn.addEquip).toEqual(false)
+    expect(userReturn.addEntry).toEqual(false)
+  })
+  test('getResourceByUsername customized', async () => {
+    const userMock = {
+      username: 'teste99',
+      typeName: 'TECNICO',
+      customized: true,
+      addCompany: true,
+      addPart: true,
+      addAnalyze: true,
+      addEquip: true,
+      addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+    await userDomain.user_Create(userMock)
+
+    const username = 'teste99'
+
+    const userReturn = await userDomain.getResourceByUsername(username)
+
+    expect(userReturn.addCompany).toEqual(userMock.addCompany)
+    expect(userReturn.addPart).toEqual(userMock.addPart)
+    expect(userReturn.addAnalyze).toEqual(userMock.addAnalyze)
+    expect(userReturn.addEquip).toEqual(userMock.addEquip)
+    expect(userReturn.addEntry).toEqual(userMock.addEntry)
+  })
+
+  test('criar usuario sem premissões', async () => {
+    const typeAccountTeste = {
+      typeName: 'NADINHA',
+      addCompany: false,
+      addPart: false,
+      addAnalyze: false,
+      addEquip: false,
+      addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+    await typeAccount.add(typeAccountTeste)
+
+    const userMock = {
+      username: 'nadinha',
+      typeName: 'NADINHA',
+      customized: false,
+      addCompany: false,
+      addPart: false,
+      addAnalyze: false,
+      addEquip: false,
+      addEntry: false,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
+    }
+    const userReturn = await userDomain.user_Create(userMock)
+
+    expect(userReturn.username).toEqual(userMock.username)
   })
 })
 

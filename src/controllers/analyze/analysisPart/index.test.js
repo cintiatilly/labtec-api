@@ -65,7 +65,7 @@ describe('analysisPartController', () => {
 
     const loginBody = {
       username: 'modrp',
-      password: '102030',
+      password: 'modrp',
     }
 
     const login = await request().post('/oapi/login', loginBody)

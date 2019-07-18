@@ -17,7 +17,22 @@ const add = async (req, res, next) => {
   }
 }
 
+const getResourceByUsername = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    const { username } = req.query
+
+    const resources = await userDomain.getResourceByUsername(username)
+
+    await transaction.commit()
+    res.json(resources)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
 
 module.exports = {
   add,
+  getResourceByUsername,
 }

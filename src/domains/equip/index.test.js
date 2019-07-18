@@ -115,6 +115,28 @@ describe('equipDomain', () => {
       .rejects.toThrowError(new FieldValidationError())
   })
 
+  test('update', async () => {
+    const equipMockUp = {
+      ...equipMock,
+    }
+    equipMockUp.serialNumber = '585858'
+
+    const equipCreated = await equipDomain.add(equipMockUp)
+
+    const equipUpdateMock = {
+      id: equipCreated.id,
+      serialNumber: '858585',
+      readerColor: 'Verde',
+      type: 'catraca',
+      mark: 'Hanrye',
+      model: 'Henry 9.0',
+    }
+
+    const equipUpadate = await equipDomain.update(equipUpdateMock)
+
+    expect(equipUpadate.serialNumber).toEqual(equipUpdateMock.serialNumber)
+  })
+
   test('try add equip with equipModelId null', async () => {
     const equipCreated = equipMock
     equipCreated.equipModelId = ''

@@ -102,6 +102,8 @@ describe('analyzeDomain', () => {
       defect: 'fonte',
       delivery: 'externo',
       technicianName: 'Carlos',
+      garantia: 'externo',
+      conditionType: 'avulso',
       properlyPacked: true,
       accessories: [accessory1, accessory2],
     }

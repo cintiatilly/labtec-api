@@ -77,11 +77,13 @@ describe('entryEquipmentControllers', () => {
       neighborhood: 'Pauliceia',
       street: 'Rua dos bobo',
       number: '0',
+      conditionType: 'avulso',
+      garantia: 'externo',
     }
 
     const loginBody = {
       username: 'modrp',
-      password: '102030',
+      password: 'modrp',
     }
 
     const login = await request().post('/oapi/login', loginBody)

@@ -17,6 +17,11 @@ describe('logincontroller', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     await typeAccount.add(typeAccountMock)
@@ -30,6 +35,11 @@ describe('logincontroller', () => {
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
+      addEquipType: false,
+      tecnico: false,
+      addAccessories: false,
+      addUser: false,
+      addTypeAccount: false,
     }
 
     user = await userDomain.user_Create(userMock)
@@ -137,5 +147,41 @@ describe('logincontroller', () => {
 
     expect(logout.statusCode).toBe(200)
     expect(logout.body.logout).toBe(true)
+  })
+
+  test('auth true', async () => {
+    const loginBody = {
+      username: userMock.username,
+      password: userMock.username,
+    }
+
+    const response = await request().post('/oapi/login', loginBody)
+
+    const params = {
+      token: response.body.token,
+      username: response.body.username,
+    }
+
+
+    const auth = await request().get('/oapi/auth', { params })
+
+    const { body, statusCode } = auth
+
+    expect(statusCode).toBe(200)
+    expect(body).toBe(true)
+  })
+
+  test('auth false', async () => {
+    const params = {
+      token: '',
+      username: '',
+    }
+
+    const auth = await request().get('/oapi/auth', { params })
+
+    const { body, statusCode } = auth
+
+    expect(statusCode).toBe(200)
+    expect(body).toBe(false)
   })
 })
