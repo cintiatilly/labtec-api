@@ -79,9 +79,9 @@ module.exports = class ProcessDomain {
 
   async getAll(options = {}) {
     const inicialOrder = {
-      field: 'createdAt',
+      field: 'id',
       acendent: true,
-      direction: 'ASC',
+      direction: 'DESC',
     }
 
     const { query = null, transaction = null } = options
@@ -107,6 +107,9 @@ module.exports = class ProcessDomain {
       // where: { status: 'analise' },
       include: [{
         model: EntryEquipment,
+        order: [
+          [newOrder.field, newOrder.direction],
+        ],
         include: [
           {
             model: Equip,
@@ -127,9 +130,9 @@ module.exports = class ProcessDomain {
           },
         ],
       }],
-      order: [
-        [newOrder.field, newOrder.direction],
-      ],
+      // order: [
+      //   [newOrder.field, newOrder.direction],
+      // ],
       limit,
       offset,
       transaction,
@@ -148,6 +151,7 @@ module.exports = class ProcessDomain {
 
     const formatData = R.map((comp) => {
       const resp = {
+        id: comp.entryEquipment.id,
         status: comp.status,
         defect: comp.entryEquipment.defect,
         serialNumber: comp.entryEquipment.equip.serialNumber,
@@ -175,6 +179,7 @@ module.exports = class ProcessDomain {
       count: process.count,
       rows: processList,
     }
+
     return response
   }
 }
