@@ -200,24 +200,33 @@ module.exports = class PartDomain {
       pageResponse,
     } = formatQuery(newQuery)
 
+
     const parts = await Part.findAndCountAll({
       where: getWhere('part'),
-      order: [
-        [newOrder.field, newOrder.direction],
-      ],
       include: [{
         model: EquipModel,
+        // where: getWhere('equipModel'),
+        // where: { model: 'Ford' },
         include: [{
           model: EquipMark,
+          // where: getWhere('equipMark'),
+          // where: { mark: 'Festo' },
           include: [{
             model: EquipType,
+            // where: { type: 'catraca' },
+            // where: getWhere('equipType'),
           }],
         }],
       }],
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
       limit,
       offset,
       transaction,
     })
+
+    // console.log(parts)
 
     const { rows } = parts
 

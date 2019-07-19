@@ -365,6 +365,12 @@ class UserDomain {
         addAnalyze: userResources.resource.addAnalyze,
         addEquip: userResources.resource.addEquip,
         addEntry: userResources.resource.addEntry,
+        addEquipType: userResources.resource.addEquipType,
+        tecnico: userResources.resource.tecnico,
+        addAccessories: userResources.resource.addAccessories,
+        addUser: userResources.resource.addUser,
+        addTypeAccount: userResources.resource.addTypeAccount,
+
       }
     } else {
       userResources = await User.findByPk(user.id, {
@@ -383,8 +389,15 @@ class UserDomain {
         addAnalyze: userResources.typeAccount.resource.addAnalyze,
         addEquip: userResources.typeAccount.resource.addEquip,
         addEntry: userResources.typeAccount.resource.addEntry,
+        addEquipType: userResources.typeAccount.resource.addEquipType,
+        tecnico: userResources.typeAccount.resource.tecnico,
+        addAccessories: userResources.typeAccount.resource.addAccessories,
+        addUser: userResources.typeAccount.resource.addUser,
+        addTypeAccount: userResources.typeAccount.resource.addTypeAccount,
       }
     }
+
+    console.log(userResources)
 
     return response
   }

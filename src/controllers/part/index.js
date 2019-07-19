@@ -53,6 +53,8 @@ const getAllParts = async (req, res, next) => {
   try {
     const query = JSON.parse(req.query.query)
 
+    // console.log(query)
+
     const part = await partDomain.getAllParts({ query, transaction })
 
     await transaction.commit()
