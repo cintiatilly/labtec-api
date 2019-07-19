@@ -151,8 +151,10 @@ module.exports = class ProcessDomain {
 
     const formatData = R.map((comp) => {
       const resp = {
-        id: comp.entryEquipment.id,
         status: comp.status,
+        id: comp.entryEquipment.id,
+        conditionType: comp.entryEquipment.conditionType,
+        garantia: comp.entryEquipment.garantia,
         defect: comp.entryEquipment.defect,
         serialNumber: comp.entryEquipment.equip.serialNumber,
         razaoSocial: comp.entryEquipment.equip.company.razaoSocial,
