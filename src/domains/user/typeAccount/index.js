@@ -205,8 +205,12 @@ module.exports = class TypeAccountDomain {
       addAnalyze: typeAccount.resource.addAnalyze,
       addEquip: typeAccount.resource.addEquip,
       addEntry: typeAccount.resource.addEntry,
+      addEquipType: typeAccount.resource.addEquipType,
+      tecnico: typeAccount.resource.tecnico,
+      addAccessories: typeAccount.resource.addAccessories,
+      addUser: typeAccount.resource.addUser,
+      addTypeAccount: typeAccount.resource.addTypeAccount,
     }
-
 
     return response
   }
