@@ -112,6 +112,36 @@ class UserDomain {
       message.addEntry = 'addEntry não é um booleano'
     }
 
+    if (bodyNotHasProps('addEquipType') || typeof bodyData.addEquipType !== 'boolean') {
+      errors = true
+      field.addEquipType = true
+      message.addEquipType = 'addEquipType não é um booleano'
+    }
+
+    if (bodyNotHasProps('tecnico') || typeof bodyData.tecnico !== 'boolean') {
+      errors = true
+      field.tecnico = true
+      message.tecnico = 'tecnico não é um booleano'
+    }
+
+    if (bodyNotHasProps('addAccessories') || typeof bodyData.addAccessories !== 'boolean') {
+      errors = true
+      field.addAccessories = true
+      message.addAccessories = 'addAccessories não é um booleano'
+    }
+
+    if (bodyNotHasProps('addUser') || typeof bodyData.addUser !== 'boolean') {
+      errors = true
+      field.addUser = true
+      message.addUser = 'addUser não é um booleano'
+    }
+
+    if (bodyNotHasProps('addTypeAccount') || typeof bodyData.addTypeAccount !== 'boolean') {
+      errors = true
+      field.addTypeAccount = true
+      message.addTypeAccount = 'addTypeAccount não é um booleano'
+    }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
@@ -122,6 +152,11 @@ class UserDomain {
       addAnalyze: bodyData.addAnalyze,
       addEquip: bodyData.addEquip,
       addEntry: bodyData.addEntry,
+      addEquipType: bodyData.addEquipType,
+      tecnico: bodyData.tecnico,
+      addAccessories: bodyData.addAccessories,
+      addUser: bodyData.addUser,
+      addTypeAccount: bodyData.addTypeAccount,
     }
 
     if (userNotFormatted.customized) {
@@ -396,8 +431,6 @@ class UserDomain {
         addTypeAccount: userResources.typeAccount.resource.addTypeAccount,
       }
     }
-
-    console.log(userResources)
 
     return response
   }
