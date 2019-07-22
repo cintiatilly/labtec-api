@@ -56,9 +56,9 @@ class LoginDomain {
     let resource = {}
 
     if (user.customized) {
-      const { resourceid } = user
+      const { resourceId } = user
 
-      const resourceReturn = await Resources.findByPk(resourceid, { transaction })
+      const resourceReturn = await Resources.findByPk(resourceId, { transaction })
 
       resource = {
         addCompany: resourceReturn.addCompany,

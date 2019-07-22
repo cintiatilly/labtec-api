@@ -104,7 +104,6 @@ module.exports = class ProcessDomain {
 
     const process = await Process.findAndCountAll({
       where: getWhere('process'),
-      // where: { status: 'analise' },
       include: [{
         model: EntryEquipment,
         order: [
@@ -138,7 +137,6 @@ module.exports = class ProcessDomain {
       transaction,
     })
 
-
     const { rows } = process
 
     const formatDateFunct = (date) => {
@@ -159,6 +157,7 @@ module.exports = class ProcessDomain {
         serialNumber: comp.entryEquipment.equip.serialNumber,
         razaoSocial: comp.entryEquipment.equip.company.razaoSocial,
         readerColor: comp.entryEquipment.equip.readerColor,
+        equipModelId: comp.entryEquipment.equip.equipModel.id,
         model: comp.entryEquipment.equip.equipModel.model,
         mark: comp.entryEquipment.equip.equipModel.equipMark.mark,
         type: comp.entryEquipment.equip.equipModel.equipMark.equipType.type,
