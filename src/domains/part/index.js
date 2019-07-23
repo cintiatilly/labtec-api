@@ -236,6 +236,7 @@ module.exports = class PartDomain {
 
     const formatData = R.map((comp) => {
       const resp = {
+        id: comp.id,
         item: comp.item,
         description: comp.description,
         costPrice: comp.costPrice,

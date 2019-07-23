@@ -34,19 +34,34 @@ module.exports = (sequelize) => {
       defaultValue: false,
     },
 
-    garantia: {
-      type: Sequelize.ENUM(['externa', 'laboratorio', 'venda', 'semg garantia']),
-      allowNull: false,
+    observations: {
+      type: Sequelize.STRING,
+      allowNull: true,
     },
 
-    conditionType: {
-      type: Sequelize.ENUM(['avulso', 'contrato', 'emprestimo']),
-      allowNull: false,
-    },
+    // garantia: {
+    //   type: Sequelize.ENUM(['externa', 'laboratorio', 'venda', 'semg garantia']),
+    //   allowNull: false,
+    // },
+
+    // conditionType: {
+    //   type: Sequelize.ENUM(['avulso', 'contrato', 'emprestimo']),
+    //   allowNull: false,
+    // },
   })
 
   analyze.associate = (models) => {
     analyze.hasMany(models.analysisPart, {
+      foreignKey: {
+        // allowNull: false,
+      },
+    })
+    analyze.belongsTo(models.process, {
+      foreignKey: {
+        // allowNull: false,
+      },
+    })
+    analyze.hasMany(models.pause, {
       foreignKey: {
         // allowNull: false,
       },
