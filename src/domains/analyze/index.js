@@ -3,10 +3,12 @@ const R = require('ramda')
 const database = require('../../database')
 
 const AnalysisPartDomain = require('./analysisPart')
+const PauseDomain = require('./pause')
 
 const { FieldValidationError } = require('../../helpers/errors')
 
 const analysisPartDomain = new AnalysisPartDomain()
+const pauseDomain = new PauseDomain()
 
 const EquipModel = database.model('equipModel')
 const EquipMark = database.model('equipMark')
@@ -15,6 +17,7 @@ const AnalysisPart = database.model('analysisPart')
 const Part = database.model('part')
 const Analyze = database.model('analyze')
 const Process = database.model('process')
+const Pause = database.model('pause')
 
 
 module.exports = class AnalyzeDomain {
@@ -27,28 +30,44 @@ module.exports = class AnalyzeDomain {
     const analyzeHasProp = prop => R.has(prop, bodyData)
 
     const field = {
-      garantia: false,
-      conditionType: false,
       processId: false,
+      humidity: false,
+      misuse: false,
+      brokenSeal: false,
+      fall: false,
     }
     const message = {
-      garantia: '',
-      conditionType: '',
       processId: '',
+      humidity: '',
+      misuse: '',
+      brokenSeal: '',
+      fall: '',
     }
 
     let errors = false
 
-    if (analyzeNotHasProp('garantia') || !analyze.garantia) {
+    if (analyzeNotHasProp('humidity') || typeof analyze.humidity !== 'boolean') {
       errors = true
-      field.garantia = true
-      message.garantia = 'Por favor informar o tipo de garantia.'
+      field.humidity = true
+      message.humidity = 'humidity not is bollean.'
     }
 
-    if (analyzeNotHasProp('conditionType') || !analyze.conditionType) {
+    if (analyzeNotHasProp('misuse') || typeof analyze.misuse !== 'boolean') {
       errors = true
-      field.conditionType = true
-      message.conditionType = 'Por favor informar o tipo de condição.'
+      field.misuse = true
+      message.misuse = 'misuse not is bollean.'
+    }
+
+    if (analyzeNotHasProp('brokenSeal') || typeof analyze.brokenSeal !== 'boolean') {
+      errors = true
+      field.brokenSeal = true
+      message.brokenSeal = 'brokenSeal not is bollean.'
+    }
+
+    if (analyzeNotHasProp('fall') || typeof analyze.fall !== 'boolean') {
+      errors = true
+      field.fall = true
+      message.fall = 'fall not is bollean.'
     }
 
     if (analyzeHasProp('processId')) {
@@ -89,6 +108,23 @@ module.exports = class AnalyzeDomain {
 
         await analyzeCreated.addAnalysisParts(analysisPartCreatedList, { transaction })
       }
+
+      if (bodyHasProp('pause')) {
+        const { pause } = bodyData
+
+
+        const pauseCreatedPromises = pause.map((item) => {
+          const pauseBody = {
+            ...item,
+            analyzeId: analyzeCreated.id,
+          }
+          return pauseDomain.add(pauseBody, { transaction })
+        })
+
+        const analysisPartCreatedList = await Promise.all(pauseCreatedPromises)
+
+        await analyzeCreated.addPauses(analysisPartCreatedList, { transaction })
+      }
     }
 
     if (errors) {
@@ -113,10 +149,17 @@ module.exports = class AnalyzeDomain {
             }],
           }],
         },
+        {
+          model: Process,
+        },
+        {
+          model: Pause,
+        },
       ],
       transaction,
     })
 
+    // console.log(JSON.stringify(response))
     return response
   }
 

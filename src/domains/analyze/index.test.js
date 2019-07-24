@@ -111,10 +111,19 @@ describe('analyzeDomain', () => {
     entryEquipmentCreated = await entryEquipmentDomain.add(entryEquipmentMock)
 
     analyzeMock = {
-      garantia: 'externa',
-      conditionType: 'avulso',
+      // garantia: 'externa',
+      // conditionType: 'avulso',
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       analysisPart: [analysisPartMock, analysisPartMock],
       processId: entryEquipmentCreated.processId,
+      pause: [{
+        inicio: new Date(),
+        final: new Date(),
+        motivoPausa: 'sdbiasdaiu',
+      }],
     }
   })
 
@@ -124,8 +133,8 @@ describe('analyzeDomain', () => {
 
     expect(analyzeCreated).toBeTruthy()
     expect(analyzeCreated1).toBeTruthy()
-    expect(analyzeCreated.garantia).toBe(analyzeMock.garantia)
-    expect(analyzeCreated.conditionType).toBe(analyzeMock.conditionType)
+    // expect(analyzeCreated.garantia).toBe(analyzeMock.garantia)
+    // expect(analyzeCreated.conditionType).toBe(analyzeMock.conditionType)
     expect(analyzeCreated.processId).toBe(entryEquipmentCreated.processId)
   })
 

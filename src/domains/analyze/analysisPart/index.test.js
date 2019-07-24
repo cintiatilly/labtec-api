@@ -47,8 +47,12 @@ describe('analysisPartDomain', () => {
     const partCreated = await partDomain.add(partMock)
 
     analyzeMock = {
-      garantia: 'externa',
-      conditionType: 'avulso',
+      // garantia: 'externa',
+      // conditionType: 'avulso',
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
     }
 
     const analyzeCreated = await analyzeDomain.add(analyzeMock)

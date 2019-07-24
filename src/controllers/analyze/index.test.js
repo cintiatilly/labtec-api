@@ -49,8 +49,12 @@ describe('analyzecontroller', () => {
     }
 
     analyzeMock = {
-      garantia: 'externa',
-      conditionType: 'avulso',
+      // garantia: 'externa',
+      // conditionType: 'avulso',
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       analysisPart: [analysisPartMock, analysisPartMock],
     }
 

@@ -319,8 +319,6 @@ module.exports = class EntryEquipmentDomain {
       transaction,
     })
 
-    console.log(response.id)
-
     return response
   }
 

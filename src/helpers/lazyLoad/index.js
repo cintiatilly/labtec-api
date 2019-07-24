@@ -21,6 +21,8 @@ const assocEnum = (inputSearch) => {
   return searchformated
 }
 
+const isUUID = type => type instanceof Sequelize.UUID
+
 // string formartter
 const isString = type => type instanceof Sequelize.STRING
 const assocString = (inputSearch) => {
@@ -167,6 +169,7 @@ const getspecificSearchFormated = (filter, model) => {
     if (isString(type)) return assocString(inputSearch)
     if (isDate(type)) return assocDate(inputSearch)
     if (isEnum(type)) return assocEnum(inputSearch)
+    if (isUUID(type)) return assocEnum(inputSearch)
     return { }
   }
 

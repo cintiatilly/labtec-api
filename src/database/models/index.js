@@ -16,6 +16,7 @@ const analyze = require('./labtec/analyze')
 const analysisPart = require('./labtec/analyze/analysisPart')
 const process = require('./labtec/process')
 const time = require('./labtec/process/time')
+const pause = require('./labtec/analyze/pause')
 
 module.exports = [
 
@@ -38,6 +39,7 @@ module.exports = [
   part,
   analyze,
   analysisPart,
+  pause,
 
   process,
   time,

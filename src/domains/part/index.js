@@ -182,8 +182,6 @@ module.exports = class PartDomain {
 
     const { query = null, transaction = null } = options
 
-    // console.log(query)
-
     const newQuery = Object.assign({}, query)
     const newOrder = (query && query.order) ? query.order : inicialOrder
 
@@ -205,18 +203,18 @@ module.exports = class PartDomain {
       where: getWhere('part'),
       include: [{
         model: EquipModel,
-        // where: getWhere('equipModel'),
-        // where: { model: 'Ford' },
-        include: [{
-          model: EquipMark,
-          // where: getWhere('equipMark'),
-          // where: { mark: 'Festo' },
-          include: [{
-            model: EquipType,
-            // where: { type: 'catraca' },
-            // where: getWhere('equipType'),
-          }],
-        }],
+        where: getWhere('equipModel'),
+        // where: { model: 'Samsung 2.0' },
+        // include: [{
+        //   model: EquipMark,
+        //   // where: getWhere('equipMark'),
+        //   // where: { mark: 'Samsung' },
+        //   include: [{
+        //     model: EquipType,
+        //     // where: { type: 'catraca' },
+        //     // where: getWhere('equipType'),
+        //   }],
+        // }],
       }],
       order: [
         [newOrder.field, newOrder.direction],
@@ -225,8 +223,6 @@ module.exports = class PartDomain {
       offset,
       transaction,
     })
-
-    // console.log(parts)
 
     const { rows } = parts
 
@@ -240,6 +236,7 @@ module.exports = class PartDomain {
 
     const formatData = R.map((comp) => {
       const resp = {
+        id: comp.id,
         item: comp.item,
         description: comp.description,
         costPrice: comp.costPrice,
