@@ -86,7 +86,30 @@ module.exports = class AnalyzeDomain {
       }
     }
 
-    const analyzeCreated = await Analyze.create(analyze, { transaction })
+    const getProcess = await Process.findOne({
+      where: { id: analyze.processId },
+      include: [{
+        model: Analyze,
+      }],
+      transaction,
+    })
+    console.log(JSON.stringify(getProcess))
+
+    let analyzeCreated = {}
+
+    if (getProcess.analyze) {
+      const getAnalize = await Analyze.findOne({
+        include: [{
+          model: Process,
+          where: { id: analyze.processId },
+        }],
+        transaction,
+      })
+
+      analyzeCreated = await getAnalize.update(analyze, { transaction })
+    } else {
+      analyzeCreated = await Analyze.create(analyze, { transaction })
+    }
 
     if (bodyData) {
       const bodyHasProp = prop => R.has(prop, bodyData)

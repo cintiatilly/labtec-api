@@ -14,6 +14,7 @@ const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
+const Analyze = database.model('analyze')
 
 module.exports = class ProcessDomain {
   async update(id, bodyData, options = {}) {
@@ -39,7 +40,7 @@ module.exports = class ProcessDomain {
     let errors = false
 
     const arrayStatus = ['preAnalise', 'analise', 'fabrica',
-      'revisao1', 'posAnalise', 'revisao2', 'posAnalise2',
+      'pendente', 'revisao1', 'posAnalise', 'revisao2', 'posAnalise2',
       'revisao3', 'orcamento', 'manutencao', 'revisaoFinal', 'estoque']
 
     if (updatesHasProp('status')) {
@@ -128,7 +129,11 @@ module.exports = class ProcessDomain {
             ],
           },
         ],
-      }],
+      },
+      {
+        model: Analyze,
+      },
+      ],
       // order: [
       //   [newOrder.field, newOrder.direction],
       // ],
