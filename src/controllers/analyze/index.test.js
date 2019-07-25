@@ -84,6 +84,10 @@ describe('analyzecontroller', () => {
     await equipDomain.add(equipMock)
 
     const entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '98569856',
       externalDamage: true,
       details: 'tá zuado',
@@ -101,10 +105,10 @@ describe('analyzecontroller', () => {
     analyzeMock = {
       // garantia: 'externa',
       // conditionType: 'avulso',
-      humidity: false,
-      fall: false,
-      misuse: false,
-      brokenSeal: false,
+      // humidity: false,
+      // fall: false,
+      // misuse: false,
+      // brokenSeal: false,
       processId: entryEquipmentCreated.processId,
       analysisPart: [analysisPartMock, analysisPartMock],
     }
@@ -138,13 +142,13 @@ describe('analyzecontroller', () => {
   test('create', async () => {
     const response = await request().post('/api/analyze', analyzeMock, { headers })
 
-    const { body, statusCode } = response
+    const { statusCode } = response
 
     expect(statusCode).toBe(200)
-    expect(body.humidity).toBe(false)
-    expect(body.fall).toBe(false)
-    expect(body.misuse).toBe(false)
-    expect(body.brokenSeal).toBe(false)
+    // expect(body.humidity).toBe(false)
+    // expect(body.fall).toBe(false)
+    // expect(body.misuse).toBe(false)
+    // expect(body.brokenSeal).toBe(false)
   })
 
   test('analyzeUpdate', async () => {

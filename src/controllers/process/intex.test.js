@@ -22,6 +22,10 @@ describe('processcontroller', () => {
 
   beforeAll(async () => {
     entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '2564545',
       externalDamage: true,
       details: 'tá zuado',

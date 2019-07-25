@@ -26,49 +26,51 @@ module.exports = class AnalyzeDomain {
 
     const analyze = R.omit(['id'], bodyData)
 
-    const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
+    // console.log(JSON.stringify(analyze))
+
+    // const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
     const analyzeHasProp = prop => R.has(prop, bodyData)
 
     const field = {
       processId: false,
-      humidity: false,
-      misuse: false,
-      brokenSeal: false,
-      fall: false,
+      // humidity: false,
+      // misuse: false,
+      // brokenSeal: false,
+      // fall: false,
     }
     const message = {
       processId: '',
-      humidity: '',
-      misuse: '',
-      brokenSeal: '',
-      fall: '',
+      // humidity: '',
+      // misuse: '',
+      // brokenSeal: '',
+      // fall: '',
     }
 
     let errors = false
 
-    if (analyzeNotHasProp('humidity') || typeof analyze.humidity !== 'boolean') {
-      errors = true
-      field.humidity = true
-      message.humidity = 'humidity not is bollean.'
-    }
+    // if (analyzeNotHasProp('humidity') || typeof analyze.humidity !== 'boolean') {
+    //   errors = true
+    //   field.humidity = true
+    //   message.humidity = 'humidity not is bollean.'
+    // }
 
-    if (analyzeNotHasProp('misuse') || typeof analyze.misuse !== 'boolean') {
-      errors = true
-      field.misuse = true
-      message.misuse = 'misuse not is bollean.'
-    }
+    // if (analyzeNotHasProp('misuse') || typeof analyze.misuse !== 'boolean') {
+    //   errors = true
+    //   field.misuse = true
+    //   message.misuse = 'misuse not is bollean.'
+    // }
 
-    if (analyzeNotHasProp('brokenSeal') || typeof analyze.brokenSeal !== 'boolean') {
-      errors = true
-      field.brokenSeal = true
-      message.brokenSeal = 'brokenSeal not is bollean.'
-    }
+    // if (analyzeNotHasProp('brokenSeal') || typeof analyze.brokenSeal !== 'boolean') {
+    //   errors = true
+    //   field.brokenSeal = true
+    //   message.brokenSeal = 'brokenSeal not is bollean.'
+    // }
 
-    if (analyzeNotHasProp('fall') || typeof analyze.fall !== 'boolean') {
-      errors = true
-      field.fall = true
-      message.fall = 'fall not is bollean.'
-    }
+    // if (analyzeNotHasProp('fall') || typeof analyze.fall !== 'boolean') {
+    //   errors = true
+    //   field.fall = true
+    //   message.fall = 'fall not is bollean.'
+    // }
 
     if (analyzeHasProp('processId')) {
       if (!analyze.processId) {

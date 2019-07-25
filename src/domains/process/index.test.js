@@ -24,6 +24,10 @@ describe('ProcessDomain', () => {
 
   beforeAll(async () => {
     entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '2564',
       externalDamage: true,
       details: 'tá zuado',
@@ -102,118 +106,6 @@ describe('ProcessDomain', () => {
     expect(await processDomain.update(entry.processId, { status: 'revisaoFinal' })).toBeTruthy()
     expect(await processDomain.update(entry.processId, { status: 'estoque' })).toBeTruthy()
   })
-
-  // test('update preAnalise', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'preAnalise' })).toBeTruthy()
-  // })
-
-  // test('update analise', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'analise' })).toBeTruthy()
-  // })
-
-  // test('update fabrica', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'fabrica' })).toBeTruthy()
-  // })
-
-  // test('update pendente', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'pendente' })).toBeTruthy()
-  // })
-
-  // test('update revisao1', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'revisao1'})).toBeTruthy()
-  // })
-
-  // test('update revisao1', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'revisao1'})).toBeTruthy()
-  // })
-
-  // test('update posAnalise', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'posAnalise'})).toBeTruthy()
-  // })
-
-  // test('update revisao2', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'revisao2' })).toBeTruthy()
-  // })
-
-  // test('update posAnalise2', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'posAnalise2'})).toBeTruthy()
-  // })
-
-  // test('update revisao3', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'revisao3'})).toBeTruthy()
-  // })
-
-  // test('update orcamento', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'orcamento'})).toBeTruthy()
-  // })
-
-  // test('update manutencao', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'manutencao'})).toBeTruthy()
-  // })
-
-  // test('update revisaoFinal', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'revisaoFinal'})).toBeTruthy()
-  // })
-
-  // test('update estoque', async () => {
-  //   const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
-
-  //   expect(updateProcess).toBeTruthy()
-
-  //   expect(await processDomain.update(entry.processId, { status: 'estoque'})).toBeTruthy()
-  // })
 
   test('getAll', async () => {
     const entrace = await processDomain.getAll()

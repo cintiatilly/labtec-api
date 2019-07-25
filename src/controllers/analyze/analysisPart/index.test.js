@@ -84,6 +84,10 @@ describe('analysisPartController', () => {
     await equipDomain.add(equipMock)
 
     const entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '12541254',
       externalDamage: true,
       details: 'tá zuado',
@@ -101,10 +105,10 @@ describe('analysisPartController', () => {
     analyzeMock = {
       // garantia: 'externa',
       // conditionType: 'avulso',
-      humidity: false,
-      fall: false,
-      misuse: false,
-      brokenSeal: false,
+      // humidity: false,
+      // fall: false,
+      // misuse: false,
+      // brokenSeal: false,
       processId: entryEquipmentCreated.processId,
     }
 

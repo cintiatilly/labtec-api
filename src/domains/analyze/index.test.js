@@ -96,6 +96,10 @@ describe('analyzeDomain', () => {
     const accessory2 = await Accessories.create(accessoriesMock2)
 
     const entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '321654987',
       externalDamage: true,
       details: 'tá zuado',
@@ -113,10 +117,10 @@ describe('analyzeDomain', () => {
     analyzeMock = {
       // garantia: 'externa',
       // conditionType: 'avulso',
-      humidity: false,
-      fall: false,
-      misuse: false,
-      brokenSeal: false,
+      // humidity: false,
+      // fall: false,
+      // misuse: false,
+      // brokenSeal: false,
       analysisPart: [analysisPartMock, analysisPartMock],
       processId: entryEquipmentCreated.processId,
       pause: [{

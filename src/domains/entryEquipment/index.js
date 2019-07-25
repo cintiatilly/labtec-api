@@ -49,6 +49,11 @@ module.exports = class EntryEquipmentDomain {
       motoboyName: false,
       responsibleName: false,
       technicianName: false,
+
+      humidity: false,
+      misuse: false,
+      brokenSeal: false,
+      fall: false,
     }
     const message = {
       equipId: '',
@@ -69,6 +74,11 @@ module.exports = class EntryEquipmentDomain {
       motoboyName: '',
       responsibleName: '',
       technicianName: '',
+
+      humidity: '',
+      misuse: '',
+      brokenSeal: '',
+      fall: '',
     }
 
     let errors = false
@@ -76,6 +86,30 @@ module.exports = class EntryEquipmentDomain {
     const { serialNumber } = bodyData
 
     let equipReturned = null
+
+    if (bodyDataNotHasProp('humidity') || typeof entryEquipment.humidity !== 'boolean') {
+      errors = true
+      field.humidity = true
+      message.humidity = 'humidity not is bollean.'
+    }
+
+    if (bodyDataNotHasProp('misuse') || typeof entryEquipment.misuse !== 'boolean') {
+      errors = true
+      field.misuse = true
+      message.misuse = 'misuse not is bollean.'
+    }
+
+    if (bodyDataNotHasProp('brokenSeal') || typeof entryEquipment.brokenSeal !== 'boolean') {
+      errors = true
+      field.brokenSeal = true
+      message.brokenSeal = 'brokenSeal not is bollean.'
+    }
+
+    if (bodyDataNotHasProp('fall') || typeof entryEquipment.fall !== 'boolean') {
+      errors = true
+      field.fall = true
+      message.fall = 'fall not is bollean.'
+    }
 
     if (bodyDataNotHasProp('serialNumber') || !bodyData.serialNumber) {
       errors = true

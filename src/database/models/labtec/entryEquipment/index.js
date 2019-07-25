@@ -93,6 +93,27 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: true,
     },
+
+    humidity: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+
+    fall: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+
+    misuse: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+
+    brokenSeal: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+
   })
 
   entryEquipment.associate = (models) => {

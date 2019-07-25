@@ -79,6 +79,10 @@ describe('entryEquipmentDomain', () => {
     const accessory2 = await Accessories.create(accessoriesMock2)
 
     entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: true,
+      brokenSeal: false,
       serialNumber: '696969',
       externalDamage: true,
       details: 'tá zuado',

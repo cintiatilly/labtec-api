@@ -15,6 +15,8 @@ const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
 const Analyze = database.model('analyze')
+const AnalysisPart = database.model('analysisPart')
+const Part = database.model('part')
 
 module.exports = class ProcessDomain {
   async update(id, bodyData, options = {}) {
@@ -132,6 +134,21 @@ module.exports = class ProcessDomain {
       },
       {
         model: Analyze,
+        include: [{
+          model: AnalysisPart,
+          include: [{
+            model: Part,
+            include: [{
+              model: EquipModel,
+              include: [{
+                model: EquipMark,
+                include: [{
+                  model: EquipType,
+                }],
+              }],
+            }],
+          }],
+        }],
       },
       ],
       // order: [
@@ -144,6 +161,8 @@ module.exports = class ProcessDomain {
 
     const { rows } = process
 
+    // console.log(JSON.stringify(rows))
+
     const formatDateFunct = (date) => {
       moment.locale('pt-br')
       const formatDate = moment(date).format('L')
@@ -155,6 +174,7 @@ module.exports = class ProcessDomain {
     const formatData = R.map((comp) => {
       const resp = {
         status: comp.status,
+        analyze: comp.analyze,
         id: comp.entryEquipment.id,
         conditionType: comp.entryEquipment.conditionType,
         garantia: comp.entryEquipment.garantia,
