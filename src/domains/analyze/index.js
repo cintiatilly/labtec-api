@@ -95,7 +95,7 @@ module.exports = class AnalyzeDomain {
 
     let analyzeCreated = {}
 
-    if (getProcess === null) {
+    if (getProcess.analyze !== null) {
       const getAnalize = await Analyze.findOne({
         include: [{
           model: Process,
