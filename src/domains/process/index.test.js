@@ -24,6 +24,10 @@ describe('ProcessDomain', () => {
 
   beforeAll(async () => {
     entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '2564',
       externalDamage: true,
       details: 'tá zuado',
@@ -87,6 +91,20 @@ describe('ProcessDomain', () => {
     const updateProcess = await processDomain.update(entry.processId, updateProcessMock)
 
     expect(updateProcess).toBeTruthy()
+
+    expect(await processDomain.update(entry.processId, { status: 'fabrica' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'preAnalise' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'analise' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'pendente' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'revisao1' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'posAnalise' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'revisao2' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'posAnalise2' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'revisao3' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'orcamento' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'manutencao' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'revisaoFinal' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'estoque' })).toBeTruthy()
   })
 
   test('getAll', async () => {

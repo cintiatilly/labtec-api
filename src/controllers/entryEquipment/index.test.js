@@ -58,6 +58,10 @@ describe('entryEquipmentControllers', () => {
     await equipDomain.add(equipMock)
 
     entryEquipmentMock = {
+      humidity: false,
+      fall: false,
+      misuse: false,
+      brokenSeal: false,
       serialNumber: '696970',
       externalDamage: true,
       details: 'tá zuado',

@@ -3,12 +3,18 @@ const request = require('../../helpers/request')
 const EquipTypeDomain = require('../../domains/equip/equipType')
 const PartDomain = require('../../domains/part')
 const AnalyzeDomain = require('../../domains/analyze')
+const EntryEquipmentDomain = require('../../domains/entryEquipment')
+const CompanyDomain = require('../../domains/company')
+const EquipDomain = require('../../domains/equip')
 
 // const { FieldValidationError } = require('../../helpers/errors')
 
 const partDomain = new PartDomain()
 const equipTypeDomain = new EquipTypeDomain()
 const analyzeDomain = new AnalyzeDomain()
+const entryEquipmentDomain = new EntryEquipmentDomain()
+const companyDomain = new CompanyDomain()
+const equipDomain = new EquipDomain()
 
 describe('analyzecontroller', () => {
   let analyzeMock = null
@@ -16,6 +22,9 @@ describe('analyzecontroller', () => {
   let headers = null
   let bodyData = null
   let analyzeUpdateMock = null
+  let entryEquipmentCreated = null
+  let companyMock = null
+  let equipMock = null
 
   beforeAll(async () => {
     const equipMarkMock = {
@@ -48,13 +57,59 @@ describe('analyzecontroller', () => {
       description: 'garrafa furada.',
     }
 
-    analyzeMock = {
-      // garantia: 'externa',
-      // conditionType: 'avulso',
+    companyMock = {
+      razaoSocial: 'testes 7070 LTDA',
+      cnpj: '48864576000123',
+      street: 'jadaisom rodrigues',
+      number: '69',
+      city: 'São Paulo',
+      state: 'UF',
+      neighborhood: 'JD. Avelino',
+      zipCode: '09930-210',
+      telphone: '(11)8565-4118',
+      nameContact: 'josi',
+      email: 'josi@gmail.com',
+    }
+
+    const companyCreated = await companyDomain.add(companyMock)
+
+    equipMock = {
+      equipModelId: modelMock.id,
+      companyId: companyCreated.id,
+      serialNumber: '98569856',
+      readerColor: 'Verde',
+      details: '',
+    }
+
+    await equipDomain.add(equipMock)
+
+    const entryEquipmentMock = {
       humidity: false,
       fall: false,
       misuse: false,
       brokenSeal: false,
+      serialNumber: '98569856',
+      externalDamage: true,
+      details: 'tá zuado',
+      defect: 'fonte',
+      delivery: 'externo',
+      technicianName: 'Carlos',
+      garantia: 'externo',
+      conditionType: 'avulso',
+      properlyPacked: true,
+      accessories: [],
+    }
+
+    entryEquipmentCreated = await entryEquipmentDomain.add(entryEquipmentMock)
+
+    analyzeMock = {
+      // garantia: 'externa',
+      // conditionType: 'avulso',
+      // humidity: false,
+      // fall: false,
+      // misuse: false,
+      // brokenSeal: false,
+      processId: entryEquipmentCreated.processId,
       analysisPart: [analysisPartMock, analysisPartMock],
     }
 
@@ -87,13 +142,13 @@ describe('analyzecontroller', () => {
   test('create', async () => {
     const response = await request().post('/api/analyze', analyzeMock, { headers })
 
-    const { body, statusCode } = response
+    const { statusCode } = response
 
     expect(statusCode).toBe(200)
-    expect(body.humidity).toBe(false)
-    expect(body.fall).toBe(false)
-    expect(body.misuse).toBe(false)
-    expect(body.brokenSeal).toBe(false)
+    // expect(body.humidity).toBe(false)
+    // expect(body.fall).toBe(false)
+    // expect(body.misuse).toBe(false)
+    // expect(body.brokenSeal).toBe(false)
   })
 
   test('analyzeUpdate', async () => {

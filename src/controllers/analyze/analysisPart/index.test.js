@@ -4,6 +4,9 @@ const EquipTypeDomain = require('../../../domains/equip/equipType')
 const PartDomain = require('../../../domains/part')
 const AnalyzeDomain = require('../../../domains/analyze')
 const AnalysisPartDomain = require('../../../domains/analyze/analysisPart')
+const CompanyDomain = require('../../../domains/company')
+const EquipDomain = require('../../../domains/equip')
+const EntryEquipmentDomain = require('../../../domains/entryEquipment')
 
 // const { FieldValidationError } = require('../../helpers/errors')
 
@@ -11,6 +14,9 @@ const partDomain = new PartDomain()
 const equipTypeDomain = new EquipTypeDomain()
 const analyzeDomain = new AnalyzeDomain()
 const analysisPartDomain = new AnalysisPartDomain()
+const companyDomain = new CompanyDomain()
+const equipDomain = new EquipDomain()
+const entryEquipmentDomain = new EntryEquipmentDomain()
 
 describe('analysisPartController', () => {
   let analyzeMock = null
@@ -21,6 +27,9 @@ describe('analysisPartController', () => {
   let equipModelMock = null
   let headers = null
   let partMock = null
+  let companyMock = null
+  let equipMock = null
+  let entryEquipmentCreated = null
 
   beforeAll(async () => {
     equipMarkMock = {
@@ -48,13 +57,59 @@ describe('analysisPartController', () => {
 
     const partCreated = await partDomain.add(partMock)
 
-    analyzeMock = {
-      // garantia: 'externa',
-      // conditionType: 'avulso',
+    companyMock = {
+      razaoSocial: 'testes analysisPartController LTDA',
+      cnpj: '70159807000157',
+      street: 'jadaisom rodrigues',
+      number: '69',
+      city: 'São Paulo',
+      state: 'UF',
+      neighborhood: 'JD. Avelino',
+      zipCode: '09930-210',
+      telphone: '(11)8565-4118',
+      nameContact: 'josi',
+      email: 'josi@gmail.com',
+    }
+
+    const companyCreated = await companyDomain.add(companyMock)
+
+    equipMock = {
+      equipModelId: modelMock.id,
+      companyId: companyCreated.id,
+      serialNumber: '12541254',
+      readerColor: 'Verde',
+      details: '',
+    }
+
+    await equipDomain.add(equipMock)
+
+    const entryEquipmentMock = {
       humidity: false,
       fall: false,
       misuse: false,
       brokenSeal: false,
+      serialNumber: '12541254',
+      externalDamage: true,
+      details: 'tá zuado',
+      defect: 'fonte',
+      delivery: 'externo',
+      technicianName: 'Carlos',
+      garantia: 'externo',
+      conditionType: 'avulso',
+      properlyPacked: true,
+      accessories: [],
+    }
+
+    entryEquipmentCreated = await entryEquipmentDomain.add(entryEquipmentMock)
+
+    analyzeMock = {
+      // garantia: 'externa',
+      // conditionType: 'avulso',
+      // humidity: false,
+      // fall: false,
+      // misuse: false,
+      // brokenSeal: false,
+      processId: entryEquipmentCreated.processId,
     }
 
     const analyzeCreated = await analyzeDomain.add(analyzeMock)

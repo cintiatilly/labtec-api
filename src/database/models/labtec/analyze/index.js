@@ -14,25 +14,25 @@ module.exports = (sequelize) => {
       defaultValue: 'aguardando aprovação',
     },
 
-    humidity: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
+    // humidity: {
+    //   type: Sequelize.BOOLEAN,
+    //   defaultValue: false,
+    // },
 
-    fall: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
+    // fall: {
+    //   type: Sequelize.BOOLEAN,
+    //   defaultValue: false,
+    // },
 
-    misuse: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
+    // misuse: {
+    //   type: Sequelize.BOOLEAN,
+    //   defaultValue: false,
+    // },
 
-    brokenSeal: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
+    // brokenSeal: {
+    //   type: Sequelize.BOOLEAN,
+    //   defaultValue: false,
+    // },
 
     observations: {
       type: Sequelize.STRING,
