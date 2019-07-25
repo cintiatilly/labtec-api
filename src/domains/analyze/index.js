@@ -86,18 +86,16 @@ module.exports = class AnalyzeDomain {
       }
     }
 
-    const getProcess = await Process.findOne({
-      where: { id: analyze.processId },
+    const getProcess = await Process.findByPk(analyze.processId, {
       include: [{
         model: Analyze,
       }],
       transaction,
     })
-    console.log(JSON.stringify(getProcess))
 
     let analyzeCreated = {}
 
-    if (getProcess.analyze) {
+    if (getProcess === null) {
       const getAnalize = await Analyze.findOne({
         include: [{
           model: Process,
