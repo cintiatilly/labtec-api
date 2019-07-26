@@ -109,8 +109,11 @@ describe('analyzecontroller', () => {
       // fall: false,
       // misuse: false,
       // brokenSeal: false,
+      observations: '',
+      init: new Date(),
+      end: new Date(),
       processId: entryEquipmentCreated.processId,
-      analysisPart: [analysisPartMock, analysisPartMock],
+      // analysisPart: [analysisPartMock, analysisPartMock],
     }
 
     const loginBody = {

@@ -35,7 +35,18 @@ module.exports = (sequelize) => {
     // },
 
     observations: {
-      type: Sequelize.STRING,
+      // type: Sequelize.STRING,
+      type: Sequelize.ARRAY(Sequelize.TEXT),
+      allowNull: true,
+    },
+
+    init: {
+      type: Sequelize.ARRAY(Sequelize.DATE),
+      allowNull: true,
+    },
+
+    end: {
+      type: Sequelize.ARRAY(Sequelize.DATE),
       allowNull: true,
     },
 

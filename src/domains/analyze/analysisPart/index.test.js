@@ -111,6 +111,9 @@ describe('analysisPartDomain', () => {
       // fall: false,
       // misuse: false,
       // brokenSeal: false,
+      observations: '',
+      init: new Date(),
+      end: new Date(),
       processId: entryEquipmentCreated.processId,
     }
 

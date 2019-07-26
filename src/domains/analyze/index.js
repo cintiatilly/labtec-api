@@ -24,11 +24,11 @@ module.exports = class AnalyzeDomain {
   async add(bodyData, options = {}) {
     const { transaction = null } = options
 
-    const analyze = R.omit(['id'], bodyData)
+    const analyze = R.omit(['id', 'observations'], bodyData)
 
     // console.log(JSON.stringify(analyze))
 
-    // const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
+    const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
     const analyzeHasProp = prop => R.has(prop, bodyData)
 
     const field = {
@@ -88,6 +88,24 @@ module.exports = class AnalyzeDomain {
       }
     }
 
+    if (analyzeNotHasProp('observations')) {
+      errors = true
+      field.observations = true
+      message.observations = 'observations .'
+    }
+
+    if (analyzeNotHasProp('init')) {
+      errors = true
+      field.init = true
+      message.init = 'init .'
+    }
+
+    if (analyzeNotHasProp('end')) {
+      errors = true
+      field.end = true
+      message.end = 'end .'
+    }
+
     const getProcess = await Process.findByPk(analyze.processId, {
       include: [{
         model: Analyze,
@@ -106,8 +124,20 @@ module.exports = class AnalyzeDomain {
         transaction,
       })
 
+      getAnalize.observations.push(bodyData.observations)
+      getAnalize.init.push(bodyData.init)
+      getAnalize.end.push(bodyData.end)
+
+      analyze.observations = getAnalize.observations
+      analyze.init = getAnalize.init
+      analyze.end = getAnalize.end
+
       analyzeCreated = await getAnalize.update(analyze, { transaction })
     } else {
+      analyze.observations = [bodyData.observations]
+      analyze.init = [bodyData.init]
+      analyze.end = [bodyData.end]
+
       analyzeCreated = await Analyze.create(analyze, { transaction })
     }
 

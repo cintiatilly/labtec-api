@@ -60,8 +60,8 @@ describe('analyzeDomain', () => {
     }
 
     companyMock = {
-      razaoSocial: 'testes analise LTDA',
-      cnpj: '16647179000103',
+      razaoSocial: 'analisee LTDA',
+      cnpj: '58383275000131',
       street: 'jadaisom rodrigues',
       number: '69',
       city: 'São Paulo',
@@ -70,7 +70,7 @@ describe('analyzeDomain', () => {
       zipCode: '09930-210',
       telphone: '(11)8565-4118',
       nameContact: 'josi',
-      email: 'josi@gmail.com',
+      email: 'analise@gmail.com',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -121,6 +121,9 @@ describe('analyzeDomain', () => {
       // fall: false,
       // misuse: false,
       // brokenSeal: false,
+      observations: 'test1',
+      init: new Date(),
+      end: new Date(),
       analysisPart: [analysisPartMock, analysisPartMock],
       processId: entryEquipmentCreated.processId,
       pause: [{
