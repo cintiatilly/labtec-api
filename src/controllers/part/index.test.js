@@ -18,6 +18,7 @@ describe('partController', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Lakai',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -26,6 +27,7 @@ describe('partController', () => {
       equipMarkId: markMock.id,
       model: 'Lakai 2.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
@@ -36,6 +38,7 @@ describe('partController', () => {
       costPrice: '100,00',
       salePrice: '150,00',
       equipModels: [{ id: modelMock.id }],
+      responsibleUser: 'modrp',
     }
 
     const partCreated = await partDomain.add(partMock)

@@ -8,6 +8,7 @@ const database = require('../../../database')
 const { FieldValidationError } = require('../../../helpers/errors')
 
 const Accessories = database.model('accessories')
+const User = database.model('user')
 
 
 module.exports = class AccessoriesDomain {
@@ -20,9 +21,11 @@ module.exports = class AccessoriesDomain {
 
     const field = {
       accessories: false,
+      responsibleUser: false,
     }
     const message = {
       accessories: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -42,6 +45,29 @@ module.exports = class AccessoriesDomain {
         field.accessories = true
         message.accessories = 'Esse tipo acessório já está cadastrado.'
       }
+    }
+
+    if (accessoryNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
     }
 
     if (errors) {

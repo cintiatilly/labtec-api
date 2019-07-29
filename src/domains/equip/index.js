@@ -12,6 +12,7 @@ const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
 const Company = database.model('company')
 const Equip = database.model('equip')
+const User = database.model('user')
 
 
 module.exports = class EquipDomain {
@@ -28,6 +29,7 @@ module.exports = class EquipDomain {
       serialNumber: false,
       readerColor: false,
       details: false,
+      responsibleUser: false,
     }
     const message = {
       equipModelId: '',
@@ -35,6 +37,7 @@ module.exports = class EquipDomain {
       serialNumber: '',
       readerColor: '',
       details: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -107,6 +110,29 @@ module.exports = class EquipDomain {
     //   field.readerColor = true
     //   message.readerColor = 'leitor inválido.'
     // }
+
+    if (equipNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
+    }
 
     if (errors) {
       throw new FieldValidationError([{ field, message }])

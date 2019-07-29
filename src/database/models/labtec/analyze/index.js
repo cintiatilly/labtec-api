@@ -35,9 +35,35 @@ module.exports = (sequelize) => {
     // },
 
     observations: {
-      type: Sequelize.STRING,
+      // type: Sequelize.STRING,
+      type: Sequelize.ARRAY(Sequelize.TEXT),
       allowNull: true,
     },
+
+    init: {
+      type: Sequelize.ARRAY(Sequelize.DATE),
+      allowNull: true,
+    },
+
+    end: {
+      type: Sequelize.ARRAY(Sequelize.DATE),
+      allowNull: true,
+    },
+
+    arrayResponsibleUser: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: true,
+    },
+
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
+    // arrayUserId: {
+    //   type: Sequelize.ARRAY(Sequelize.UUID),
+    //   allowNull: true,
+    // },
 
     // garantia: {
     //   type: Sequelize.ENUM(['externa', 'laboratorio', 'venda', 'semg garantia']),
@@ -66,6 +92,11 @@ module.exports = (sequelize) => {
         // allowNull: false,
       },
     })
+    // analyze.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
 
   return analyze

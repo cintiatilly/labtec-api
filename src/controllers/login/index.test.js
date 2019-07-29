@@ -22,6 +22,7 @@ describe('logincontroller', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     await typeAccount.add(typeAccountMock)
@@ -40,6 +41,7 @@ describe('logincontroller', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     user = await userDomain.user_Create(userMock)

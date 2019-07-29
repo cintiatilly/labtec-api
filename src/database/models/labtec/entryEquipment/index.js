@@ -114,6 +114,11 @@ module.exports = (sequelize) => {
       defaultValue: false,
     },
 
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
   })
 
   entryEquipment.associate = (models) => {
@@ -123,6 +128,11 @@ module.exports = (sequelize) => {
       },
     })
     entryEquipment.hasMany(models.accessories)
+    // entryEquipment.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
   return entryEquipment
 }

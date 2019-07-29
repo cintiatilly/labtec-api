@@ -18,18 +18,21 @@ const Part = database.model('part')
 const Analyze = database.model('analyze')
 const Process = database.model('process')
 const Pause = database.model('pause')
+const User = database.model('user')
 
 
 module.exports = class AnalyzeDomain {
   async add(bodyData, options = {}) {
     const { transaction = null } = options
 
-    const analyze = R.omit(['id'], bodyData)
+    // console.log(bodyData)
+
+    const analyze = R.omit(['id', 'observations'], bodyData)
 
     // console.log(JSON.stringify(analyze))
 
-    // const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
-    const analyzeHasProp = prop => R.has(prop, bodyData)
+    const analyzeNotHasProp = prop => R.not(R.has(prop, bodyData))
+    const analyzeHasProp = prop => R.has(prop, analyze)
 
     const field = {
       processId: false,
@@ -37,6 +40,10 @@ module.exports = class AnalyzeDomain {
       // misuse: false,
       // brokenSeal: false,
       // fall: false,
+      responsibleUser: false,
+      observations: false,
+      init: false,
+      end: false,
     }
     const message = {
       processId: '',
@@ -44,6 +51,10 @@ module.exports = class AnalyzeDomain {
       // misuse: '',
       // brokenSeal: '',
       // fall: '',
+      responsibleUser: '',
+      observations: '',
+      init: '',
+      end: '',
     }
 
     let errors = false
@@ -88,6 +99,47 @@ module.exports = class AnalyzeDomain {
       }
     }
 
+    if (analyzeNotHasProp('observations')) {
+      errors = true
+      field.observations = true
+      message.observations = 'observations .'
+    }
+
+    if (analyzeNotHasProp('init')) {
+      errors = true
+      field.init = true
+      message.init = 'init .'
+    }
+
+    if (analyzeNotHasProp('end')) {
+      errors = true
+      field.end = true
+      message.end = 'end .'
+    }
+
+    if (analyzeNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
+    }
+
     const getProcess = await Process.findByPk(analyze.processId, {
       include: [{
         model: Analyze,
@@ -106,8 +158,23 @@ module.exports = class AnalyzeDomain {
         transaction,
       })
 
+      getAnalize.observations.push(bodyData.observations)
+      getAnalize.init.push(bodyData.init)
+      getAnalize.end.push(bodyData.end)
+      getAnalize.arrayResponsibleUser.push(bodyData.responsibleUser)
+
+      analyze.observations = getAnalize.observations
+      analyze.init = getAnalize.init
+      analyze.end = getAnalize.end
+      analyze.arrayResponsibleUser = getAnalize.arrayResponsibleUser
+
       analyzeCreated = await getAnalize.update(analyze, { transaction })
     } else {
+      analyze.observations = [bodyData.observations]
+      analyze.init = [bodyData.init]
+      analyze.end = [bodyData.end]
+      analyze.arrayResponsibleUser = [bodyData.responsibleUser]
+
       analyzeCreated = await Analyze.create(analyze, { transaction })
     }
 
@@ -122,6 +189,7 @@ module.exports = class AnalyzeDomain {
         const analysisPartCreatedPromises = analysisPart.map((item) => {
           const analysisPartBody = {
             ...item,
+            // responsibleUser: bodyData.responsibleUser,
             analyzeId: analyzeCreated.id,
           }
           return analysisPartDomain.add(analysisPartBody, { transaction })

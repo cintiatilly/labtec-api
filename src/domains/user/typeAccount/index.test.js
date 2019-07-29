@@ -22,6 +22,7 @@ describe('typeAccountDomain', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
   })
 

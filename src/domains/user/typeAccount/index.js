@@ -6,6 +6,7 @@ const { FieldValidationError } = require('../../../helpers/errors')
 
 const TypeAccount = database.model('typeAccount')
 const Resources = database.model('resources')
+const User = database.model('user')
 
 module.exports = class TypeAccountDomain {
   async add(bodyData, options = {}) {
@@ -35,6 +36,7 @@ module.exports = class TypeAccountDomain {
       addAnalyze: false,
       addEquip: false,
       addEntry: false,
+      responsibleUser: false,
     }
     const message = {
       typeName: '',
@@ -43,6 +45,7 @@ module.exports = class TypeAccountDomain {
       addAnalyze: '',
       addEquip: '',
       addEntry: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -127,6 +130,28 @@ module.exports = class TypeAccountDomain {
       message.addTypeAccount = 'addTypeAccount não é um booleano'
     }
 
+    if (typeAccountNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user && bodyData.responsibleUser !== 'modrp') {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
+    }
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }

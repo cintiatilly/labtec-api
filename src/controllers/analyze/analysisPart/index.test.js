@@ -35,6 +35,7 @@ describe('analysisPartController', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'DC',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -43,6 +44,7 @@ describe('analysisPartController', () => {
       equipMarkId: markMock.id,
       model: 'DC 2.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
@@ -53,6 +55,7 @@ describe('analysisPartController', () => {
       costPrice: '100,00',
       salePrice: '150,00',
       equipModels: [{ id: modelMock.id }],
+      responsibleUser: 'modrp',
     }
 
     const partCreated = await partDomain.add(partMock)
@@ -69,6 +72,7 @@ describe('analysisPartController', () => {
       telphone: '(11)8565-4118',
       nameContact: 'josi',
       email: 'josi@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -79,6 +83,7 @@ describe('analysisPartController', () => {
       serialNumber: '12541254',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)
@@ -98,6 +103,7 @@ describe('analysisPartController', () => {
       conditionType: 'avulso',
       properlyPacked: true,
       accessories: [],
+      responsibleUser: 'modrp',
     }
 
     entryEquipmentCreated = await entryEquipmentDomain.add(entryEquipmentMock)
@@ -109,7 +115,11 @@ describe('analysisPartController', () => {
       // fall: false,
       // misuse: false,
       // brokenSeal: false,
+      observations: '',
+      init: new Date(),
+      end: new Date(),
       processId: entryEquipmentCreated.processId,
+      responsibleUser: 'modrp',
     }
 
     const analyzeCreated = await analyzeDomain.add(analyzeMock)
@@ -119,6 +129,7 @@ describe('analysisPartController', () => {
       partId: partCreated.id,
       description: 'fonte queimada.',
       analysisPart: [],
+      responsibleUser: 'modrp',
     }
 
 

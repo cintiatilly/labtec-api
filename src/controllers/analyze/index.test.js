@@ -30,6 +30,7 @@ describe('analyzecontroller', () => {
     const equipMarkMock = {
       type: 'catraca',
       mark: 'Zoo York',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -38,6 +39,7 @@ describe('analyzecontroller', () => {
       equipMarkId: markMock.id,
       model: 'Zoo York 2.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
@@ -48,6 +50,7 @@ describe('analyzecontroller', () => {
       costPrice: '100,00',
       salePrice: '150,00',
       equipModels: [{ id: modelMock.id }],
+      responsibleUser: 'modrp',
     }
 
     const partCreated = await partDomain.add(partMock)
@@ -55,6 +58,7 @@ describe('analyzecontroller', () => {
     analysisPartMock = {
       partId: partCreated.id,
       description: 'garrafa furada.',
+      responsibleUser: 'modrp',
     }
 
     companyMock = {
@@ -69,6 +73,7 @@ describe('analyzecontroller', () => {
       telphone: '(11)8565-4118',
       nameContact: 'josi',
       email: 'josi@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -79,6 +84,7 @@ describe('analyzecontroller', () => {
       serialNumber: '98569856',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)
@@ -98,6 +104,7 @@ describe('analyzecontroller', () => {
       conditionType: 'avulso',
       properlyPacked: true,
       accessories: [],
+      responsibleUser: 'modrp',
     }
 
     entryEquipmentCreated = await entryEquipmentDomain.add(entryEquipmentMock)
@@ -109,8 +116,12 @@ describe('analyzecontroller', () => {
       // fall: false,
       // misuse: false,
       // brokenSeal: false,
+      observations: '',
+      init: new Date(),
+      end: new Date(),
       processId: entryEquipmentCreated.processId,
       analysisPart: [analysisPartMock, analysisPartMock],
+      responsibleUser: 'modrp',
     }
 
     const loginBody = {

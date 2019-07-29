@@ -12,6 +12,7 @@ describe('accessoriesDomain', () => {
   beforeAll(async () => {
     accessoriesMock = {
       accessories: 'Caaaaabo',
+      responsibleUser: 'modrp',
     }
   })
 

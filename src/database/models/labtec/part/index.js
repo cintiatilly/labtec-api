@@ -30,11 +30,20 @@ module.exports = (sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
 
   part.associate = (models) => {
     part.belongsToMany(models.equipModel,
       { through: 'partEquipModel' })
+    // part.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
 
   return part

@@ -8,6 +8,7 @@ const { FieldValidationError } = require('../../../helpers/errors')
 const EquipType = database.model('equipType')
 const EquipMark = database.model('equipMark')
 const EquipModel = database.model('equipModel')
+const User = database.model('user')
 
 
 module.exports = class EquipTypeDomain {
@@ -21,10 +22,12 @@ module.exports = class EquipTypeDomain {
     const field = {
       type: false,
       mark: false,
+      responsibleUser: false,
     }
     const message = {
       type: '',
       mark: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -47,6 +50,29 @@ module.exports = class EquipTypeDomain {
       errors = true
       field.mark = true
       message.mark = 'Por favor informar a marca do equipamento.'
+    }
+
+    if (equipNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
     }
 
 
@@ -72,6 +98,7 @@ module.exports = class EquipTypeDomain {
     const equipMark = {
       mark: equip.mark,
       equipTypeId: typeHasExist.id,
+      responsibleUser: equip.responsibleUser,
     }
 
     let markHasExist = await EquipMark.findOne({
@@ -115,11 +142,13 @@ module.exports = class EquipTypeDomain {
       equipMarkId: false,
       model: false,
       description: false,
+      responsibleUser: false,
     }
     const message = {
       equipMarkId: '',
       model: '',
       description: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -135,6 +164,29 @@ module.exports = class EquipTypeDomain {
       errors = true
       field.model = true
       message.model = 'Por favor informar o modelo do equipamento.'
+    }
+
+    if (equipNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
     }
 
     if (errors) {
@@ -159,6 +211,7 @@ module.exports = class EquipTypeDomain {
       model: equip.model,
       description: equip.description,
       equipMarkId: markHasExist.id,
+      responsibleUser: equip.responsibleUser,
     }
 
     let modelHasExist = await EquipModel.findOne({

@@ -10,6 +10,7 @@ const EquipModel = database.model('equipModel')
 const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
 const Part = database.model('part')
+const User = database.model('user')
 
 
 module.exports = class PartDomain {
@@ -29,6 +30,7 @@ module.exports = class PartDomain {
       mark: false,
       modelListCard: false,
       part: false,
+      responsibleUser: false,
     }
     const message = {
       item: '',
@@ -38,6 +40,7 @@ module.exports = class PartDomain {
       mark: '',
       modelListCard: '',
       part: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -88,6 +91,29 @@ module.exports = class PartDomain {
         field.item = true
         message.item = 'Peça já existe.'
       }
+    }
+
+    if (partNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
     }
 
     if (errors) {

@@ -12,6 +12,7 @@ const database = require('../../database')
 const { FieldValidationError } = require('../../helpers/errors')
 
 const Company = database.model('company')
+const User = database.model('user')
 
 module.exports = class CompanyDomain {
   async add(bodyData, options = {}) {
@@ -34,6 +35,7 @@ module.exports = class CompanyDomain {
       telphone: false,
       email: false,
       nameContact: false,
+      responsibleUser: false,
     }
     const message = {
       razaoSocial: '',
@@ -48,6 +50,7 @@ module.exports = class CompanyDomain {
       telphone: '',
       email: '',
       nameContact: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -200,11 +203,37 @@ module.exports = class CompanyDomain {
       message.nameContact = 'Por favor informar o nome para contato.'
     }
 
+    if (companyNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
+    }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
 
+
     const companyCreated = Company.create(company, { transaction })
+
+    // console.log(JSON.stringify(companyCreated))
 
     return companyCreated
   }
@@ -216,7 +245,9 @@ module.exports = class CompanyDomain {
 
     const companyNotHasProp = prop => R.not(R.has(prop, company))
 
-    const oldCompany = await this.getOneByCnpj(company.cnpj)
+    const cnpjOrCpf = company.cnpj.replace(/\D/gi, '')
+
+    const oldCompany = await this.getOneByCnpj(cnpjOrCpf)
 
     const field = {
       razaoSocial: false,
@@ -266,14 +297,11 @@ module.exports = class CompanyDomain {
       }
     }
 
-
     if (companyNotHasProp('cnpj') || !company.cnpj) {
       errors = true
       field.cnpj = true
       message.cnpj = 'Por favor informar o cnpj ou cpf.'
     } else {
-      const cnpjOrCpf = company.cnpj.replace(/\D/g, '')
-
       if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
         errors = true
         field.cnpj = true
@@ -287,7 +315,7 @@ module.exports = class CompanyDomain {
         transaction,
       })
 
-      if (companyHasExist && company.cnpj !== oldCompany.cnpj) {
+      if (companyHasExist && cnpjOrCpf !== oldCompany.cnpj) {
         errors = true
         field.cnpj = true
         message.cnpj = 'O cnpj ou cpf infomardo já existem em nosso sistema.'
@@ -402,8 +430,10 @@ module.exports = class CompanyDomain {
       throw new FieldValidationError([{ field, message }])
     }
 
+    const newCompany = Object.assign(oldCompany, company)
+
     // const companyCreated = Company.update(company, { transaction })
-    const response = await oldCompany.update(company, { transaction })
+    const response = await oldCompany.update(newCompany, { transaction })
 
     return response
   }

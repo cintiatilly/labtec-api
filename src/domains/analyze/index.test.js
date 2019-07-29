@@ -1,12 +1,13 @@
 // const R = require('ramda')
 
-const database = require('../../database')
+// const database = require('../../database')
 const EquipTypeDomain = require('../../domains/equip/equipType')
 const PartDomain = require('../../domains/part')
 const AnalyzeDomain = require('./')
 const CompanyDomain = require('../company')
 const EquipDomain = require('../equip')
 const EntryEquipmentDomain = require('../entryEquipment')
+const AccessoriesDomain = require('../entryEquipment/accessories')
 
 // const { FieldValidationError } = require('../../helpers/errors')
 
@@ -15,9 +16,10 @@ const equipTypeDomain = new EquipTypeDomain()
 const analyzeDomain = new AnalyzeDomain()
 const companyDomain = new CompanyDomain()
 const equipDomain = new EquipDomain()
+const accessoriesDomain = new AccessoriesDomain()
 const entryEquipmentDomain = new EntryEquipmentDomain()
 
-const Accessories = database.model('accessories')
+// const Accessories = database.model('accessories')
 
 describe('analyzeDomain', () => {
   let analyzeMock = null
@@ -32,6 +34,7 @@ describe('analyzeDomain', () => {
     const equipMarkMock = {
       type: 'catraca',
       mark: 'Lindóya',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -40,6 +43,7 @@ describe('analyzeDomain', () => {
       equipMarkId: markMock.id,
       model: 'Lindóya 2.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
@@ -50,6 +54,7 @@ describe('analyzeDomain', () => {
       costPrice: '100,00',
       salePrice: '150,00',
       equipModels: [{ id: modelMock.id }],
+      responsibleUser: 'modrp',
     }
 
     const partCreated = await partDomain.add(partMock)
@@ -57,11 +62,12 @@ describe('analyzeDomain', () => {
     analysisPartMock = {
       partId: partCreated.id,
       description: 'garrafa furada.',
+      responsibleUser: 'modrp',
     }
 
     companyMock = {
-      razaoSocial: 'testes analise LTDA',
-      cnpj: '16647179000103',
+      razaoSocial: 'analisee LTDA',
+      cnpj: '58383275000131',
       street: 'jadaisom rodrigues',
       number: '69',
       city: 'São Paulo',
@@ -70,7 +76,8 @@ describe('analyzeDomain', () => {
       zipCode: '09930-210',
       telphone: '(11)8565-4118',
       nameContact: 'josi',
-      email: 'josi@gmail.com',
+      email: 'analise@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -81,19 +88,22 @@ describe('analyzeDomain', () => {
       serialNumber: '321654987',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)
 
     accessoriesMock1 = {
       accessories: 'fonte',
+      responsibleUser: 'modrp',
     }
     accessoriesMock2 = {
       accessories: 'teclado',
+      responsibleUser: 'modrp',
     }
 
-    const accessory1 = await Accessories.create(accessoriesMock1)
-    const accessory2 = await Accessories.create(accessoriesMock2)
+    const accessory1 = await accessoriesDomain.add(accessoriesMock1)
+    const accessory2 = await accessoriesDomain.add(accessoriesMock2)
 
     const entryEquipmentMock = {
       humidity: false,
@@ -110,6 +120,7 @@ describe('analyzeDomain', () => {
       conditionType: 'avulso',
       properlyPacked: true,
       accessories: [accessory1, accessory2],
+      responsibleUser: 'modrp',
     }
 
     entryEquipmentCreated = await entryEquipmentDomain.add(entryEquipmentMock)
@@ -121,6 +132,9 @@ describe('analyzeDomain', () => {
       // fall: false,
       // misuse: false,
       // brokenSeal: false,
+      observations: 'test1',
+      init: new Date(),
+      end: new Date(),
       analysisPart: [analysisPartMock, analysisPartMock],
       processId: entryEquipmentCreated.processId,
       pause: [{
@@ -128,6 +142,7 @@ describe('analyzeDomain', () => {
         final: new Date(),
         motivoPausa: 'sdbiasdaiu',
       }],
+      responsibleUser: 'modrp',
     }
   })
 

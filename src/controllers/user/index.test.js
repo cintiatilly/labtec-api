@@ -23,6 +23,7 @@ describe('userController', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     await typeAccount.add(typeAccountMock)
@@ -41,6 +42,7 @@ describe('userController', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     const loginBody = {
@@ -87,6 +89,7 @@ describe('userController', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     await request().post('/api/user', userMock, { headers })

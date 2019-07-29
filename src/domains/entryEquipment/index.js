@@ -19,6 +19,7 @@ const Company = database.model('company')
 const Equip = database.model('equip')
 const Accessories = database.model('accessories')
 const Process = database.model('process')
+const User = database.model('user')
 
 module.exports = class EntryEquipmentDomain {
   async add(bodyData, options = {}) {
@@ -54,6 +55,8 @@ module.exports = class EntryEquipmentDomain {
       misuse: false,
       brokenSeal: false,
       fall: false,
+
+      responsibleUser: false,
     }
     const message = {
       equipId: '',
@@ -79,6 +82,8 @@ module.exports = class EntryEquipmentDomain {
       misuse: '',
       brokenSeal: '',
       fall: '',
+
+      responsibleUser: '',
     }
 
     let errors = false
@@ -303,6 +308,29 @@ module.exports = class EntryEquipmentDomain {
     if (entryEquipmentHasProp('zipCode')) {
       const { zipCode } = entryEquipment
       entryEquipment.zipCode = zipCode.replace(/\D/g, '')
+    }
+
+    if (entryEquipmentNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
     }
 
     if (errors) {

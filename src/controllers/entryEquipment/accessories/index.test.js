@@ -7,6 +7,7 @@ describe('accessoriesControllers', () => {
   beforeAll(async () => {
     accessoriesMock = {
       accessories: 'fone',
+      responsibleUser: 'modrp',
     }
 
 

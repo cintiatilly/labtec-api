@@ -67,6 +67,7 @@ class UserDomain {
       addAnalyze: false,
       addEquip: false,
       addEntry: false,
+      responsibleUser: false,
     }
     const message = {
       typeName: '',
@@ -75,6 +76,7 @@ class UserDomain {
       addAnalyze: '',
       addEquip: '',
       addEntry: '',
+      responsibleUser: '',
     }
 
     let errors = null
@@ -142,6 +144,29 @@ class UserDomain {
       message.addTypeAccount = 'addTypeAccount não é um booleano'
     }
 
+    if (notHasProps('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user && bodyData.responsibleUser !== 'modrp') {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
+    }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
@@ -183,6 +208,9 @@ class UserDomain {
       },
     }
 
+    // if (user) {
+    //   userFormatted.userId = user.id
+    // }
 
     const userCreated = await User.create(userFormatted, {
       include: [Login],
@@ -434,6 +462,21 @@ class UserDomain {
 
     return response
   }
+
+  // async findUsernameByPK(userId, options = {}) {
+  //   const { transaction = null } = options
+
+  //   const user = await User.findByPk(userId, { transaction })
+
+  //   if (!user) {
+  //     throw new FieldValidationError([{
+  //       name: 'userId',
+  //       message: 'userId invalid',
+  //     }])
+  //   }
+
+  //   return user.username
+  // }
 }
 
 module.exports = UserDomain

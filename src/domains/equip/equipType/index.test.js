@@ -6,7 +6,7 @@ const { FieldValidationError } = require('../../../helpers/errors')
 
 const equipTypeDomain = new EquipTypeDomain()
 
-describe('equipType', () => {
+describe('equipTypeDomain', () => {
   let equipModelMock = null
   let equipMarkMock = null
 
@@ -14,6 +14,7 @@ describe('equipType', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Festo',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -22,6 +23,7 @@ describe('equipType', () => {
       equipMarkId: markMock.id,
       model: 'Não conheço nenhum',
       description: 'sadddas',
+      responsibleUser: 'modrp',
     }
   })
 
@@ -115,11 +117,13 @@ describe('equipType', () => {
     const equipMarkMock1 = {
       type: 'catraca',
       mark: 'GM',
+      responsibleUser: 'modrp',
     }
 
     const equipMarkMock2 = {
       type: 'relogio',
       mark: 'GM',
+      responsibleUser: 'modrp',
     }
 
     const markMock1 = await equipTypeDomain.addMark(equipMarkMock1)
@@ -129,16 +133,19 @@ describe('equipType', () => {
       equipMarkId: markMock1.id,
       model: 'Onix',
       description: '',
+      responsibleUser: 'modrp',
     }
     const equipModelMock2 = {
       equipMarkId: markMock2.id,
       model: 'Onix',
       description: '',
+      responsibleUser: 'modrp',
     }
     const equipModelMock3 = {
       equipMarkId: markMock2.id,
       model: 'Corsa',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     await equipTypeDomain.addModel(equipModelMock1)
@@ -155,6 +162,7 @@ describe('equipType', () => {
     const equipMarkMock1 = {
       type: 'peca',
       mark: 'Ford',
+      responsibleUser: 'modrp',
     }
 
     const markMock1 = await equipTypeDomain.addMark(equipMarkMock1)
@@ -163,11 +171,13 @@ describe('equipType', () => {
       equipMarkId: markMock1.id,
       model: 'Ka',
       description: 'Motor',
+      responsibleUser: 'modrp',
     }
     const equipModelMock2 = {
       equipMarkId: markMock1.id,
       model: 'Ka',
       description: 'Volante',
+      responsibleUser: 'modrp',
     }
 
     const equipTypeCreated1 = await equipTypeDomain.addModel(equipModelMock1)

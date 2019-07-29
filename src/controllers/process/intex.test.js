@@ -35,6 +35,7 @@ describe('processcontroller', () => {
       properlyPacked: true,
       conditionType: 'avulso',
       garantia: 'externo',
+      responsibleUser: 'modrp',
     }
     companyMock = {
       razaoSocial: 'Real teste 321/ .LTDA',
@@ -48,6 +49,7 @@ describe('processcontroller', () => {
       telphone: '(11)8565-4658',
       nameContact: 'jose',
       email: 'jose@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -55,6 +57,7 @@ describe('processcontroller', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'LRG',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -63,6 +66,7 @@ describe('processcontroller', () => {
       equipMarkId: markMock.id,
       model: 'LRG 7.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
 
@@ -74,6 +78,7 @@ describe('processcontroller', () => {
       serialNumber: '2564545',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)

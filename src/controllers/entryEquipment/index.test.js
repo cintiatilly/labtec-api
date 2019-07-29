@@ -28,6 +28,7 @@ describe('entryEquipmentControllers', () => {
       telphone: '(11)8565-1058',
       nameContact: 'josel',
       email: 'josel@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -35,6 +36,7 @@ describe('entryEquipmentControllers', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Henry',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -43,6 +45,7 @@ describe('entryEquipmentControllers', () => {
       equipMarkId: markMock.id,
       model: 'Henry 11.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
@@ -53,6 +56,7 @@ describe('entryEquipmentControllers', () => {
       serialNumber: '696970',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)
@@ -83,6 +87,7 @@ describe('entryEquipmentControllers', () => {
       number: '0',
       conditionType: 'avulso',
       garantia: 'externo',
+      responsibleUser: 'modrp',
     }
 
     const loginBody = {

@@ -134,21 +134,21 @@ module.exports = class ProcessDomain {
       },
       {
         model: Analyze,
-        include: [{
-          model: AnalysisPart,
-          include: [{
-            model: Part,
-            include: [{
-              model: EquipModel,
-              include: [{
-                model: EquipMark,
-                include: [{
-                  model: EquipType,
-                }],
-              }],
-            }],
-          }],
-        }],
+      //   include: [{
+      //     model: AnalysisPart,
+      //     include: [{
+      //       model: Part,
+      //       include: [{
+      //         model: EquipModel,
+      //         include: [{
+      //           model: EquipMark,
+      //           include: [{
+      //             model: EquipType,
+      //           }],
+      //         }],
+      //       }],
+      //     }],
+      //   }],
       },
       ],
       // order: [

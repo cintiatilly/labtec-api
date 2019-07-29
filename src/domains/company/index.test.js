@@ -22,6 +22,7 @@ describe('companyDomain', () => {
       telphone: '(11)0965-4568',
       nameContact: 'joseildom',
       email: 'josealdo@gmasi.com',
+      responsibleUser: 'modrp',
     }
   })
 

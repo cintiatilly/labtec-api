@@ -25,6 +25,7 @@ describe('equipController', () => {
       telphone: '(11)0985-4568',
       nameContact: 'jaimeldom',
       email: 'jaime@gmasi.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -32,6 +33,7 @@ describe('equipController', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Hanry',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -40,6 +42,7 @@ describe('equipController', () => {
       equipMarkId: markMock.id,
       model: 'Henry 8.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
@@ -50,6 +53,7 @@ describe('equipController', () => {
       serialNumber: '123456789',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     const loginBody = {

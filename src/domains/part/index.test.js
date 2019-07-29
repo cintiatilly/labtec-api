@@ -19,6 +19,7 @@ describe('partDomain', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Samsung',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -27,11 +28,13 @@ describe('partDomain', () => {
       equipMarkId: markMock.id,
       model: 'Samsung 2.0',
       description: '',
+      responsibleUser: 'modrp',
     }
     equipModelMock1 = {
       equipMarkId: markMock.id,
       model: 'Samsung 3.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const modelMock = await equipTypeDomain.addModel(equipModelMock)
@@ -43,6 +46,7 @@ describe('partDomain', () => {
       costPrice: '100,00',
       salePrice: '150,00',
       equipModels: [{ id: modelMock.id }, { id: modelMock1.id }],
+      responsibleUser: 'modrp',
     }
   })
 

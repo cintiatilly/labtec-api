@@ -19,6 +19,7 @@ describe('companyController', () => {
       telphone: '09654568',
       nameContact: 'joseildom',
       email: 'clebinho@joazinho.com',
+      responsibleUser: 'modrp',
     }
 
     updateCompanyMock = {
@@ -33,6 +34,7 @@ describe('companyController', () => {
       telphone: '09654568',
       nameContact: 'joseildom',
       email: 'clebinho@joazinho.com',
+      responsibleUser: 'modrp',
     }
 
     const loginBody = {

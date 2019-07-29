@@ -32,6 +32,11 @@ module.exports = (sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
 
   analysisPart.associate = (models) => {
