@@ -245,7 +245,9 @@ module.exports = class CompanyDomain {
 
     const companyNotHasProp = prop => R.not(R.has(prop, company))
 
-    const oldCompany = await this.getOneByCnpj(company.cnpj)
+    const cnpjOrCpf = company.cnpj.replace(/\D/gi, '')
+
+    const oldCompany = await this.getOneByCnpj(cnpjOrCpf)
 
     const field = {
       razaoSocial: false,
@@ -295,14 +297,11 @@ module.exports = class CompanyDomain {
       }
     }
 
-
     if (companyNotHasProp('cnpj') || !company.cnpj) {
       errors = true
       field.cnpj = true
       message.cnpj = 'Por favor informar o cnpj ou cpf.'
     } else {
-      const cnpjOrCpf = company.cnpj.replace(/\D/g, '')
-
       if (!Cnpj.isValid(cnpjOrCpf) && !Cpf.isValid(cnpjOrCpf)) {
         errors = true
         field.cnpj = true
@@ -316,7 +315,7 @@ module.exports = class CompanyDomain {
         transaction,
       })
 
-      if (companyHasExist && company.cnpj !== oldCompany.cnpj) {
+      if (companyHasExist && cnpjOrCpf !== oldCompany.cnpj) {
         errors = true
         field.cnpj = true
         message.cnpj = 'O cnpj ou cpf infomardo já existem em nosso sistema.'
@@ -431,8 +430,10 @@ module.exports = class CompanyDomain {
       throw new FieldValidationError([{ field, message }])
     }
 
+    const newCompany = Object.assign(oldCompany, company)
+
     // const companyCreated = Company.update(company, { transaction })
-    const response = await oldCompany.update(company, { transaction })
+    const response = await oldCompany.update(newCompany, { transaction })
 
     return response
   }
