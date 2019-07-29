@@ -50,6 +50,21 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
+    arrayResponsibleUser: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: true,
+    },
+
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
+    // arrayUserId: {
+    //   type: Sequelize.ARRAY(Sequelize.UUID),
+    //   allowNull: true,
+    // },
+
     // garantia: {
     //   type: Sequelize.ENUM(['externa', 'laboratorio', 'venda', 'semg garantia']),
     //   allowNull: false,
@@ -77,6 +92,11 @@ module.exports = (sequelize) => {
         // allowNull: false,
       },
     })
+    // analyze.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
 
   return analyze

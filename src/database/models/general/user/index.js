@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       // defaultValue: false,
     },
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
 
   user.associate = (models) => {
@@ -27,6 +31,11 @@ module.exports = (sequelize) => {
       //   allowNull: false,
       // },
     })
+    // user.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
 
   return user

@@ -21,6 +21,7 @@ describe('create user', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
     await typeAccount.add(typeAccountMock)
   })
@@ -40,6 +41,7 @@ describe('create user', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
     const userCreated = await userDomain.user_Create(userMock)
 
@@ -65,6 +67,7 @@ describe('create user', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
     await userDomain.user_Create(userMock)
 
@@ -93,6 +96,7 @@ describe('create user', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
     await userDomain.user_Create(userMock)
 
@@ -120,6 +124,7 @@ describe('create user', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
     await typeAccount.add(typeAccountTeste)
 
@@ -137,10 +142,12 @@ describe('create user', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
     const userReturn = await userDomain.user_Create(userMock)
 
     expect(userReturn.username).toEqual(userMock.username)
+    // expect(await userDomain.findUsernameByPK(userReturn.id)).toBeTruthy()
   })
 })
 

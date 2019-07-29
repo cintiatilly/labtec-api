@@ -18,6 +18,7 @@ describe('typeAccountController', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     const loginBody = {

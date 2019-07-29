@@ -84,6 +84,11 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
 
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
+
   return company
 }

@@ -31,6 +31,7 @@ describe('equipDomain', () => {
       telphone: '(11)0995-4568',
       nameContact: 'jaimeldom',
       email: 'jaime@gmasi.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -38,6 +39,7 @@ describe('equipDomain', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Hanry',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -46,6 +48,7 @@ describe('equipDomain', () => {
       equipMarkId: markMock.id,
       model: 'Henry 2.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const equipModelCreated = await equipTypeDomain.addModel(equipTypeMock)
@@ -56,6 +59,7 @@ describe('equipDomain', () => {
       serialNumber: '12345687',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     const companyMock1 = {
@@ -70,6 +74,7 @@ describe('equipDomain', () => {
       telphone: '(11)0999-4568',
       nameContact: 'jaimeldom',
       email: 'jaime@gmasi.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated1 = await companyDomain.add(companyMock1)
@@ -77,6 +82,7 @@ describe('equipDomain', () => {
     equipMarkMock1 = {
       type: 'catraca',
       mark: 'Hanrye',
+      responsibleUser: 'modrp',
     }
 
     const markMock1 = await equipTypeDomain.addMark(equipMarkMock1)
@@ -85,6 +91,7 @@ describe('equipDomain', () => {
       equipMarkId: markMock1.id,
       model: 'Henry 9.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
     const equipModelCreated1 = await equipTypeDomain.addModel(equipTypeMock1)
@@ -95,6 +102,7 @@ describe('equipDomain', () => {
       serialNumber: '987654321',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
   })
 

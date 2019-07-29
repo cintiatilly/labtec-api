@@ -29,6 +29,7 @@ const createUserAdmin = async () => {
     addAccessories: true,
     addUser: true,
     addTypeAccount: true,
+    responsibleUser: 'modrp',
   }
   await typeAccount.add(typeAccountMock)
 
@@ -49,6 +50,7 @@ const createUserAdmin = async () => {
     // login: {
     //   password: '102030',
     // },
+    responsibleUser: 'modrp',
   }
 
   // await User.create(userAdmin, { include: [Login] })

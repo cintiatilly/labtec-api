@@ -9,6 +9,7 @@ const AnalysisPart = database.model('analysisPart')
 const EquipModel = database.model('equipModel')
 const EquipMark = database.model('equipMark')
 const EquipType = database.model('equipType')
+const User = database.model('user')
 
 
 module.exports = class AnalysisPartDomain {
@@ -23,11 +24,13 @@ module.exports = class AnalysisPartDomain {
       partId: false,
       analyzeId: false,
       description: false,
+      responsibleUser: false,
     }
     const message = {
       partId: '',
       analyzeId: '',
       description: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -53,6 +56,29 @@ module.exports = class AnalysisPartDomain {
       errors = true
       field.description = true
       message.description = 'Campo descrição obrigatório.'
+    }
+
+    if (analysisPartNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser !== null) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
     }
 
     if (errors) {

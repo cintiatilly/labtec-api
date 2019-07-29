@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
 
 
@@ -21,6 +25,11 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
     })
+    // typeAccount.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
 
 

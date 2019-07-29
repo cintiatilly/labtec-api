@@ -26,6 +26,7 @@ describe('loginDomain', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     await typeAccount.add(typeAccountMock)
@@ -44,6 +45,7 @@ describe('loginDomain', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
   })
 
@@ -98,6 +100,7 @@ describe('logoutTest', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     await typeAccount.add(typeAccountMock)
@@ -116,6 +119,7 @@ describe('logoutTest', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
   })
 
@@ -155,6 +159,7 @@ describe('sessionDomain', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
 
     await typeAccount.add(typeAccountMock)
@@ -173,6 +178,7 @@ describe('sessionDomain', () => {
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
+      responsibleUser: 'modrp',
     }
   })
 

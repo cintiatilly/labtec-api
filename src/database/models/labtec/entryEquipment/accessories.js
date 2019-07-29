@@ -12,6 +12,19 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
+
+  // accessories.associate = (models) => {
+  //   accessories.belongsTo(models.user, {
+  //     foreignKey: {
+  //       allowNull: false,
+  //     },
+  //   })
+  // }
   return accessories
 }

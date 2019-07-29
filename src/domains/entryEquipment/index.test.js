@@ -1,20 +1,19 @@
 const R = require('ramda')
 
-const database = require('../../database')
 const CompanyDomain = require('../company')
 const EntryEquipmentDomain = require('./')
 const EquipTypeDomain = require('../equip/equipType')
 const EquipDomain = require('../equip')
+const AccessoriesDomain = require('./accessories')
 
 
 const { FieldValidationError } = require('../../helpers/errors')
 
+const accessoriesDomain = new AccessoriesDomain()
 const companyDomain = new CompanyDomain()
 const entryEquipmentDomain = new EntryEquipmentDomain()
 const equipTypeDomain = new EquipTypeDomain()
 const equipDomain = new EquipDomain()
-
-const Accessories = database.model('accessories')
 
 describe('entryEquipmentDomain', () => {
   let companyMock = null
@@ -38,6 +37,7 @@ describe('entryEquipmentDomain', () => {
       telphone: '(11)8565-4658',
       nameContact: 'jose',
       email: 'jose@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -45,6 +45,7 @@ describe('entryEquipmentDomain', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'Festo',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -53,6 +54,7 @@ describe('entryEquipmentDomain', () => {
       equipMarkId: markMock.id,
       model: 'Henry 7.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
 
@@ -64,19 +66,22 @@ describe('entryEquipmentDomain', () => {
       serialNumber: '696969',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)
 
     accessoriesMock1 = {
-      accessories: 'fonte',
+      accessories: 'fonteeeee',
+      responsibleUser: 'modrp',
     }
     accessoriesMock2 = {
-      accessories: 'teclado',
+      accessories: 'tecladooooo',
+      responsibleUser: 'modrp',
     }
 
-    const accessory1 = await Accessories.create(accessoriesMock1)
-    const accessory2 = await Accessories.create(accessoriesMock2)
+    const accessory1 = await accessoriesDomain.add(accessoriesMock1)
+    const accessory2 = await accessoriesDomain.add(accessoriesMock2)
 
     entryEquipmentMock = {
       humidity: false,
@@ -105,6 +110,7 @@ describe('entryEquipmentDomain', () => {
       conditionType: 'avulso',
       garantia: 'externo',
       accessories: [accessory1, accessory2],
+      responsibleUser: 'modrp',
     }
   })
 

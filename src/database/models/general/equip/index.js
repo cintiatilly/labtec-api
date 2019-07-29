@@ -41,6 +41,11 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
     })
+    // equip.belongsTo(models.user, {
+    //   foreignKey: {
+    //     allowNull: false,
+    //   },
+    // })
   }
 
   return equip

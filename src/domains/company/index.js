@@ -12,6 +12,7 @@ const database = require('../../database')
 const { FieldValidationError } = require('../../helpers/errors')
 
 const Company = database.model('company')
+const User = database.model('user')
 
 module.exports = class CompanyDomain {
   async add(bodyData, options = {}) {
@@ -34,6 +35,7 @@ module.exports = class CompanyDomain {
       telphone: false,
       email: false,
       nameContact: false,
+      responsibleUser: false,
     }
     const message = {
       razaoSocial: '',
@@ -48,6 +50,7 @@ module.exports = class CompanyDomain {
       telphone: '',
       email: '',
       nameContact: '',
+      responsibleUser: '',
     }
 
     let errors = false
@@ -200,11 +203,37 @@ module.exports = class CompanyDomain {
       message.nameContact = 'Por favor informar o nome para contato.'
     }
 
+    if (companyNotHasProp('responsibleUser')) {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não está sendo passado.'
+    } else if (bodyData.responsibleUser) {
+      const { responsibleUser } = bodyData
+
+      const user = await User.findOne({
+        where: { username: responsibleUser },
+        transaction,
+      })
+
+      if (!user) {
+        errors = true
+        field.responsibleUser = true
+        message.responsibleUser = 'username inválido.'
+      }
+    } else {
+      errors = true
+      field.responsibleUser = true
+      message.responsibleUser = 'username não pode ser nulo.'
+    }
+
     if (errors) {
       throw new FieldValidationError([{ field, message }])
     }
 
+
     const companyCreated = Company.create(company, { transaction })
+
+    // console.log(JSON.stringify(companyCreated))
 
     return companyCreated
   }

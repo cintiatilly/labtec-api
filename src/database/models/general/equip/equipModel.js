@@ -17,7 +17,10 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: true,
     },
-
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
 
   equipModel.associate = (models) => {

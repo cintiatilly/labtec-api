@@ -14,6 +14,7 @@ describe('equipTypeController', () => {
     equipMarkMock = {
       type: 'relogio',
       mark: 'Henry',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -22,6 +23,7 @@ describe('equipTypeController', () => {
       equipMarkId: markMock.id,
       model: 'Henry facil',
       description: '',
+      responsibleUser: 'modrp',
     }
 
 
@@ -62,6 +64,7 @@ describe('equipTypeController', () => {
     equipMarkMock = {
       type: 'relogio',
       mark: 'Dell',
+      responsibleUser: 'modrp',
     }
 
     const response = await request().post('/api/equip/equipType/addMark', equipMarkMock, { headers })

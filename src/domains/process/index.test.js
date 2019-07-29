@@ -37,6 +37,7 @@ describe('ProcessDomain', () => {
       properlyPacked: true,
       conditionType: 'avulso',
       garantia: 'externo',
+      responsibleUser: 'modrp',
     }
     companyMock = {
       razaoSocial: 'Real teste 123/ .LTDA',
@@ -50,6 +51,7 @@ describe('ProcessDomain', () => {
       telphone: '(11)8565-4658',
       nameContact: 'jose',
       email: 'jose@gmail.com',
+      responsibleUser: 'modrp',
     }
 
     const companyCreated = await companyDomain.add(companyMock)
@@ -57,6 +59,7 @@ describe('ProcessDomain', () => {
     equipMarkMock = {
       type: 'catraca',
       mark: 'LG',
+      responsibleUser: 'modrp',
     }
 
     const markMock = await equipTypeDomain.addMark(equipMarkMock)
@@ -65,6 +68,7 @@ describe('ProcessDomain', () => {
       equipMarkId: markMock.id,
       model: 'LG 7.0',
       description: '',
+      responsibleUser: 'modrp',
     }
 
 
@@ -76,6 +80,7 @@ describe('ProcessDomain', () => {
       serialNumber: '2564',
       readerColor: 'Verde',
       details: '',
+      responsibleUser: 'modrp',
     }
 
     await equipDomain.add(equipMock)
