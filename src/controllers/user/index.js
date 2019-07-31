@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const UserDomain = require('../../domains/user')
 const database = require('../../database')
 
@@ -32,7 +34,29 @@ const getResourceByUsername = async (req, res, next) => {
   }
 }
 
+const getAll = async (req, res, next) => {
+  const transaction = await database.transaction()
+  try {
+    let query
+    if (R.has('query', req)) {
+      if (R.has('query', req.query)) {
+        query = JSON.parse(req.query.query)
+      }
+    }
+    const users = await userDomain.getAll({ query, transaction })
+
+    // console.log(users)
+
+    await transaction.commit()
+    res.json(users)
+  } catch (error) {
+    await transaction.rollback()
+    next()
+  }
+}
+
 module.exports = {
   add,
   getResourceByUsername,
+  getAll,
 }

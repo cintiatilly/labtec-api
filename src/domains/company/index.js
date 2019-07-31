@@ -430,10 +430,9 @@ module.exports = class CompanyDomain {
       throw new FieldValidationError([{ field, message }])
     }
 
-    const newCompany = Object.assign(oldCompany, company)
+    await oldCompany.update(company, { transaction })
 
-    // const companyCreated = Company.update(company, { transaction })
-    const response = await oldCompany.update(newCompany, { transaction })
+    const response = await Company.findByPk(oldCompany.id, { transaction })
 
     return response
   }
