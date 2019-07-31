@@ -97,7 +97,8 @@ describe('ProcessDomain', () => {
 
     expect(updateProcess).toBeTruthy()
 
-    expect(await processDomain.update(entry.processId, { status: 'fabrica' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'fabricaIda' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'fabricaVolta' })).toBeTruthy()
     expect(await processDomain.update(entry.processId, { status: 'preAnalise' })).toBeTruthy()
     expect(await processDomain.update(entry.processId, { status: 'analise' })).toBeTruthy()
     expect(await processDomain.update(entry.processId, { status: 'pendente' })).toBeTruthy()
@@ -110,10 +111,16 @@ describe('ProcessDomain', () => {
     expect(await processDomain.update(entry.processId, { status: 'manutencao' })).toBeTruthy()
     expect(await processDomain.update(entry.processId, { status: 'revisaoFinal' })).toBeTruthy()
     expect(await processDomain.update(entry.processId, { status: 'estoque' })).toBeTruthy()
+    expect(await processDomain.update(entry.processId, { status: 'semConserto' })).toBeTruthy()
   })
 
   test('getAll', async () => {
     const entrace = await processDomain.getAll()
     expect(entrace.rows.length > 0).toBeTruthy()
+  })
+
+  test('getProcessToControl', async () => {
+    const entrace = await processDomain.getProcessToControl()
+    expect(entrace.rows.length >= 0).toBeTruthy()
   })
 })

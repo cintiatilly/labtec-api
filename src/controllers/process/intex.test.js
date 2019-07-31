@@ -129,4 +129,12 @@ describe('processcontroller', () => {
     expect(body.show).toBeTruthy()
     expect(body.rows).toBeTruthy()
   })
+
+  test('getAllToControl', async () => {
+    const response = await request().get('/api/process/control', { headers })
+
+    const { statusCode } = response
+
+    expect(statusCode).toBe(200)
+  })
 })
