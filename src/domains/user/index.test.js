@@ -149,6 +149,12 @@ describe('create user', () => {
     expect(userReturn.username).toEqual(userMock.username)
     // expect(await userDomain.findUsernameByPK(userReturn.id)).toBeTruthy()
   })
+
+  test('getAll', async () => {
+    const users = await userDomain.getAll()
+    expect(users.length > 0).toBeTruthy()
+  })
+
 })
 
   // describe('update password', () => {

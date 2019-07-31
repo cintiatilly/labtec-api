@@ -63,8 +63,8 @@ describe('userController', () => {
   test('create', async () => {
     const response = await request().post('/api/user', userMock, { headers })
 
-    const { body, statusCode } = response
-    
+    const { statusCode } = response
+
     expect(statusCode).toBe(200)
     // expect(body.typeName).toBe(typeAccountMock.typeName)
     // expect(body.resource.addCompany).toBe(typeAccountMock.addCompany)
@@ -107,5 +107,26 @@ describe('userController', () => {
     expect(body.addAnalyze).toBe(userMock.addAnalyze)
     expect(body.addEquip).toBe(userMock.addEquip)
     expect(body.addEntry).toBe(userMock.addEntry)
+  })
+
+  test('getall, query', async () => {
+    const params = {
+      query: {
+        filters: {
+          typeAccount: {
+            specific: {
+              typeName: 'RECEPÇAO',
+            },
+          },
+        },
+      },
+    }
+
+    const response = await request().get('/api/user/getAll', { headers, params })
+
+    const { body, statusCode } = response
+
+    expect(statusCode).toBe(200)
+    expect(body).toBeTruthy()
   })
 })

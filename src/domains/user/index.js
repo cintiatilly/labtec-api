@@ -3,6 +3,7 @@ const R = require('ramda')
 const { FieldValidationError, UnauthorizedError } = require('../../helpers/errors')
 
 const database = require('../../database')
+const formatQuery = require('../../helpers/lazyLoad')
 
 const User = database.model('user')
 const Login = database.model('login')
@@ -477,6 +478,53 @@ class UserDomain {
 
   //   return user.username
   // }
+
+  async getAll(options = {}) {
+    const inicialOrder = {
+      field: 'username',
+      acendent: false,
+      direction: 'DESC',
+    }
+
+    const { query = null, transaction = null } = options
+
+    const newQuery = Object.assign({}, query)
+    const newOrder = (query && query.order) ? query.order : inicialOrder
+
+    if (newOrder.acendent) {
+      newOrder.direction = 'DESC'
+    } else {
+      newOrder.direction = 'ASC'
+    }
+
+    const { getWhere } = formatQuery(newQuery)
+
+    const users = await User.findAll({
+      include: [{
+        model: TypeAccount,
+        where: getWhere('typeAccount'),
+      }],
+      order: [
+        [newOrder.field, newOrder.direction],
+      ],
+      transaction,
+    })
+
+
+    // console.log(JSON.stringify(companies))
+
+
+    const formatData = R.map((comp) => {
+      const resp = {
+        username: comp.username,
+      }
+      return resp
+    })
+
+    const usersList = formatData(users)
+
+    return usersList
+  }
 }
 
 module.exports = UserDomain
