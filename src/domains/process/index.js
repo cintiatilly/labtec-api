@@ -152,15 +152,23 @@ module.exports = class ProcessDomain {
       //   }],
       },
       ],
-      // order: [
-      //   [newOrder.field, newOrder.direction],
-      // ],
       limit,
       offset,
       transaction,
     })
 
     const { rows } = process
+
+    // console.log(JSON.stringify(rows))
+
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: process.count,
+        rows,
+      }
+    }
 
     // console.log(JSON.stringify(rows))
 
