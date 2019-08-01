@@ -27,6 +27,7 @@ const getAll = async (req, res, next) => {
         query = JSON.parse(req.query.query)
       }
     }
+
     const company = await companyDomain.getAll({ query, transaction })
 
     await transaction.commit()

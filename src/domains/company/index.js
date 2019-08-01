@@ -233,8 +233,6 @@ module.exports = class CompanyDomain {
 
     const companyCreated = Company.create(company, { transaction })
 
-    // console.log(JSON.stringify(companyCreated))
-
     return companyCreated
   }
 
@@ -473,6 +471,15 @@ module.exports = class CompanyDomain {
     })
 
     const { rows } = companies
+
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: companies.count,
+        rows: [],
+      }
+    }
 
     const formatDateFunct = (date) => {
       moment.locale('pt-br')

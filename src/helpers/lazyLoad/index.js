@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const Sequelize = require('sequelize')
 const R = require('ramda')
 const moment = require('moment')
@@ -26,6 +27,11 @@ const isUUID = type => type instanceof Sequelize.UUID
 // string formartter
 const isString = type => type instanceof Sequelize.STRING
 const assocString = (inputSearch) => {
+  const searchformated = { [operators.iRegexp]: inputSearch }
+  return searchformated
+}
+
+const assocStringGlobal = (inputSearch) => {
   const searchformated = { [operators.iRegexp]: inputSearch }
   return searchformated
 }
@@ -121,8 +127,8 @@ const getGlobalSearchFormated = (filter, model) => {
   const search = getSearchValue(filter)
 
   const getOperatorsOr = (type) => {
-    if (isString(type)) return assocString(search)
-    return { }
+    if (isString(type)) return assocStringGlobal(search)
+    return {}
   }
 
   const mountSearchForGlobal = R.map((field) => {
@@ -131,6 +137,39 @@ const getGlobalSearchFormated = (filter, model) => {
     const attribute = getAttributes(field, model)
     if (!attribute) return null
     const { type } = attribute
+
+    if (field === 'createdAt') {
+      if ((/\d{1,2}[\/.-]{1}\d{1,2}[\/.-]{1}\d{4}/).test(search)) {
+        const searchCreatedAt = search.replace(/\D/ig, '/')
+
+        const arraySearchCreatedAt = R.split('/', searchCreatedAt)
+
+        const diaString = arraySearchCreatedAt[0]
+        const mesString = arraySearchCreatedAt[1]
+        const anoString = arraySearchCreatedAt[2]
+
+        const stringToNumber = (string) => {
+          if (!string) return 0
+          const number = parseInt(string, 10)
+          return number
+        }
+
+        const dia = stringToNumber(diaString)
+        const mes = stringToNumber(mesString) - 1
+        const ano = stringToNumber(anoString)
+
+
+        const now = new Date(ano, mes, dia)
+        const now1 = new Date(ano, mes, (dia + 1))
+
+        return {
+          [field]: {
+            [operators.gte]: now,
+            [operators.lte]: now1,
+          },
+        }
+      }
+    }
 
     const attributesAndSearch = {
       [field]: getOperatorsOr(type),
@@ -150,7 +189,8 @@ const getGlobalSearchFormated = (filter, model) => {
         [operators.or]: whereOrFieldsToSearch,
       }
     }
-    return { }
+
+    return {}
   }
 
   const whereOrFieldsToSearchWithNull = getGlobalSearchFormatted(filter)
@@ -170,7 +210,7 @@ const getspecificSearchFormated = (filter, model) => {
     if (isDate(type)) return assocDate(inputSearch)
     if (isEnum(type)) return assocEnum(inputSearch)
     if (isUUID(type)) return assocEnum(inputSearch)
-    return { }
+    return {}
   }
 
 
@@ -239,6 +279,7 @@ const formatQuery = (queryPassed = null) => {
     const filter = getfilter(filters)
 
     const whereOrFormatted = getGlobalSearchFormated(filter, model)
+
     const whereAndFormatted = getspecificSearchFormated(filter, model)
 
     const where = {
@@ -249,8 +290,6 @@ const formatQuery = (queryPassed = null) => {
 
     return where
   }
-
-
   const limitAndOffset = getLimitAndOffset(total, page)
   return { getWhere, ...limitAndOffset }
 }
