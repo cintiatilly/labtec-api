@@ -81,7 +81,12 @@ describe('analysisPartController', () => {
       equipModelId: modelMock.id,
       companyId: companyCreated.id,
       serialNumber: '12541254',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }

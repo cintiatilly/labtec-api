@@ -64,7 +64,12 @@ describe('entryEquipmentDomain', () => {
       equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '696969',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }

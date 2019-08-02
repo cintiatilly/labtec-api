@@ -436,6 +436,15 @@ module.exports = class EntryEquipmentDomain {
 
     const { rows } = entry
 
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: entry.count,
+        rows: [],
+      }
+    }
+
     const formatDateFunct = (date) => {
       moment.locale('pt-br')
       const formatDate = moment(date).format('L')

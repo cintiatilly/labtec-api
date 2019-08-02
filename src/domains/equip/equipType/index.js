@@ -318,6 +318,15 @@ module.exports = class EquipTypeDomain {
 
     const { rows } = equipModels
 
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: equipModels.count,
+        rows: [],
+      }
+    }
+
     const formatData = R.map((equip) => {
       const resp = {
         type: equip.equipMark.equipType.type,

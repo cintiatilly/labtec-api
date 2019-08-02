@@ -57,7 +57,12 @@ describe('equipDomain', () => {
       equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '12345687',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }
@@ -100,7 +105,12 @@ describe('equipDomain', () => {
       equipModelId: equipModelCreated1.id,
       companyId: companyCreated1.id,
       serialNumber: '987654321',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }
@@ -114,7 +124,12 @@ describe('equipDomain', () => {
     expect(equipCreated.equipModelId).toBe(equipMock.equipModelId)
     expect(equipCreated.companyId).toBe(equipMock.companyId)
     expect(equipCreated.serialNumber).toBe(equipMock.serialNumber)
-    expect(equipCreated.readerColor).toBe(equipMock.readerColor)
+    expect(equipCreated.proximidade).toBe(equipMock.proximidade)
+    expect(equipCreated.bio).toBe(equipMock.bio)
+    expect(equipCreated.barras).toBe(equipMock.barras)
+    expect(equipCreated.cartografico).toBe(equipMock.cartografico)
+    expect(equipCreated.tipoCracha).toBe(equipMock.tipoCracha)
+    expect(equipCreated.corLeitor).toBe(equipMock.corLeitor)
     expect(equipCreated.details).toBe(equipMock.details)
 
     expect(equipCreated1).toBeTruthy()
@@ -134,7 +149,7 @@ describe('equipDomain', () => {
     const equipUpdateMock = {
       id: equipCreated.id,
       serialNumber: '858585',
-      readerColor: 'Verde',
+      corLeitor: 'Verde',
       type: 'catraca',
       mark: 'Hanrye',
       model: 'Henry 9.0',

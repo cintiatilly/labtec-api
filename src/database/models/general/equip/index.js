@@ -13,20 +13,42 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
 
-    readerColor: {
-      type: Sequelize.ENUM(['Branco', 'Vermelho', 'Azul', 'Verde',
-        'DedoVivo', 'BioLFD', 'BioLC', 'NaoSeAplica']),
+    corLeitor: {
+      type: Sequelize.ENUM(['Branco', 'Vermelho', 'Azul', 'Verde', 'NaoSeAplica']),
       allowNull: false,
     },
 
-    // readerColor: {
-    //   type: Sequelize.STRING,
-    //   allowNull: true,
-    // },
+    tipoCracha: {
+      type: Sequelize.ENUM(['Hid', 'Mifare', 'Wiegand', 'Abatrack', 'Sarial', 'NaoSeAplica']),
+      allowNull: false,
+    },
+
+    proximidade: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+    },
+    bio: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+    },
+    barras: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+    },
+    cartografico: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+    },
+
 
     details: {
       type: Sequelize.STRING,
       allowNull: true,
+    },
+
+    responsibleUser: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
   })
 

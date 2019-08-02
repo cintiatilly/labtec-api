@@ -76,7 +76,12 @@ describe('processcontroller', () => {
       equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '2564545',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }

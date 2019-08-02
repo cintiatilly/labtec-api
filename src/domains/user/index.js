@@ -511,8 +511,7 @@ class UserDomain {
     })
 
 
-    // console.log(JSON.stringify(companies))
-
+    if (users.length === 0) return []
 
     const formatData = R.map((comp) => {
       const resp = {
