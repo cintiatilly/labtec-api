@@ -193,6 +193,14 @@ module.exports = class TypeAccountDomain {
 
     const { rows } = typeAccounts
 
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: typeAccounts.count,
+        rows: [],
+      }
+    }
 
     const formatData = R.map((comp) => {
       const resp = {

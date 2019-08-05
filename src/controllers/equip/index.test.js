@@ -51,7 +51,12 @@ describe('equipController', () => {
       equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '123456789',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }
@@ -101,7 +106,13 @@ describe('equipController', () => {
 
     expect(statusCode).toBe(200)
     expect(body.serialNumber).toBe(equipMock.serialNumber)
-    expect(body.readerColor).toBe(equipMock.readerColor)
+    expect(body.proximidade).toBe(equipMock.proximidade)
+    expect(body.bio).toBe(equipMock.bio)
+    expect(body.barras).toBe(equipMock.barras)
+    expect(body.cartografico).toBe(equipMock.cartografico)
+    expect(body.tipoCracha).toBe(equipMock.tipoCracha)
+    expect(body.corLeitor).toBe(equipMock.corLeitor)
+    expect(body.responsibleUser).toBe(equipMock.responsibleUser)
     expect(body.details).toBe(equipMock.details)
     expect(body.company.id).toBe(equipMock.companyId)
     expect(body.equipModel.id).toBe(equipMock.equipModelId)
@@ -138,7 +149,6 @@ describe('equipController', () => {
 
     expect(statusCode).toBe(200)
     expect(body.serialNumber).toBeTruthy()
-    expect(body.readerColor).toBeTruthy()
     expect(body.equipModelId).toBeTruthy()
     expect(body.companyId).toBeTruthy()
   })
@@ -154,7 +164,6 @@ describe('equipController', () => {
     const updateEquipMock = {
       id: equipCreated.body.id,
       serialNumber: '88778877',
-      readerColor: 'Vermelho',
       type: 'catraca',
       mark: 'Hanry',
       model: 'Henry 8.0',
@@ -166,7 +175,6 @@ describe('equipController', () => {
 
     expect(statusCode).toBe(200)
     expect(body.serialNumber).toBeTruthy()
-    expect(body.readerColor).toBeTruthy()
     expect(body.companyId).toBeTruthy()
     expect(body.equipModelId).toBeTruthy()
   })

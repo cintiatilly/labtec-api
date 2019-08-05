@@ -82,11 +82,15 @@ describe('analyzecontroller', () => {
       equipModelId: modelMock.id,
       companyId: companyCreated.id,
       serialNumber: '98569856',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }
-
     await equipDomain.add(equipMock)
 
     const entryEquipmentMock = {

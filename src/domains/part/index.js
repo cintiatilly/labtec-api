@@ -252,6 +252,15 @@ module.exports = class PartDomain {
 
     const { rows } = parts
 
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: parts.count,
+        rows: [],
+      }
+    }
+
     const formatDateFunct = (date) => {
       moment.locale('pt-br')
       const formatDate = moment(date).format('L')

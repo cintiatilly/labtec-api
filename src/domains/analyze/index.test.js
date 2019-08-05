@@ -86,7 +86,12 @@ describe('analyzeDomain', () => {
       equipModelId: modelMock.id,
       companyId: companyCreated.id,
       serialNumber: '321654987',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }

@@ -118,6 +118,15 @@ module.exports = class AccessoriesDomain {
 
     const { rows } = accessories
 
+    if (rows.length === 0) {
+      return {
+        page: null,
+        show: 0,
+        count: accessories.count,
+        rows: [],
+      }
+    }
+
     const formatDateFunct = (date) => {
       moment.locale('pt-br')
       const formatDate = moment(date).format('L')

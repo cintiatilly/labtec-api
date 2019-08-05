@@ -12,14 +12,14 @@ describe('userController', () => {
 
   beforeAll(async () => {
     typeAccountMock = {
-      typeName: 'RECEPÇAO',
-      addCompany: true,
-      addPart: true,
+      typeName: 'TecnicoLab',
+      addCompany: false,
+      addPart: false,
       addAnalyze: true,
       addEquip: false,
-      addEntry: false,
+      addEntry: true,
       addEquipType: false,
-      tecnico: false,
+      tecnico: true,
       addAccessories: false,
       addUser: false,
       addTypeAccount: false,
@@ -29,19 +29,19 @@ describe('userController', () => {
     await typeAccount.add(typeAccountMock)
 
     userMock = {
-      username: 'teste9',
-      typeName: 'RECEPÇAO',
-      customized: true,
+      username: 'matheus',
+      typeName: 'TecnicoLab',
+      customized: false,
       addCompany: true,
       addPart: true,
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
-      addEquipType: false,
-      tecnico: false,
-      addAccessories: false,
-      addUser: false,
-      addTypeAccount: false,
+      addEquipType: true,
+      tecnico: true,
+      addAccessories: true,
+      addUser: true,
+      addTypeAccount: true,
       responsibleUser: 'modrp',
     }
 
@@ -76,17 +76,17 @@ describe('userController', () => {
 
   test('getResourceByUsername', async () => {
     userMock = {
-      username: 'teste97',
-      typeName: 'RECEPÇAO',
+      username: 'alvaro',
+      typeName: 'TecnicoLab',
       customized: true,
-      addCompany: true,
-      addPart: true,
+      addCompany: false,
+      addPart: false,
       addAnalyze: true,
       addEquip: true,
       addEntry: true,
-      addEquipType: false,
-      tecnico: false,
-      addAccessories: false,
+      addEquipType: true,
+      tecnico: true,
+      addAccessories: true,
       addUser: false,
       addTypeAccount: false,
       responsibleUser: 'modrp',
@@ -95,7 +95,7 @@ describe('userController', () => {
     await request().post('/api/user', userMock, { headers })
 
     const params = {
-      username: 'teste97',
+      username: 'alvaro',
     }
     const response = await request().get('/api/user/getResourceByUsername', { headers, params })
 
@@ -115,7 +115,7 @@ describe('userController', () => {
         filters: {
           typeAccount: {
             specific: {
-              typeName: 'RECEPÇAO',
+              typeName: 'TecnicoLab',
             },
           },
         },

@@ -54,11 +54,15 @@ describe('entryEquipmentControllers', () => {
       equipModelId: equipModelCreated.id,
       companyId: companyCreated.id,
       serialNumber: '696970',
-      readerColor: 'Verde',
+      proximidade: true,
+      bio: true,
+      barras: true,
+      cartografico: true,
+      tipoCracha: 'Hid',
+      corLeitor: 'Verde',
       details: '',
       responsibleUser: 'modrp',
     }
-
     await equipDomain.add(equipMock)
 
     entryEquipmentMock = {
