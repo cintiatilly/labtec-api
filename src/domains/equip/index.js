@@ -1,8 +1,10 @@
+/* eslint-disable array-callback-return */
 const R = require('ramda')
 const moment = require('moment')
-const Sequelize = require('sequelize')
+// const Sequelize = require('sequelize')
 
-const { Op: operators } = Sequelize
+// const { Op: operators } = Sequelize
+// const { Op: operators } = Sequelize
 
 const formatQuery = require('../../helpers/lazyLoad')
 
@@ -231,36 +233,18 @@ module.exports = class EquipDomain {
       pageResponse,
     } = formatQuery(newQuery)
 
-    // const equips = await Equip.findAndCountAll({
-    //   // where: getWhere('equip'),
-    //   where: {
-    //     [operators.or]: [
-    //       {
-    //         serialNumber: '987654321',
-    //       },
-    //       {
-    //         include: [{ model: Company, where: { cnpj: '12533380000109' } }],
-    //       },
-    //     ],
-    //   },
-    //   // include: [{ model: Company, where: { cnpj: '12533380000109' } }],
-    //   order: [
-    //     [newOrder.field, newOrder.direction],
-    //   ],
-    //   limit,
-    //   offset,
-    //   transaction,
-    // })
-
     const equips = await Equip.findAndCountAll({
       where: getWhere('equip'),
+      // attributes: ['id'],
       include: [
         {
           model: Company,
           where: getWhere('company'),
+          // attributes: [],
         },
         {
           model: EquipModel,
+          // attributes: [],
           where: getWhere('equipModel'),
           include: [{
             model: EquipMark,
@@ -279,6 +263,216 @@ module.exports = class EquipDomain {
       offset,
       transaction,
     })
+
+    // const global = query.filters.global.replace(/\W/gi, '')
+
+
+    // const searchEquip = await Equip.findAndCountAll({
+    //   where: { serialNumber: { [operators.iRegexp]: global } },
+    //   attributes: ['id'],
+    //   limit,
+    //   offset,
+    //   transaction,
+    // })
+
+    // const searchCompany = await Equip.findAndCountAll({
+    //   attributes: ['id'],
+    //   include: [
+    //     {
+    //       model: Company,
+    //       where: {
+    //         [operators.or]: [
+    //           {
+    //             cnpj: { [operators.iRegexp]: global },
+
+    //           },
+    //           {
+    //             razaoSocial: { [operators.iRegexp]: global },
+    //           },
+    //         ],
+    //       },
+    //       attributes: [],
+    //     },
+    //   ],
+    //   order: [
+    //     [newOrder.field, newOrder.direction],
+    //   ],
+    //   limit,
+    //   offset,
+    //   transaction,
+    // })
+
+    // const formatedJSON = json => JSON.parse(JSON.stringify(json))
+
+    // const extractId = (search) => {
+    //   const searchFormated = formatedJSON(search).rows
+
+    //   const arraySearchId = []
+
+    //   searchFormated.map((item) => {
+    //     const id = R.prop('id', item)
+
+    //     arraySearchId.push(id)
+    //   })
+
+    //   return arraySearchId
+    // }
+
+    // const searchCompanyIds = extractId(searchCompany)
+    // const searchEquipIds = extractId(searchEquip)
+    // // console.log(searchCompanyIds)
+    // // console.log(searchEquipIds)
+
+    // Array.prototype.push.apply(searchCompanyIds, searchEquipIds)
+    // console.log(searchCompanyIds)
+
+    // // searchCompanyIds.filter((este, i) => searchCompanyIds.indexOf(este) === i)
+
+
+    // const novaArr = searchCompanyIds.filter((este, i) => searchCompanyIds.indexOf(este) === i)
+
+    // console.log(novaArr)
+
+
+    // // const findByPkSearchArray = R.map(async (item) => {
+    // //   const equip = await Equip.findByPk(item, {
+    // //     include: [
+    // //       {
+    // //         model: Company,
+    // //       },
+    // //       {
+    // //         model: EquipModel,
+    // //         include: [{
+    // //           model: EquipMark,
+    // //           include: [{
+    // //             model: EquipType,
+    // //           }],
+    // //         }],
+    // //       },
+    // //     ],
+    // //     transaction,
+    // //   })
+
+    // //   const resp = {
+    // //     id: equip.id,
+    // //     companyId: equip.companyId,
+    // //     equipModelId: equip.equipModelId,
+    // //     razaoSocial: equip.company.razaoSocial,
+    // //     cnpj: equip.company.cnpj,
+    // //     street: equip.company.street,
+    // //     number: equip.company.number,
+    // //     city: equip.company.city,
+    // //     state: equip.company.state,
+    // //     neighborhood: equip.company.neighborhood,
+    // //     referencePoint: equip.company.referencePoint,
+    // //     zipCode: equip.company.zipCode,
+    // //     telphone: equip.company.telphone,
+    // //     email: equip.company.email,
+    // //     nameContact: equip.company.nameContact,
+    // //     type: equip.equipModel.equipMark.equipType.type,
+    // //     mark: equip.equipModel.equipMark.mark,
+    // //     model: equip.equipModel.model,
+    // //     description: equip.equipModel.description,
+    // //     serialNumber: equip.serialNumber,
+    // //     corLeitor: equip.corLeitor,
+    // //     tipoCracha: equip.tipoCracha,
+    // //     details: equip.details,
+    // //     proximidade: equip.proximidade,
+    // //     bio: equip.bio,
+    // //     barras: equip.barras,
+    // //     cartografico: equip.cartografico,
+    // //     responsibleUser: equip.responsibleUser,
+    // //     // createdAt: formatDateFunct(equip.createdAt),
+    // //     // updatedAt: formatDateFunct(equip.updatedAt),
+    // //   }
+    // //   return resp
+    // // })
+
+
+    // const newRows = []
+
+    // // console.log(searchCompanyIds)
+
+    // await Promise.all(
+    //   searchCompanyIds.map(async (item) => {
+    //     const equip = await Equip.findByPk(item, {
+    //       include: [
+    //         {
+    //           model: Company,
+    //         },
+    //         {
+    //           model: EquipModel,
+    //           include: [{
+    //             model: EquipMark,
+    //             include: [{
+    //               model: EquipType,
+    //             }],
+    //           }],
+    //         },
+    //       ],
+    //       transaction,
+    //     })
+
+    //     const equipFormated = formatedJSON(equip)
+
+
+    //     newRows.push(equipFormated)
+    //   }),
+    // )
+
+    // // console.log(newRows)
+
+    // const formatData = R.map((equip) => {
+    //   const resp = {
+    //     id: equip.id,
+    //     companyId: equip.companyId,
+    //     equipModelId: equip.equipModelId,
+    //     razaoSocial: equip.company.razaoSocial,
+    //     cnpj: equip.company.cnpj,
+    //     street: equip.company.street,
+    //     number: equip.company.number,
+    //     city: equip.company.city,
+    //     state: equip.company.state,
+    //     neighborhood: equip.company.neighborhood,
+    //     referencePoint: equip.company.referencePoint,
+    //     zipCode: equip.company.zipCode,
+    //     telphone: equip.company.telphone,
+    //     email: equip.company.email,
+    //     nameContact: equip.company.nameContact,
+    //     type: equip.equipModel.equipMark.equipType.type,
+    //     mark: equip.equipModel.equipMark.mark,
+    //     model: equip.equipModel.model,
+    //     description: equip.equipModel.description,
+    //     serialNumber: equip.serialNumber,
+    //     corLeitor: equip.corLeitor,
+    //     tipoCracha: equip.tipoCracha,
+    //     details: equip.details,
+    //     proximidade: equip.proximidade,
+    //     bio: equip.bio,
+    //     barras: equip.barras,
+    //     cartografico: equip.cartografico,
+    //     responsibleUser: equip.responsibleUser,
+    //     // createdAt: formatDateFunct(equip.createdAt),
+    //     // updatedAt: formatDateFunct(equip.updatedAt),
+    //   }
+
+    //   return resp
+    // })
+
+    // const equipsList = formatData(newRows)
+
+
+    // const response = {
+    //   // page: pageResponse,
+    //   // show: limit,
+    //   count: equipsList.length,
+    //   rows: equipsList,
+    // }
+
+    // // console.log(response)
+
+    // return response
+
 
     const { rows } = equips
 
@@ -299,7 +493,13 @@ module.exports = class EquipDomain {
       return dateformated
     }
 
-    const formatData = R.map((equip) => {
+    const equipsList = []
+
+    let global = ''
+
+    if (R.prop('filters', query) && R.prop('global', query.filters)) global = query.filters.global.replace(/\W/gi, '')
+
+    const globalSearch = R.map((equip) => {
       const resp = {
         id: equip.id,
         companyId: equip.companyId,
@@ -332,23 +532,28 @@ module.exports = class EquipDomain {
         createdAt: formatDateFunct(equip.createdAt),
         updatedAt: formatDateFunct(equip.updatedAt),
       }
-      return resp
+
+      if (resp.razaoSocial.indexOf(global) !== -1
+        || resp.cnpj.indexOf(global) !== -1
+        || resp.type.indexOf(global) !== -1
+        || resp.mark.indexOf(global) !== -1
+        || resp.model.indexOf(global) !== -1
+        || resp.serialNumber.indexOf(global) !== -1) {
+        equipsList.push(resp)
+      }
     })
 
-    const equipsList = formatData(rows)
-
+    await globalSearch(rows)
 
     const response = {
       page: pageResponse,
       show: limit,
-      count: equips.count,
+      count: equipsList.length,
       rows: equipsList,
     }
 
-    // console.log(response)
     return response
   }
-
 
   async update(bodyData, options = {}) {
     const { transaction = null } = options
